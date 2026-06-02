@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Rudrapriya Rajesh Choudhari</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Segoe UI',system-ui,sans-serif;
+  background:#fafaf8;
+  color:#1c1c1e;
+  overflow-x:hidden;
+  /* CUSTOM ORANGE DOT CURSOR (Hidden on mobile via media query) */
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><circle cx="8" cy="8" r="4" fill="%23c97d4e"/></svg>') 8 8, auto;
+}
+
+/* CUSTOM POINTER CURSOR FOR CLICKABLES */
+a, button, .ptab, .proj-panel, .mini-card, .interactive-course, input, textarea, .modal-close {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><circle cx="10" cy="10" r="4" fill="%23c97d4e"/><circle cx="10" cy="10" r="8" stroke="%23c97d4e" stroke-width="1.5" fill="none"/></svg>') 10 10, pointer !important;
+}
+
+/* CUSTOM SCROLLBAR */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #fafaf8; }
+::-webkit-scrollbar-thumb { background: #d1ccc0; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #c97d4e; }
+
+/* CANVAS GRID STYLES */
+#interactive-grid {
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  z-index: -1; pointer-events: none; 
+}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  background:var(--nav-bg,rgba(250,250,248,0.88));
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border-col,#e8e4dc);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 48px;height:60px;
+  transition:background .3s;
+}
+
+/* --- TRUER BLACK DARK MODE VARS --- */
+body.dark {
+  --nav-bg: rgba(10, 10, 10, 0.92);
+  --border-col: #222222;
+  background: #080808; 
+  color: #eaeaf0;
+}
+body.dark ::-webkit-scrollbar-track { background: #080808; }
+body.dark ::-webkit-scrollbar-thumb { background: #222222; }
+body.dark ::-webkit-scrollbar-thumb:hover { background: #c97d4e; }
+
+body.dark .section-alt { background: #0c0c0c; }
+body.dark .about-photo, body.dark .contact-img { filter:brightness(.85); }
+body.dark .astat, body.dark .skill-card, body.dark .mini-card, body.dark .musician-card,
+body.dark .proj-content, body.dark input, body.dark textarea, body.dark .soc, 
+body.dark .hero-badge, body.dark .hero-badge2, body.dark .main-proj-wrapper, 
+body.dark .modal-content {
+  background: #111111; border-color: #222222; color: #eaeaf0;
+}
+body.dark input::placeholder, body.dark textarea::placeholder { color:#555; }
+body.dark .mini-card-title, body.dark .proj-title, body.dark .tl-role, 
+body.dark .musician-name, body.dark .skill-card-title { color:#eaeaf0; }
+body.dark .about-text p, body.dark .proj-body, body.dark .tl-desc, 
+body.dark .musician-desc, body.dark .mini-card-tools { color:#aaa; }
+body.dark .about-text strong { color:#eaeaf0; } 
+body.dark .hero-sub, body.dark .sec-sub { color:#aaa; }
+body.dark .chip { background:#111111; border-color:#222222; color:#aaa; }
+body.dark footer { background:#080808; border-color:#222222; }
+body.dark footer p { color:#555; }
+body.dark .skill-pill { background:#1a1a1a; color:#ccc; border: 1px solid #333; }
+body.dark .proj-tags .proj-tag { background:#1a1512; color:#c97d4e; }
+body.dark .nav-logo, body.dark h1.name, body.dark .sec-title { color:#eaeaf0; }
+body.dark .nav-links a { color:#888; }
+body.dark .nav-links a:hover { color:#c97d4e; }
+body.dark .timeline::before { background:linear-gradient(#c97d4e,#222222); }
+body.dark .tl-placeholder { border-color:#222222; color:#444; }
+body.dark .hero-blob { background:linear-gradient(135deg,#2a1a10,#1e1525); }
+body.dark #hero { background:linear-gradient(135deg,#0a0a0a 0%,#050505 100%); }
+body.dark .astat-label { color:#666; }
+body.dark .mini-card-img { filter:brightness(.8); }
+body.dark .proj-tabs { border-color:#222222; }
+body.dark .proj-panel.active, body.dark div[style*="background:#fff"] { background:#111111; }
+body.dark .about-stats .astat-num { color:#c97d4e; }
+body.dark .modal-title { color:#eaeaf0; }
+body.dark .modal-desc { color:#aaa; }
+body.dark .proj-tabs-container { background: #080808 !important; border-bottom-color: #222222 !important; }
+
+/* NAV LINKS & HAMBURGER */
+.nav-logo{font-size:15px;font-weight:700;letter-spacing:-.01em;color:#1c1c1e;}
+.nav-logo span{color:#c97d4e;}
+.nav-links{display:flex;gap:32px;align-items:center;}
+.nav-links a{font-size:13px;color:#666;text-decoration:none;font-weight:500;transition:color .2s;}
+.nav-links a:hover{color:#c97d4e;}
+.menu-toggle { display: none; font-size: 20px; color: #1c1c1e; cursor: pointer; background: none; border: none; }
+body.dark .menu-toggle { color: #eaeaf0; }
+
+/* HERO */
+#hero{
+  position:relative; min-height:100vh; display:grid; grid-template-columns:1fr 1fr;
+  align-items:center; padding:80px 48px 60px; gap:60px;
+  background:linear-gradient(135deg,#fdf6ee 0%,#fafaf8 60%,#f0ece8 100%);
+  overflow:hidden;
+}
+
+.hero-text{position:relative;z-index:1;}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px; background:#fff;border:1px solid #e8e4dc;border-radius:4px; 
+  padding:6px 16px;font-size:12px;color:#888; font-family:monospace;letter-spacing:0.5px;font-weight:600;margin-bottom:28px;
+}
+.hero-eyebrow .dot{width:7px;height:7px;background:#c97d4e;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+h1.name{font-size:clamp(2.4rem,4vw,3.8rem);font-weight:800;line-height:1.08;letter-spacing:-.03em;color:#1c1c1e;}
+h1.name span{color:#c97d4e;}
+.hero-sub{margin-top:18px;font-size:1rem;color:#666;line-height:1.75;max-width:460px;}
+.hero-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px;}
+.chip{background:#fff;border:1px solid #e0dbd4;border-radius:4px;padding:5px 14px;font-size:12px;color:#555;font-weight:600;font-family:monospace;}
+.hero-btns{display:flex;gap:12px;margin-top:30px;flex-wrap:wrap;}
+.btn-warm{padding:12px 28px;background:#c97d4e;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;transition:transform .2s,background .2s;letter-spacing:.02em; display:inline-block;}
+.btn-warm:hover{background:#b56e40;transform:translateY(-2px);}
+.btn-ghost{padding:12px 28px;background:transparent;color:#c97d4e;border:1.5px solid #c97d4e;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;transition:all .2s; display:inline-block;}
+.btn-ghost:hover{background:#fdf0e8;}
+
+/* HERO IMAGE SIDE */
+.hero-img-wrap{position:relative;display:flex;align-items:center;justify-content:center;z-index:1;}
+.hero-photo{
+  width:340px;height:420px;object-fit:cover;border-radius:24px;
+  box-shadow:0 30px 80px rgba(0,0,0,.14); position:relative;z-index:2;
+  transition: transform 0.1s ease-out;
+}
+.hero-blob{
+  position:absolute;width:380px;height:460px; background:linear-gradient(135deg,#f5dcc8,#e8d5c4);
+  border-radius:40% 60% 55% 45% / 50% 40% 60% 50%; animation:blobmorph 8s ease-in-out infinite;
+  z-index:1; transition: transform 0.1s ease-out;
+}
+@keyframes blobmorph{0%,100%{border-radius:40% 60% 55% 45% / 50% 40% 60% 50%;}50%{border-radius:55% 45% 40% 60% / 40% 55% 45% 60%;}}
+.hero-badge{
+  position:absolute;bottom:40px;left:-20px;z-index:3; background:#fff;border-radius:14px;padding:12px 18px;
+  box-shadow:0 8px 30px rgba(0,0,0,.1); font-size:12px;font-weight:600;color:#1c1c1e;
+  display:flex;align-items:center;gap:10px; transition: transform 0.1s ease-out;
+}
+.hero-badge2{
+  position:absolute;top:50px;right:-20px;z-index:3; background:#fff;border-radius:14px;padding:10px 14px;
+  box-shadow:0 8px 30px rgba(0,0,0,.1); font-size:11px;font-weight:600;color:#c97d4e;
+  transition: transform 0.1s ease-out;
+}
+
+/* SECTIONS */
+.section{padding:96px 48px;}
+.section-alt{background:#f5f2ee;}
+.sec-inner{max-width:1100px;margin:0 auto;}
+.sec-eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#c97d4e;font-weight:700;margin-bottom:8px;}
+.sec-title{font-size:clamp(1.8rem,3vw,2.6rem);font-weight:800;letter-spacing:-.02em;color:#1c1c1e;margin-bottom:6px;}
+.sec-sub{font-size:.95rem;color:#888;margin-bottom:44px;max-width:520px;line-height:1.6;}
+
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+.about-photo{width:100%;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,.1);aspect-ratio:4/3;object-fit:cover;}
+.about-text p{font-size:.95rem;color:#555;line-height:1.85;margin-bottom:16px;}
+.about-text strong{color:#1c1c1e;}
+.about-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:28px;}
+.astat{background:#fff;border:1px solid #e8e4dc;border-radius:12px;padding:16px 18px;}
+.astat-num{font-size:1.5rem;font-weight:800;color:#c97d4e;}
+.astat-label{font-size:11px;color:#999;font-weight:500;margin-top:2px;}
+
+/* MAIN PROJECT WRAPPER */
+.main-proj-wrapper {
+  background: #fff; border: 1px solid #e8e4dc; border-radius: 20px; overflow: hidden;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.main-proj-wrapper:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,0.08); }
+
+/* PROJECTS — Tabs */
+.proj-tabs-container { width: 100%; background: #fff !important; border-bottom: 2px solid #e8e4dc; }
+.proj-tabs { display: flex; gap: 0; overflow-x: auto; overflow-y: hidden; scroll-behavior: smooth; -ms-overflow-style: none; scrollbar-width: none; }
+.proj-tabs::-webkit-scrollbar { display: none; }
+.ptab {
+  position: relative; padding: 14px 28px; font-size: 13px; font-weight: 600; color: #999 !important; 
+  border-bottom: none; margin-bottom: 0px; white-space: nowrap; transition: color 0.3s;
+  background: transparent !important; border-top: none; border-left: none; border-right: none; z-index: 1;
+}
+.ptab::after {
+  content: ''; position: absolute; bottom: -2px; left: 0; width: 100%; height: 2px;
+  background-color: #c97d4e; transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease;
+}
+.ptab:hover::after, .ptab.active::after { transform: scaleX(1); }
+.ptab.active, .ptab:hover { color: #c97d4e !important; }
+
+/* PROJECT PANELS */
+.proj-panel { display: none; animation: fadein .35s ease; }
+.proj-panel.active { display: grid; grid-template-columns: 1fr 1fr; min-height: 460px; }
+@keyframes fadein{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.proj-img { width: 100%; height: 100%; object-fit: cover; min-height: 380px; border-radius: 0 0 0 16px; transition: filter 0.3s ease; }
+.proj-panel:hover .proj-img { filter: brightness(1.05); }
+.proj-content { padding: 48px 52px; display: flex; flex-direction: column; justify-content: center; background: #fff; }
+.proj-num{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#c97d4e;font-weight:700;margin-bottom:14px;}
+.proj-title{font-size:1.35rem;font-weight:800;line-height:1.25;margin-bottom:14px;color:#1c1c1e;}
+.proj-body{font-size:.88rem;color:#666;line-height:1.8;margin-bottom:20px;}
+.proj-tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:18px;}
+.proj-tag{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 12px;background:#fdf0e8;color:#c97d4e;border-radius:20px;}
+.proj-tools{font-size:11px;color:#aaa;margin-bottom:24px;}
+.proj-tools span{color:#888;}
+
+/* MINI PROJECTS */
+.mini-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;}
+.mini-card{ background:#fff;border:1px solid #e8e4dc;border-radius:14px; overflow:hidden;transition:transform .25s,box-shadow .25s; }
+.mini-card:hover{transform:translateY(-5px);box-shadow:0 16px 40px rgba(0,0,0,.08);}
+.mini-card-img{width:100%;height:140px;object-fit:cover;}
+.mini-card-body{padding:18px;}
+.mini-card-num{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#c97d4e;font-weight:700;margin-bottom:6px;}
+.mini-card-title{font-size:.875rem;font-weight:700;margin-bottom:6px;color:#1c1c1e;}
+.mini-card-tools{font-size:11px;color:#aaa;}
+
+/* SKILLS */
+.skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.skill-card{background:#fff;border:1px solid #e8e4dc;border-radius:16px;padding:26px;}
+.skill-card-icon{font-size:22px;color:#c97d4e;margin-bottom:14px;}
+.skill-card-title{font-size:.875rem;font-weight:700;margin-bottom:14px;color:#1c1c1e;}
+.skill-pill{display:inline-block;background:#f5f2ee;color:#555;font-size:11px;font-weight:600;padding:5px 12px;border-radius:20px;margin:4px 4px 0 0;}
+
+/* COURSEWORK */
+.interactive-course { transition: transform .2s, box-shadow .2s; }
+.interactive-course:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,.08); }
+
+/* TIMELINE */
+.timeline{display:flex;flex-direction:column;gap:0;position:relative;padding-left:32px;}
+.timeline::before{content:'';position:absolute;left:10px;top:0;bottom:0;width:2px;background:linear-gradient(#c97d4e,#e8e4dc);}
+.tl{position:relative;padding:0 0 40px 28px;}
+.tl-dot{position:absolute;left:-32px;top:3px;width:16px;height:16px;border-radius:50%;background:#c97d4e;border:3px solid #fafaf8;box-shadow:0 0 0 2px #c97d4e;}
+.tl-dot.empty{background:#e8e4dc;box-shadow:0 0 0 2px #e8e4dc;}
+.tl-date{font-size:11px;color:#c97d4e;font-weight:700;letter-spacing:.08em;margin-bottom:5px;}
+.tl-role{font-size:1rem;font-weight:700;color:#1c1c1e;margin-bottom:3px;}
+.tl-org{font-size:.85rem;color:#aaa;margin-bottom:8px;}
+.tl-desc{font-size:.875rem;color:#666;line-height:1.7;}
+
+/* MUSIC */
+.music-hero{ width:100%;border-radius:20px;overflow:hidden;position:relative;margin-bottom:36px; height:280px; }
+.music-hero img{width:100%;height:100%;object-fit:cover;filter:brightness(.6);}
+.music-hero-text{ position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end; padding:32px;color:#fff; }
+.music-hero-text h3{font-size:1.8rem;font-weight:800;margin-bottom:6px;}
+.music-hero-text p{font-size:.9rem;opacity:.85;max-width:500px;line-height:1.6;}
+.musicians-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+.musician-card{ background:#fff;border:1px solid #e8e4dc;border-radius:16px;overflow:hidden; transition:transform .25s; }
+.musician-card:hover{transform:translateY(-4px);}
+.musician-img{width:100%;height:160px;object-fit:cover;object-position:top;}
+.musician-body{padding:18px;}
+.musician-role{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#c97d4e;font-weight:700;margin-bottom:5px;}
+.musician-name{font-size:.95rem;font-weight:800;margin-bottom:7px;color:#1c1c1e;}
+.musician-desc{font-size:.8rem;color:#888;line-height:1.65;}
+
+/* CONTACT */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;}
+.contact-img{width:100%;border-radius:20px;object-fit:cover;height:400px;}
+label{display:block;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#aaa;margin-bottom:5px;}
+input,textarea{
+  width:100%;background:#fff;border:1px solid #e8e4dc;color:#1c1c1e; border-radius:8px;padding:11px 14px;
+  font-size:.875rem;outline:none; transition:border-color .2s;font-family:inherit;margin-bottom:14px;
+}
+input:focus,textarea:focus{border-color:#c97d4e;}
+textarea{resize:vertical;min-height:110px;}
+.social-row{display:flex;gap:12px;margin-top:24px;flex-wrap:wrap;}
+.soc{
+  display:flex;align-items:center;gap:10px; padding:12px 18px;background:#fff;border:1px solid #e8e4dc;
+  border-radius:10px; text-decoration:none;color:#555;font-size:.85rem;font-weight:600;transition:all .2s;
+}
+.soc:hover{border-color:#c97d4e;color:#c97d4e;}
+.soc i{color:#c97d4e;font-size:16px;}
+footer{text-align:center;padding:40px 48px;border-top:1px solid #e8e4dc;background:#fff;}
+footer p{font-size:12px;color:#bbb;}
+footer strong{color:#888;}
+
+/* MODAL STYLES */
+.modal-overlay {
+  display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(5px); z-index: 1000; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;
+}
+.modal-overlay.show { display: flex; opacity: 1; }
+.modal-content {
+  background: #fff; width: 90%; max-width: 650px; border-radius: 20px; padding: 40px; position: relative;
+  border: 1px solid #e8e4dc; transform: translateY(20px); transition: transform 0.3s ease;
+  max-height: 90vh; overflow-y: auto; /* Fix modal cutoff on phones */
+}
+.modal-overlay.show .modal-content { transform: translateY(0); }
+.modal-close {
+  position: absolute; top: 20px; right: 24px; background: transparent; border: none; font-size: 24px; color: #888; transition: color 0.2s;
+}
+.modal-close:hover { color: #c97d4e; }
+.modal-title { font-size: 1.6rem; font-weight: 800; margin-bottom: 12px; color: #1c1c1e; }
+.modal-desc { font-size: 0.95rem; color: #555; line-height: 1.8; margin-bottom: 24px; }
+.modal-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+/* SCROLL REVEAL */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .6s ease,transform .6s ease;}
+.reveal.visible{opacity:1;transform:none;}
+
+
+/* ========================================================
+   MOBILE RESPONSIVENESS OVERHAUL
+======================================================== */
+@media(max-width:900px){
+  /* Revert custom cursors on touch devices */
+  body, a, button, .ptab, .proj-panel, .mini-card, .interactive-course, input, textarea, .modal-close {
+    cursor: auto !important;
+  }
+  
+  /* Navigation Fix: Hamburger Menu */
+  nav { padding: 0 24px; }
+  .menu-toggle { display: block; } /* Show hamburger icon */
+  .nav-links {
+    display: none; /* Hide default flex row */
+    flex-direction: column;
+    position: absolute;
+    top: 60px; left: 0; right: 0;
+    background: var(--nav-bg);
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border-col);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    align-items: flex-start;
+    gap: 20px;
+  }
+  .nav-links.active { display: flex; } /* Shown when toggled */
+  
+  /* Hero Section Fix: Stack Photo on Top */
+  #hero {
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding: 120px 24px 60px; /* More top padding to clear nav */
+    gap: 40px;
+  }
+  .hero-img-wrap { 
+    display: flex !important; /* Bring picture back */
+    order: -1; /* Push to the very top */
+  }
+  /* Scale down the photo slightly for mobile */
+  .hero-photo { width: 260px; height: 320px; border-radius: 20px; }
+  .hero-blob { width: 280px; height: 340px; }
+  
+  /* Center alignments for mobile hero text */
+  .hero-eyebrow, .hero-chips, .hero-btns { justify-content: center; }
+  .hero-sub { margin-left: auto; margin-right: auto; }
+  
+  /* Badges positioning adjustments for mobile */
+  .hero-badge { bottom: 20px; left: 0; font-size: 10px; padding: 8px 12px; }
+  .hero-badge2 { top: 20px; right: 0; font-size: 9px; padding: 8px 12px; }
+
+  /* General Section Spacing */
+  .section { padding: 64px 24px; }
+  .about-grid, .contact-grid { grid-template-columns: 1fr; }
+  
+  /* Project Panel Fixes */
+  .proj-panel.active { grid-template-columns: 1fr; }
+  .proj-img { min-height: 240px; border-radius: 0; }
+  .proj-content { padding: 32px 24px; }
+
+  /* Grid Adjustments */
+  .musicians-grid, .skills-grid { grid-template-columns: 1fr; }
+  .contact-img { height: 280px; }
+}
+</style>
+</head>
+<body class="dark">
+
+<canvas id="interactive-grid"></canvas>
+
+<nav>
+  <div class="nav-logo">Rudra<span>.</span></div>
+  <button class="menu-toggle" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
+  
+  <div class="nav-links" id="navLinks">
+    <a href="#about" onclick="toggleMenu()">About</a>
+    <a href="#projects" onclick="toggleMenu()">Projects</a>
+    <a href="#skills" onclick="toggleMenu()">Skills</a>
+    <a href="#coursework" onclick="toggleMenu()">Coursework</a>
+    <a href="#experience" onclick="toggleMenu()">Experience</a>
+    <a href="#music" onclick="toggleMenu()">Music</a>
+    <a href="#contact" onclick="toggleMenu()">Contact</a>
+    <button onclick="toggleDark()" id="theme-btn" style="background:none;border:1.5px solid #e8e4dc;color:#555;border-radius:20px;padding:6px 16px;font-size:13px;font-weight:700;transition:all .2s;">☀️ Light</button>
+  </div>
+</nav>
+
+<section id="hero">
+  <div class="hero-text reveal">
+    <div class="hero-eyebrow"><span class="dot"></span> Open to Internships · 2026</div>
+    <h1 class="name">Rudrapriya<br><span>Rajesh</span><br>Choudhari</h1>
+    <p class="hero-sub">4th-year Dual Degree student at <strong>IIT Bhubaneswar</strong>, School of Mechanical Sciences. I build things, simulate flows, and occasionally shred a guitar.</p>
+    <div class="hero-chips">
+      <div class="chip">⚙ System Design</div>
+      <div class="chip">💧 Fluid Dynamics</div>
+      <div class="chip">🤖 Robotics</div>
+      <div class="chip">🎸 Progressive Metal</div>
+    </div>
+    <div class="hero-btns">
+      <a href="#projects" class="btn-warm">See My Work</a>
+      <a href="#contact" class="btn-ghost">Get in Touch</a>
+    </div>
+  </div>
+  
+  <div class="hero-img-wrap reveal">
+    <div class="hero-blob" id="parallaxBlob"></div>
+    <img src="assests/images/profile_pic.jpg" alt="Engineering lab" class="hero-photo" id="parallaxImg"/>
+    <div class="hero-badge" id="parallaxBadge1">📍 IIT Bhubaneswar · Year 4</div>
+    <div class="hero-badge2" id="parallaxBadge2">B.Tech + M.Tech Dual Degree</div>
+  </div>
+</section>
+
+<section class="section section-alt" id="about">
+  <div class="sec-inner">
+    <div class="about-grid reveal">
+      <img src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=900&q=80" alt="Mechanical engineering workshop" class="about-photo"/>
+      <div class="about-text">
+        <div class="sec-eyebrow">Who I Am</div>
+        <h2 class="sec-title">About Me</h2>
+        <p>I'm a fourth-year student in the <strong>B.Tech + M.Tech Dual Degree programme</strong> at IIT Bhubaneswar, specialising in <strong>System Design</strong> within the School of Mechanical Sciences.</p>
+        <p>My academic training centres on building rigorous, first-principles understanding of mechanical systems — from <strong>fluid dynamics and continuum mechanics</strong> to machine kinematics and structural analysis. My primary research interest is the intersection of <strong>physical engineering and intelligent systems</strong>: where hardware meets computation.</p>
+        <p>I'm actively expanding into <strong>machine learning and scientific computing</strong> in Python, with a long-term goal of applying data-driven methods to robotics, smart actuator design, and autonomous physical systems.</p>
+        <div class="about-stats">
+          <div class="astat"><div class="astat-num">IIT</div><div class="astat-label">Bhubaneswar</div></div>
+          <div class="astat"><div class="astat-num">4th</div><div class="astat-label">Year · 2023–2028</div></div>
+          <div class="astat"><div class="astat-num">Dual</div><div class="astat-label">B.Tech + M.Tech</div></div>
+          <div class="astat"><div class="astat-num">SysDes</div><div class="astat-label">Specialisation</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="projects">
+  <div class="sec-inner reveal">
+    <div class="sec-eyebrow">Research & Engineering</div>
+    <h2 class="sec-title">Major Projects</h2>
+    <p class="sec-sub">Full-width project cards — click tabs to explore each one.</p>
+
+    <div class="main-proj-wrapper">
+      <div class="proj-tabs-container" id="tabsContainer">
+        <div class="proj-tabs" id="projTabs">
+          <button class="ptab active" onclick="showProj(0,this)">01 · Ionic Wind Generator</button>
+          <button class="ptab" onclick="showProj(1,this)">02 · Autonomous UAV Drone</button>
+          <button class="ptab" onclick="showProj(2,this)">03 · Piston CFD Analysis</button>
+          <button class="ptab" onclick="showProj(3,this)">04 · 2DOF Robotic Manipulator</button>
+        </div>
+      </div>
+
+      <div class="proj-panel active" id="pp0" onclick="openModal('ionic')">
+        <img src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=900&q=80" alt="Fluid dynamics" class="proj-img"/>
+        <div class="proj-content">
+          <div class="proj-num">Project 01 · Ongoing</div>
+          <div class="proj-title">Ionic Wind Generator (EHD Thruster)</div>
+          <p class="proj-body">Designing a solid-state electrohydrodynamic (EHD) thruster to generate directed airflow with no moving parts. Successfully identified and integrated a high-voltage DC source to drive corona discharge, and currently iterating on electrode geometry to optimize thrust. Investigating boundary layer control effects for potential drag-reduction applications.</p>
+          <div class="proj-tags">
+            <span class="proj-tag">Fluid Dynamics</span>
+            <span class="proj-tag">Hardware</span>
+            <span class="proj-tag">Electrostatics</span>
+          </div>
+          <div class="proj-tools">Tools: <span>HV Electronics · Prototype Fabrication</span></div>
+        </div>
+      </div>
+
+      <div class="proj-panel" id="pp1" onclick="openModal('drone')">
+        <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=900&q=80" alt="Robotics" class="proj-img"/>
+        <div class="proj-content">
+          <div class="proj-num">Project 02 · e-Yantra IIT Bombay</div>
+          <div class="proj-title">Krishi Drone Precision Agriculture UAV</div>
+          <p class="proj-body">Contributed to the development of an autonomous quadrotor for pest and disease detection using overhead camera-based computer vision. The system architecture is built on ROS 2, featuring a navigation stack that handles precision waypoint following guided by real-time image feedback.</p>
+          <div class="proj-tags">
+            <span class="proj-tag">Robotics</span>
+            <span class="proj-tag">Computer Vision</span>
+            <span class="proj-tag">UAV Control</span>
+          </div>
+          <div class="proj-tools">Tools: <span>ROS 2 · Gazebo · Python · YOLO</span></div>
+        </div>
+      </div>
+
+      <div class="proj-panel" id="pp2" onclick="openModal('cfd')">
+        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=900&q=80" alt="CFD Engine" class="proj-img"/>
+        <div class="proj-content">
+          <div class="proj-num">Project 03 · Simulation</div>
+          <div class="proj-title">CFD Analysis of IC Engine Piston Heads</div>
+          <p class="proj-body">Performed reactive-flow CFD simulations in ANSYS Forte to compare combustion performance of Flat-top and Circular Dish piston geometries in a CI engine. Configured RANS RNG k-epsilon turbulence model with CHEMKIN-Pro chemistry solver to confirm superior air-fuel mixing in dish-type geometry.</p>
+          <div class="proj-tags">
+            <span class="proj-tag">Thermodynamics</span>
+            <span class="proj-tag">CFD</span>
+            <span class="proj-tag">Combustion</span>
+          </div>
+          <div class="proj-tools">Tools: <span>ANSYS Forte · CHEMKIN-Pro</span></div>
+        </div>
+      </div>
+
+      <div class="proj-panel" id="pp3" onclick="openModal('manipulator')">
+        <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=900&q=80" alt="Robotic Arm" class="proj-img"/>
+        <div class="proj-content">
+          <div class="proj-num">Project 04 · Kinematics</div>
+          <div class="proj-title">2DOF Robotic Manipulator Kinematics</div>
+          <p class="proj-body">Designed a CAD model of a 2-DOF planar robotic arm using Simscape Multibody and exported its Rigid Body Tree to implement Forward Kinematics. Implemented Inverse Kinematics using the iterative Levenberg-Marquardt solver to trace geometric waypoints and generated smooth Cartesian paths.</p>
+          <div class="proj-tags">
+            <span class="proj-tag">Kinematics</span>
+            <span class="proj-tag">Trajectory Planning</span>
+            <span class="proj-tag">Robotics</span>
+          </div>
+          <div class="proj-tools">Tools: <span>MATLAB Simulink · Simscape Multibody</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt" id="miniprojects">
+  <div class="sec-inner reveal">
+    <div class="sec-eyebrow">Coursework & Content</div>
+    <h2 class="sec-title">Other Work</h2>
+    <p class="sec-sub">Selected coursework and problem-solving initiatives.</p>
+    <div class="mini-grid">
+      <div class="mini-card" onclick="openModal('cad_portfolio')">
+        <img src="https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?w=600&q=80" alt="CAD modelling" class="mini-card-img"/>
+        <div class="mini-card-body">
+          <div class="mini-card-num">Coursework</div>
+          <div class="mini-card-title">CAD Modelling Portfolio</div>
+          <p style="font-size:.8rem;color:#888;line-height:1.65;margin:6px 0 8px;">Assembly and detail-drawing collection across engine sub-assemblies, precision jigs, and mechanical linkages. Emphasis on GD&T compliance.</p>
+          <div class="mini-card-tools">SolidWorks</div>
+        </div>
+      </div>
+      <div class="mini-card" onclick="openModal('booksolver_sme')">
+        <img src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=600&q=80" alt="Physics" class="mini-card-img"/>
+        <div class="mini-card-body">
+          <div class="mini-card-num">Booksolver</div>
+          <div class="mini-card-title">Physics & Maths Expert</div>
+          <p style="font-size:.8rem;color:#888;line-height:1.65;margin:6px 0 8px;">Produced detailed video solutions for JEE Advanced-level Physics and Mathematics problems, emphasizing conceptual clarity.</p>
+          <div class="mini-card-tools">Content Creation · EdTech</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="skills">
+  <div class="sec-inner reveal">
+    <div class="sec-eyebrow">Technical Competencies</div>
+    <h2 class="sec-title">Skills</h2>
+    <p class="sec-sub">Tools and methods I work with regularly.</p>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <div class="skill-card-icon"><i class="fa-solid fa-cube"></i></div>
+        <div class="skill-card-title">CAD & Simulation</div>
+        <span class="skill-pill">SolidWorks</span>
+        <span class="skill-pill">Ansys Forte</span>
+        <span class="skill-pill">Ansys CFD / Fluent</span>
+        <span class="skill-pill">Ansys Mechanical</span>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon"><i class="fa-solid fa-terminal"></i></div>
+        <div class="skill-card-title">Computing & Analysis</div>
+        <span class="skill-pill">MATLAB</span>
+        <span class="skill-pill">Simulink</span>
+        <span class="skill-pill">Python</span>
+        <span class="skill-pill">NumPy / SciPy</span>
+        <span class="skill-pill">Pandas</span>
+        <span class="skill-pill">OpenCV</span>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon"><i class="fa-solid fa-flask"></i></div>
+        <div class="skill-card-title">Methods & Robotics</div>
+        <span class="skill-pill">Finite Element Analysis</span>
+        <span class="skill-pill">CFD</span>
+        <span class="skill-pill">Mechanism Synthesis</span>
+        <span class="skill-pill">Topology Optimisation</span>
+        <span class="skill-pill">Control Theory</span>
+        <span class="skill-pill">ROS 2</span>
+        <span class="skill-pill">Gazebo</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt" id="coursework">
+  <div class="sec-inner reveal">
+    <div class="sec-eyebrow">Academic Foundation</div>
+    <h2 class="sec-title">Relevant Coursework</h2>
+    <p class="sec-sub">Core and elective courses that shape my technical foundation. (Click for details)</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;">
+      
+      <div class="interactive-course" onclick="openModal('cw_robotics')" style="background:#fff;border:1px solid #e8e4dc;border-radius:14px;padding:20px 22px;display:flex;align-items:center;gap:14px;">
+        <span style="font-size:22px;">🤖</span>
+        <div><div style="font-size:.875rem;font-weight:700;color:#1c1c1e;">Robotics</div><div style="font-size:11px;color:#aaa;margin-top:2px;">Core</div></div>
+      </div>
+      
+      <div class="interactive-course" onclick="openModal('cw_syscontrol')" style="background:#fff;border:1px solid #e8e4dc;border-radius:14px;padding:20px 22px;display:flex;align-items:center;gap:14px;">
+        <span style="font-size:22px;">⚙️</span>
+        <div><div style="font-size:.875rem;font-weight:700;color:#1c1c1e;">System and Control</div><div style="font-size:11px;color:#aaa;margin-top:2px;">Core</div></div>
+      </div>
+      
+      <div class="interactive-course" onclick="openModal('cw_tom')" style="background:#fff;border:1px solid #e8e4dc;border-radius:14px;padding:20px 22px;display:flex;align-items:center;gap:14px;">
+        <span style="font-size:22px;">🔩</span>
+        <div><div style="font-size:.875rem;font-weight:700;color:#1c1c1e;">Theory of Machines</div><div style="font-size:11px;color:#aaa;margin-top:2px;">Core</div></div>
+      </div>
+      
+      <div class="interactive-course" onclick="openModal('cw_fluids')" style="background:#fff;border:1px solid #e8e4dc;border-radius:14px;padding:20px 22px;display:flex;align-items:center;gap:14px;">
+        <span style="font-size:22px;">💧</span>
+        <div><div style="font-size:.875rem;font-weight:700;color:#1c1c1e;">Fluid Dynamics</div><div style="font-size:11px;color:#aaa;margin-top:2px;">Core</div></div>
+      </div>
+      
+      <div class="interactive-course" onclick="openModal('cw_heat')" style="background:#fff;border:1px solid #e8e4dc;border-radius:14px;padding:20px 22px;display:flex;align-items:center;gap:14px;">
+        <span style="font-size:22px;">🌡️</span>
+        <div><div style="font-size:.875rem;font-weight:700;color:#1c1c1e;">Heat Transfer & Thermo</div><div style="font-size:11px;color:#aaa;margin-top:2px;">Core</div></div>
+      </div>
+      
+      <div class="interactive-course" onclick="openModal('cw_programming')" style="background:#fff;border:1px solid #e8e4dc;border-radius:14px;padding:20px 22px;display:flex;align-items:center;gap:14px;">
+        <span style="font-size:22px;">💻</span>
+        <div><div style="font-size:.875rem;font-weight:700;color:#1c1c1e;">Programming & Data Str.</div><div style="font-size:11px;color:#aaa;margin-top:2px;">Core</div></div>
+      </div>
+      
+      <div class="interactive-course" onclick="openModal('cw_math')" style="background:#fff;border:1px solid #e8e4dc;border-radius:14px;padding:20px 22px;display:flex;align-items:center;gap:14px;">
+        <span style="font-size:22px;">📈</span>
+        <div><div style="font-size:.875rem;font-weight:700;color:#1c1c1e;">Linear Alg & Numerical</div><div style="font-size:11px;color:#aaa;margin-top:2px;">Core</div></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="section" id="experience">
+  <div class="sec-inner">
+    <div class="reveal">
+      <div class="sec-eyebrow">Timeline</div>
+      <h2 class="sec-title">Experience</h2>
+      <p class="sec-sub">Roles, responsibilities, and milestones.</p>
+    </div>
+    <div class="timeline reveal">
+      <div class="tl">
+        <div class="tl-dot"></div>
+        <div class="tl-date">Present</div>
+        <div class="tl-role">Student Internship Coordinator</div>
+        <div class="tl-org">IIT Bhubaneswar · Student Body</div>
+        <p class="tl-desc">Facilitating internship processes for students — coordinating with companies, managing communications, and supporting peers through application and placement workflows.</p>
+      </div>
+      <div class="tl">
+        <div class="tl-dot empty"></div>
+        <div class="tl-date">June 2025 – October 2025</div>
+        <div class="tl-role">Subject Matter Expert (Physics & Mathematics)</div>
+        <div class="tl-org">Booksolver</div>
+        <p class="tl-desc">Produced detailed video solutions for JEE Advanced-level Physics and Mathematics problems, emphasizing conceptual clarity and structured problem-solving approaches for competitive exam preparation.</p>
+      </div>
+      <div class="tl">
+        <div class="tl-dot empty"></div>
+        <div class="tl-date">2025 – 26 · Completed</div>
+        <div class="tl-role">Governor, Aaroh — Music Society</div>
+        <div class="tl-org">IIT Bhubaneswar · Student Leadership</div>
+        <p class="tl-desc">Managed annual budget planning, event scheduling, and repertoire selection for the institute's music society.</p>
+      </div>
+      <div class="tl">
+        <div class="tl-dot empty"></div>
+        <div class="tl-date">2023 – 24</div>
+        <div class="tl-role">Associate, Sponsorship Team</div>
+        <div class="tl-org">Wissenaire (Now merged to Pravah) · IIT Bhubaneswar</div>
+        <p class="tl-desc">Contributed to the organisation and execution of the annual technical festival, managing event logistics, sponsorships, and cross-team communications.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt" id="music">
+  <div class="sec-inner reveal">
+    <div class="sec-eyebrow">Beyond the Lab</div>
+    <h2 class="sec-title">Music</h2>
+    <p class="sec-sub">Electric guitar and bass · Progressive metal · Fingerstyle · Spanish guitar</p>
+    <div class="music-hero">
+      <img src="https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=1400&q=80" alt="Electric guitar"/>
+      <div class="music-hero-text">
+        <h3>Progressive Metal, Fingerstyle &amp; Spanish Guitar</h3>
+        <p>I approach guitar the way I approach engineering — analytically and iteratively. From the technical precision of progressive metal to the delicacy of fingerstyle and the rhythmic fire of Spanish-style playing, music is just problem-solving with a different tool.</p>
+      </div>
+    </div>
+    <div class="musicians-grid">
+      <div class="musician-card">
+        <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&q=80" alt="Guitar player" class="musician-img"/>
+        <div class="musician-body">
+          <div class="musician-role">Technical Guitar — Influence</div>
+          <div class="musician-name">Tim Henson</div>
+          <p class="musician-desc">Studying Henson's hybrid picking, percussive right-hand techniques, and extended harmonics within progressive structures. Particular interest in his legato-to-plucked transitions as a fine motor control problem.</p>
+        </div>
+      </div>
+      <div class="musician-card">
+        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&q=80" alt="Heavy guitar" class="musician-img"/>
+        <div class="musician-body">
+          <div class="musician-role">Heavy Guitar — Influence</div>
+          <div class="musician-name">Zakk Wylde</div>
+          <p class="musician-desc">Analysis of Wylde's pinch harmonic vocabulary and pentatonic superimposition over modal sequences — examining how raw sustain and vibrato depth function as expressive parameters in high-gain contexts.</p>
+        </div>
+      </div>
+      <div class="musician-card">
+        <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=600&q=80" alt="Music instruction" class="musician-img"/>
+        <div class="musician-body">
+          <div class="musician-role">Mentor & Instructor</div>
+          <div class="musician-name">Jack Wood</div>
+          <p class="musician-desc">Formal study under Jack Wood focusing on technique fundamentals, music theory applied to the fretboard, and structured practice methodology designed for deliberate skill acquisition.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="contact">
+  <div class="sec-inner">
+    <div class="reveal">
+      <div class="sec-eyebrow">Reach Out</div>
+      <h2 class="sec-title">Contact</h2>
+      <p class="sec-sub">Open to research collaborations, internship opportunities, and academic correspondence.</p>
+    </div>
+    <div class="contact-grid reveal">
+      <div>
+        <form onsubmit="return false;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+            <div><label>Name</label><input type="text" placeholder="Your name"/></div>
+            <div><label>Email</label><input type="email" placeholder="you@institution.edu"/></div>
+          </div>
+          <label>Subject</label>
+          <input type="text" placeholder="Research internship · Collaboration · Other"/>
+          <label>Message</label>
+          <textarea placeholder="Write your message here..."></textarea>
+          <button class="btn-warm">Send Message</button>
+        </form>
+        <div class="social-row">
+          <a href="https://github.com/Rudra-CDRI" target="_blank" class="soc"><i class="fa-brands fa-github"></i> GitHub</a>
+          <a href="https://www.linkedin.com/in/rudra-choudhari-030297317" target="_blank" class="soc"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
+          <a href="mailto:rudra.learn@gmail.com" class="soc"><i class="fa-solid fa-envelope"></i> Email</a>
+        </div>
+      </div>
+      <img src="https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?w=800&q=80" alt="IIT campus" class="contact-img"/>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p><strong>Rudrapriya Rajesh Choudhari</strong> · IIT Bhubaneswar · School of Mechanical Sciences</p>
+  <p style="margin-top:6px;">Built with HTML & vanilla JS · Ready for GitHub Pages</p>
+</footer>
+
+<div class="modal-overlay" id="projectModal" onclick="closeModalOnOutsideClick(event)">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+    <h3 class="modal-title" id="modalTitle">Project Title</h3>
+    <p class="modal-desc" id="modalDesc">Project description goes here...</p>
+    <div class="modal-actions" id="modalActions">
+      </div>
+  </div>
+</div>
+
+<script>
+// Mobile Menu Toggle
+function toggleMenu() {
+  const navLinks = document.getElementById('navLinks');
+  navLinks.classList.toggle('active');
+}
+
+// Dark mode logic
+function toggleDark() {
+  const body = document.body;
+  const btn = document.getElementById('theme-btn');
+  body.classList.toggle('dark');
+  const isDark = body.classList.contains('dark');
+  btn.textContent = isDark ? '☀️ Light' : '🌙 Dark';
+  document.querySelectorAll('#coursework [style*="background:#fff"]').forEach(el => {
+    el.style.background = isDark ? '#111111' : '#fff';
+    el.style.borderColor = isDark ? '#222222' : '#e8e4dc';
+    el.querySelector('div > div:first-child').style.color = isDark ? '#eaeaf0' : '#1c1c1e';
+  });
+}
+
+// Project Tabs Logic
+const panels = document.querySelectorAll('.proj-panel');
+const tabs = document.querySelectorAll('.ptab');
+function showProj(i, btn) {
+  panels.forEach(p => p.classList.remove('active'));
+  tabs.forEach(t => t.classList.remove('active'));
+  document.getElementById('pp' + i).classList.add('active');
+  btn.classList.add('active');
+}
+
+// Scroll reveal Logic
+const reveals = document.querySelectorAll('.reveal');
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.12 });
+reveals.forEach(r => ro.observe(r));
+
+// EXPERIMENTAL: Parallax Hover Effect in Hero (Disabled on small screens to prevent touch issues)
+const hero = document.getElementById('hero');
+const pBlob = document.getElementById('parallaxBlob');
+const pImg = document.getElementById('parallaxImg');
+const pB1 = document.getElementById('parallaxBadge1');
+const pB2 = document.getElementById('parallaxBadge2');
+
+hero.addEventListener('mousemove', (e) => {
+  if (window.innerWidth <= 900) return; // Ignore on mobile
+  const x = (window.innerWidth / 2 - e.pageX) / 50;
+  const y = (window.innerHeight / 2 - e.pageY) / 50;
+  
+  if(pBlob) pBlob.style.transform = `translate(${x * -2}px, ${y * -2}px)`;
+  if(pImg) pImg.style.transform = `translate(${x * 1}px, ${y * 1}px)`;
+  if(pB1) pB1.style.transform = `translate(${x * 1.5}px, ${y * 1.5}px)`;
+  if(pB2) pB2.style.transform = `translate(${x * 2}px, ${y * 2}px)`;
+});
+
+hero.addEventListener('mouseleave', () => {
+  if (window.innerWidth <= 900) return;
+  const elements = [pBlob, pImg, pB1, pB2];
+  elements.forEach(el => {
+    if(el) el.style.transform = 'translate(0, 0)';
+  });
+});
+
+// DYNAMIC MODAL LOGIC
+const projectData = {
+  // Main Projects
+  'ionic': {
+    title: 'Ionic Wind Generator',
+    desc: 'This project focuses on designing a solid-state electrohydrodynamic (EHD) thruster. The goal is to generate directed airflow with no moving parts for miniaturized cooling applications and drag reduction. Working under Dr. Venugopal Arumuru, I have built and tested a prototype, mapping flow rates and iterating on electrode geometries to maximize thrust efficiency.',
+    buttons: '<a href="ionic_wind.html" class="btn-ghost"><i class="fa-solid fa-file-pdf"></i> Learn More</a>'
+  },
+  'drone': {
+    title: 'Krishi Drone UAV',
+    desc: 'Developed as part of the e-Yantra Robotics initiative, this autonomous quadrotor is designed for precision agriculture. Using ROS 2 and Gazebo, we implemented a navigation stack for waypoint following. Real-time image feedback from an overhead camera allows the drone to localize diseased crops and selectively deploy biopesticides.',
+    buttons: '<a href="krishi_drone.html" class="btn-ghost"><i class="fa-brands fa-github"></i> View GitHub Repo</a> <a href="krishi_drone.html" class="btn-warm"><i class="fa-solid fa-play"></i>Learn More</a>'
+  },
+  'cfd': {
+    title: 'CFD Analysis of Piston Heads',
+    desc: 'An analytical project conducting reactive-flow CFD simulations in ANSYS Forte to evaluate CI engine combustion. By comparing Flat-top and Circular Dish geometries, we utilized the RANS RNG k-epsilon turbulence model and CHEMKIN-Pro solver. The dish geometry demonstrated superior squish-driven air-fuel mixing, resulting in near-complete combustion.',
+    buttons: '<a href="piston_cfd_analysis.html" class="btn-ghost"><i class="fa-solid fa-file-powerpoint"></i> Learn More</a>'
+  },
+  'manipulator': {
+    title: '2DOF Robotic Manipulator',
+    desc: 'A complete kinematic mapping and trajectory planning model built in MATLAB Simulink. The project involved exporting a Simscape Multibody Rigid Body Tree, establishing Forward Kinematics for pose estimation, and utilizing the Levenberg-Marquardt solver for Inverse Kinematics. This enables the end-effector to trace accurate geometric paths with governed acceleration.',
+    buttons: '<a href="2-dof_robotiic_manipulator.html" class="btn-ghost"><i class="fa-solid fa-file-powerpoint"></i> Learn More</a> <a href="2-dof_robotiic_manipulator.html" class="btn-warm"><i class="fa-solid fa-code"></i> View MATLAB Code</a>'
+  },
+  
+  // Other Work (Mini Projects)
+  'cad_portfolio': {
+    title: 'CAD Modelling Portfolio',
+    desc: 'An extensive assembly and detail-drawing collection spanning engine sub-assemblies, precision jigs, and mechanical linkages. The designs place heavy emphasis on GD&T compliance and standard design-for-manufacture conventions.',
+    buttons: '<a href="cad_portfolio.html" class="btn-ghost"><i class="fa-solid fa-cube"></i>Learn More</a>'
+  },
+  'booksolver_sme': {
+    title: 'Physics & Maths Expert - Booksolver',
+    desc: 'Produced detailed video solutions for JEE Advanced-level Physics and Mathematics problems. I focused on emphasizing conceptual clarity, first-principles understanding, and structured problem-solving approaches for competitive exam preparation.',
+    buttons: '<a href="https://www.youtube.com/playlist?list=PLioTSJheQgGiX10VHZz487jypl0BGnESb" target="_blank" class="btn-warm"><i class="fa-brands fa-youtube"></i> Learn More</a>'
+  },
+
+  // Relevant Coursework
+  'cw_robotics': {
+    title: 'Robotics (Core)',
+    desc: 'Studied Robot Kinematics & Dynamics, covering DH Parameters, Coordinate Transforms, Workspace Analysis, and advanced Path Planning algorithms.',
+    buttons: ''
+  },
+  'cw_syscontrol': {
+    title: 'System and Control (Core)',
+    desc: 'Covered classical and modern control methods including State-Space Methods, PID control, Laplace/Fourier analysis, Root Locus, and Bode/Nyquist plots. Heavily utilized MATLAB-Simulink.',
+    buttons: ''
+  },
+  'cw_tom': {
+    title: 'Theory of Machines (Core)',
+    desc: 'Explored the kinematics and dynamics of machinery, fundamental mechanisms, cams, gears, and dynamic balancing of rotating systems.',
+    buttons: ''
+  },
+  'cw_fluids': {
+    title: 'Fluid Dynamics (Core)',
+    desc: 'Rigorous first-principles approach to fluid mechanics, covering continuum mechanics, Navier-Stokes equations, boundary layer theory, and dimensional analysis.',
+    buttons: ''
+  },
+  'cw_heat': {
+    title: 'Heat Transfer & Thermodynamics (Core)',
+    desc: 'Studied conduction, convection, and radiation modes of heat transfer, alongside the fundamental laws of thermodynamics and thermodynamic power cycles.',
+    buttons: ''
+  },
+  'cw_programming': {
+    title: 'Programming & Data Structures (Core)',
+    desc: 'Built a computational foundation utilizing programming logic, essential data structures (arrays, linked lists, trees), and algorithmic complexity analysis.',
+    buttons: ''
+  },
+  'cw_math': {
+    title: 'Linear Algebra & Numerical Methods (Core)',
+    desc: 'Advanced engineering mathematics focusing on vector spaces, eigenvalue problems, and computational numerical methods for solving differential equations and large systems.',
+    buttons: ''
+  }
+};
+
+const modalOverlay = document.getElementById('projectModal');
+const modalTitle = document.getElementById('modalTitle');
+const modalDesc = document.getElementById('modalDesc');
+const modalActions = document.getElementById('modalActions');
+
+function openModal(projectId) {
+  const data = projectData[projectId];
+  if (data) {
+    modalTitle.innerHTML = data.title;
+    modalDesc.innerHTML = data.desc;
+    modalActions.innerHTML = data.buttons;
+    modalOverlay.classList.add('show');
+  }
+}
+
+function closeModal() {
+  modalOverlay.classList.remove('show');
+}
+
+function closeModalOnOutsideClick(event) {
+  if (event.target === modalOverlay) {
+    closeModal();
+  }
+}
+
+// Initialize dark mode card colors on page load
+if (document.body.classList.contains('dark')) {
+  document.querySelectorAll('#coursework [style*="background:#fff"]').forEach(el => {
+    el.style.background = '#111111';
+    el.style.borderColor = '#222222';
+    el.querySelector('div > div:first-child').style.color = '#eaeaf0';
+  });
+}
+
+// ==========================================
+// HIGH-PERFORMANCE INTERACTIVE CANVAS GRID
+// ==========================================
+class InteractiveGrid {
+  constructor() {
+    this.canvas = document.getElementById('interactive-grid');
+    this.ctx = this.canvas.getContext('2d');
+    
+    this.cellSize = 40;
+    this.mouse = { x: -1000, y: -1000, targetX: -1000, targetY: -1000 };
+    this.isHovering = false;
+    
+    this.init();
+    this.bindEvents();
+    this.animate();
+  }
+
+  init() {
+    const dpr = window.devicePixelRatio || 1;
+    this.canvas.width = window.innerWidth * dpr;
+    this.canvas.height = window.innerHeight * dpr;
+    this.ctx.scale(dpr, dpr);
+    this.canvas.style.width = `${window.innerWidth}px`;
+    this.canvas.style.height = `${window.innerHeight}px`;
+  }
+
+  bindEvents() {
+    window.addEventListener('resize', () => this.init());
+    window.addEventListener('mousemove', (e) => {
+      this.mouse.targetX = e.clientX;
+      this.mouse.targetY = e.clientY;
+      this.isHovering = true;
+    });
+    window.addEventListener('mouseout', () => {
+      this.isHovering = false;
+    });
+  }
+
+  getThemeColors() {
+    const isDark = document.body.classList.contains('dark');
+    return {
+      lineColor: isDark ? 'rgba(255, 255, 255, 0.02)' : 'rgba(0, 0, 0, 0.03)',
+      cellHighlight: isDark ? 'rgba(201, 125, 78, 0.08)' : 'rgba(201, 125, 78, 0.05)', 
+      glowCenter: isDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.02)',
+      glowEdge: 'rgba(0, 0, 0, 0)'
+    };
+  }
+
+  draw() {
+    this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    const colors = this.getThemeColors();
+
+    this.ctx.beginPath();
+    this.ctx.strokeStyle = colors.lineColor;
+    this.ctx.lineWidth = 1;
+
+    for (let x = 0; x <= window.innerWidth; x += this.cellSize) {
+      this.ctx.moveTo(x, 0);
+      this.ctx.lineTo(x, window.innerHeight);
+    }
+    for (let y = 0; y <= window.innerHeight; y += this.cellSize) {
+      this.ctx.moveTo(0, y);
+      this.ctx.lineTo(window.innerWidth, y);
+    }
+    this.ctx.stroke();
+
+    if (this.isHovering || Math.abs(this.mouse.x - this.mouse.targetX) > 0.1) {
+      const cellX = Math.floor(this.mouse.x / this.cellSize) * this.cellSize;
+      const cellY = Math.floor(this.mouse.y / this.cellSize) * this.cellSize;
+
+      this.ctx.fillStyle = colors.cellHighlight;
+      this.ctx.fillRect(cellX, cellY, this.cellSize, this.cellSize);
+
+      const gradient = this.ctx.createRadialGradient(
+        this.mouse.x, this.mouse.y, 0, 
+        this.mouse.x, this.mouse.y, 150 
+      );
+      gradient.addColorStop(0, colors.glowCenter);
+      gradient.addColorStop(1, colors.glowEdge);
+      
+      this.ctx.fillStyle = gradient;
+      this.ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+    }
+  }
+
+  animate() {
+    this.mouse.x += (this.mouse.targetX - this.mouse.x) * 0.15;
+    this.mouse.y += (this.mouse.targetY - this.mouse.y) * 0.15;
+
+    if (!this.isHovering) {
+      this.mouse.targetX = -1000;
+      this.mouse.targetY = -1000;
+    }
+
+    this.draw();
+    requestAnimationFrame(() => this.animate());
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  new InteractiveGrid();
+});
+</script>
+</body>
+</html>

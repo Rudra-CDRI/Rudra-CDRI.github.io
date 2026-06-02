@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>CFD Analysis of IC Engine Piston Heads | Rudrapriya Rajesh Choudhari</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+/* --- CORE STYLES & CUSTOM CURSORS --- */
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Segoe UI',system-ui,sans-serif;
+  background:#fafaf8;
+  color:#1c1c1e;
+  overflow-x:hidden;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><circle cx="8" cy="8" r="4" fill="%23c97d4e"/></svg>') 8 8, auto;
+}
+
+a, button, .content-box, .btn-warm, .btn-ghost {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><circle cx="10" cy="10" r="4" fill="%23c97d4e"/><circle cx="10" cy="10" r="8" stroke="%23c97d4e" stroke-width="1.5" fill="none"/></svg>') 10 10, pointer !important;
+}
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #fafaf8; }
+::-webkit-scrollbar-thumb { background: #d1ccc0; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #c97d4e; }
+
+#interactive-grid {
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  z-index: -1; pointer-events: none; 
+}
+
+/* --- NAV --- */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  background:var(--nav-bg,rgba(250,250,248,0.88));
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border-col,#e8e4dc);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 48px;height:60px;
+  transition:background .3s;
+}
+
+/* --- TRUE BLACK DARK MODE --- */
+body.dark {
+  --nav-bg: rgba(10, 10, 10, 0.92);
+  --border-col: #222222;
+  background: #080808; 
+  color: #eaeaf0;
+}
+body.dark ::-webkit-scrollbar-track { background: #080808; }
+body.dark ::-webkit-scrollbar-thumb { background: #222222; }
+body.dark ::-webkit-scrollbar-thumb:hover { background: #c97d4e; }
+
+body.dark .proj-header-wrap { background: linear-gradient(135deg, #0a0a0a 0%, #050505 100%); border-bottom-color: #222222; }
+body.dark h1.proj-title { color: #eaeaf0; }
+body.dark .proj-subtitle { color: #aaa; }
+body.dark .content-box { background: #111111; border-color: #222222; }
+body.dark .content-box h2 { color: #eaeaf0; }
+body.dark .content-text { color: #aaa; }
+body.dark .proj-media { border-color: #222222; }
+body.dark .sidebar-label { color: #888; }
+body.dark .skill-pill { background: #1a1a1a; color: #ccc; border: 1px solid #333; }
+body.dark .nav-logo { color:#eaeaf0; }
+body.dark .nav-links a { color:#888; }
+body.dark .nav-links a:hover { color:#c97d4e; }
+body.dark footer { background:#080808; border-color:#222222; color:#555;}
+body.dark footer p { color:#555;}
+
+/* --- MOBILE NAV --- */
+.nav-logo{font-size:15px;font-weight:700;letter-spacing:-.01em;color:#1c1c1e;}
+.nav-logo span{color:#c97d4e;}
+.nav-links{display:flex;gap:32px;align-items:center;}
+.nav-links a{font-size:13px;color:#666;text-decoration:none;font-weight:500;transition:color .2s;}
+.nav-links a:hover{color:#c97d4e;}
+.menu-toggle { display: none; font-size: 20px; color: #1c1c1e; cursor: pointer; background: none; border: none; }
+body.dark .menu-toggle { color: #eaeaf0; }
+
+/* --- PROJECT SPECIFIC LAYOUT --- */
+.proj-header-wrap{padding:140px 48px 80px;background:linear-gradient(135deg,#fdf6ee 0%,#fafaf8 60%,#f0ece8 100%);border-bottom:1px solid #e8e4dc;text-align:center;position:relative;z-index:1;}
+.proj-eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#c97d4e;font-weight:700;margin-bottom:16px;display:block;}
+h1.proj-title{font-size:clamp(2rem,4vw,3.2rem);font-weight:800;line-height:1.1;letter-spacing:-.03em;color:#1c1c1e;max-width:800px;margin:0 auto 20px;}
+.proj-subtitle{font-size:1.1rem;color:#666;max-width:600px;margin:0 auto;line-height:1.6;}
+
+.proj-body{padding:80px 48px;max-width:1100px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr;gap:60px;position:relative;z-index:1;}
+.content-box{background:#fff;border:1px solid #e8e4dc;border-radius:20px;padding:40px;margin-bottom:40px;transition:transform .3s,box-shadow .3s;}
+.content-box:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,.08);}
+body.dark .content-box:hover{box-shadow:0 12px 30px rgba(0,0,0,.4);}
+.content-box h2{font-size:1.5rem;font-weight:800;margin-bottom:20px;}
+.content-text{font-size:1rem;color:#555;line-height:1.8;margin-bottom:20px;}
+.proj-media{width:100%;border-radius:12px;margin-bottom:24px;border:1px solid #e8e4dc;transition:filter .3s ease;}
+.proj-media:hover{filter:brightness(1.05);}
+
+.sidebar{position:sticky;top:100px;}
+.sidebar-section{margin-bottom:40px;}
+.sidebar-label{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#999;font-weight:700;margin-bottom:12px;}
+.skill-pill{display:inline-block;background:#f5f2ee;color:#555;font-size:12px;font-weight:600;padding:6px 14px;border-radius:20px;margin:0 6px 8px 0;font-family:monospace;}
+
+.btn-warm{padding:14px 28px;background:#c97d4e;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;transition:transform .2s,background .2s;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:12px; cursor:pointer;}
+.btn-warm:hover{background:#b56e40;transform:translateY(-2px);}
+.btn-ghost{padding:14px 28px;background:transparent;color:#c97d4e;border:1.5px solid #c97d4e;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:10px;}
+.btn-ghost:hover{background:#fdf0e8;}
+body.dark .btn-ghost:hover{background:rgba(201,125,78,0.1);}
+
+footer{text-align:center;padding:40px 48px;border-top:1px solid #e8e4dc;background:#fff;position:relative;z-index:1;}
+footer p{font-size:12px;color:#bbb;}
+
+/* =============================================
+   CUSTOM PDF VIEWER MODAL
+   (only this block is new — everything above is original)
+   ============================================= */
+
+.pdf-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity .3s ease;
+}
+.pdf-overlay.show { display: flex; opacity: 1; }
+
+.pdf-shell {
+  position: relative;
+  width: min(1100px, 96vw);
+  height: min(91vh, 880px);
+  background: #111111;
+  border: 1px solid #222222;
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 40px 120px rgba(0,0,0,.85);
+  transform: translateY(20px) scale(.97);
+  transition: transform .35s cubic-bezier(.34,1.42,.64,1);
+}
+.pdf-overlay.show .pdf-shell { transform: translateY(0) scale(1); }
+
+body:not(.dark) .pdf-shell { background: #fafaf8; border-color: #e8e4dc; }
+
+/* toolbar */
+.pdf-toolbar {
+  height: 54px;
+  min-height: 54px;
+  background: #111111;
+  border-bottom: 1px solid #222222;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  gap: 6px;
+  user-select: none;
+  flex-shrink: 0;
+}
+body:not(.dark) .pdf-toolbar { background: #fafaf8; border-bottom-color: #e8e4dc; }
+
+.pdf-toolbar .t-title {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  overflow: hidden;
+  min-width: 0;
+}
+.pdf-toolbar .t-icon {
+  width: 28px; height: 28px;
+  background: rgba(201,125,78,.12);
+  border: 1px solid rgba(201,125,78,.22);
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  font-size: 12px;
+  color: #c97d4e;
+}
+.pdf-toolbar .t-name {
+  font-size: 13px; font-weight: 700;
+  color: #eaeaf0;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+body:not(.dark) .pdf-toolbar .t-name { color: #1c1c1e; }
+
+.t-sep { width: 1px; height: 20px; background: #2a2a2a; margin: 0 4px; flex-shrink: 0; }
+body:not(.dark) .t-sep { background: #e0dcd4; }
+
+/* nav cluster */
+.t-cluster {
+  display: flex; align-items: center; gap: 2px;
+  background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 8px; padding: 2px;
+}
+body:not(.dark) .t-cluster { background: #f0ece8; border-color: #e0dcd4; }
+
+.t-btn {
+  width: 30px; height: 30px;
+  background: transparent; border: none; border-radius: 6px;
+  color: #666; font-size: 12px;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .15s, color .15s;
+  flex-shrink: 0;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><circle cx="10" cy="10" r="4" fill="%23c97d4e"/><circle cx="10" cy="10" r="8" stroke="%23c97d4e" stroke-width="1.5" fill="none"/></svg>') 10 10, pointer !important;
+}
+.t-btn:hover { background: #2a2a2a; color: #eaeaf0; }
+.t-btn:active { transform: scale(.9); }
+.t-btn:disabled { opacity: .25; pointer-events: none; }
+body:not(.dark) .t-btn:hover { background: #e4dfd8; color: #1c1c1e; }
+
+.t-page-wrap {
+  display: flex; align-items: center; gap: 5px; padding: 0 5px;
+}
+.t-page-input {
+  width: 36px; height: 26px;
+  background: #080808; border: 1px solid #2a2a2a; border-radius: 5px;
+  color: #eaeaf0; font-size: 12px; font-weight: 700; text-align: center;
+  outline: none; transition: border-color .2s;
+}
+.t-page-input:focus { border-color: #c97d4e; }
+.t-page-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+body:not(.dark) .t-page-input { background: #fff; border-color: #e0dcd4; color: #1c1c1e; }
+.t-page-of { font-size: 11px; color: #555; }
+
+/* zoom cluster */
+.t-zoom-select {
+  background: transparent; border: none;
+  color: #eaeaf0; font-size: 12px; font-weight: 700;
+  cursor: pointer; outline: none; padding: 0 4px; height: 26px;
+}
+body:not(.dark) .t-zoom-select { color: #1c1c1e; }
+.t-zoom-select option { background: #1a1a1a; color: #eaeaf0; }
+body:not(.dark) .t-zoom-select option { background: #fff; color: #1c1c1e; }
+
+/* close */
+.t-close {
+  width: 30px; height: 30px;
+  background: transparent; border: none; border-radius: 6px;
+  color: #555; font-size: 14px;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .15s, color .15s;
+  margin-left: 2px;
+  flex-shrink: 0;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><circle cx="10" cy="10" r="4" fill="%23c97d4e"/><circle cx="10" cy="10" r="8" stroke="%23c97d4e" stroke-width="1.5" fill="none"/></svg>') 10 10, pointer !important;
+}
+.t-close:hover { background: rgba(201,80,80,.15); color: #e05555; }
+
+/* loading strip */
+.pdf-loading-strip {
+  height: 2px; min-height: 2px;
+  background: #1a1a1a;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+body:not(.dark) .pdf-loading-strip { background: #ede9e4; }
+.pdf-loading-bar {
+  height: 100%; width: 0%;
+  background: #c97d4e;
+  transition: width .3s ease;
+  border-radius: 2px;
+}
+
+/* canvas scroll area */
+.pdf-canvas-area {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: auto;
+  background: #0c0c0c;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 28px 20px;
+  gap: 16px;
+  scroll-behavior: smooth;
+}
+body:not(.dark) .pdf-canvas-area { background: #e4e0da; }
+.pdf-canvas-area::-webkit-scrollbar { width: 6px; }
+.pdf-canvas-area::-webkit-scrollbar-track { background: transparent; }
+.pdf-canvas-area::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 6px; }
+.pdf-canvas-area::-webkit-scrollbar-thumb:hover { background: #c97d4e; }
+
+.pdf-page-wrap {
+  position: relative;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0 6px 32px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.04);
+  flex-shrink: 0;
+  transition: box-shadow .2s;
+}
+.pdf-page-wrap:hover {
+  box-shadow: 0 10px 44px rgba(0,0,0,.7), 0 0 0 1px rgba(201,125,78,.15);
+}
+.pdf-page-wrap canvas { display: block; }
+
+/* skeleton shimmer */
+.pdf-skeleton {
+  background: linear-gradient(90deg, #161616 25%, #1e1e1e 50%, #161616 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+body:not(.dark) .pdf-skeleton {
+  background: linear-gradient(90deg, #dedad5 25%, #e8e4de 50%, #dedad5 75%);
+  background-size: 200% 100%;
+}
+@keyframes shimmer { 0%{ background-position:200% 0; } 100%{ background-position:-200% 0; } }
+
+/* loading / error screen */
+.pdf-state {
+  flex: 1;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 14px; text-align: center; padding: 40px;
+}
+.pdf-state-icon {
+  width: 52px; height: 52px;
+  background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; color: #555;
+}
+body:not(.dark) .pdf-state-icon { background: #f0ece8; border-color: #e0dcd4; }
+.pdf-state h3 { font-size: 14px; font-weight: 700; color: #eaeaf0; }
+body:not(.dark) .pdf-state h3 { color: #1c1c1e; }
+.pdf-state p  { font-size: 13px; color: #555; max-width: 300px; line-height: 1.6; }
+
+/* footer bar */
+.pdf-footer {
+  height: 36px; min-height: 36px;
+  background: #111111; border-top: 1px solid #222222;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 14px; flex-shrink: 0;
+}
+body:not(.dark) .pdf-footer { background: #fafaf8; border-top-color: #e8e4dc; }
+.pdf-footer-left { display: flex; gap: 6px; }
+.pdf-f-pill {
+  font-size: 10px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+  color: #444; background: #1a1a1a; border: 1px solid #2a2a2a;
+  border-radius: 20px; padding: 2px 9px;
+}
+body:not(.dark) .pdf-f-pill { color: #999; background: #f0ece8; border-color: #e0dcd4; }
+.pdf-footer-right { font-size: 11px; color: #333; }
+body:not(.dark) .pdf-footer-right { color: #bbb; }
+.pdf-kbd {
+  display: inline-block; background: #1a1a1a; border: 1px solid #2a2a2a;
+  border-radius: 3px; padding: 1px 4px; font-size: 10px; font-family: monospace; color: #555;
+}
+body:not(.dark) .pdf-kbd { background: #f0ece8; border-color: #e0dcd4; color: #aaa; }
+
+/* responsive */
+@media(max-width:900px){
+  nav { padding: 0 24px; }
+  .menu-toggle { display: block; } 
+  .nav-links {
+    display: none; flex-direction: column; position: absolute; top: 60px; left: 0; right: 0;
+    background: var(--nav-bg); padding: 20px 24px; border-bottom: 1px solid var(--border-col);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1); align-items: flex-start; gap: 20px;
+  }
+  .nav-links.active { display: flex; } 
+  .proj-body{grid-template-columns:1fr;gap:40px;padding:40px 24px;}
+  .proj-header-wrap{padding:120px 24px 60px;}
+  .pdf-shell { width: 100%; height: 100vh; border-radius: 0; }
+  .pdf-overlay.show .pdf-shell { transform: none; }
+}
+</style>
+</head>
+<body class="dark">
+
+<canvas id="interactive-grid"></canvas>
+
+<nav>
+  <div class="nav-logo">Rudra<span>.</span></div>
+  <button class="menu-toggle" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
+  <div class="nav-links" id="navLinks">
+    <a href="index.html#projects"><i class="fa-solid fa-arrow-left"></i> Back to Portfolio</a>
+    <button onclick="toggleDark()" id="theme-btn" style="background:none;border:1.5px solid #e8e4dc;color:#555;border-radius:20px;padding:5px 14px;font-size:12px;font-weight:700;transition:all .2s;margin-left:16px;">☀️ Light</button>
+  </div>
+</nav>
+
+<div class="proj-header-wrap">
+  <span class="proj-eyebrow">Project 03 · Simulation</span>
+  <h1 class="proj-title">CFD Analysis of IC Engine Piston Heads</h1>
+  <p class="proj-subtitle">Reactive-flow simulations comparing Flat-top and Circular Dish combustion performance.</p>
+</div>
+
+<div class="proj-body">
+  
+  <div class="main-content">
+    
+    <div class="content-box">
+      <h2>1. The Problem & Objective</h2>
+      <p class="content-text">In compression-ignition (CI) engines, achieving high thermal efficiency while simultaneously lowering emissions is a major technical hurdle. Conventional flat piston designs often suffer from poor air utilization. The core objective was to evaluate how subtle changes in the piston's bowl lip or bottom curvature optimize the combustion rate without increasing thermal stress.</p>
+      <p class="content-text">The bowl shape dictates the swirl and squish motions, which are essential for breaking up the high-pressure fuel spray. Proper geometry centralizes the flame kernel, minimizing heat loss to the cylinder walls, and enhanced turbulence reduces physical delay for more complete combustion.</p>
+      <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=900&q=80" alt="Piston Geometries" class="proj-media"/>
+    </div>
+
+    <div class="content-box">
+      <h2>2. Simulation Setup & Methodology</h2>
+      <p class="content-text">The numerical framework was built using the ANSYS Forte Sector Mesh generator utilizing Topology 3. We integrated the CHEMKIN-Pro chemistry solver for precise ignition and emission kinetics, which significantly reduces simulation time compared to traditional CFD. The RANS RNG k-epsilon turbulence model was utilized, as it is optimized for high-strain flows and swirling motion in engines.</p>
+      <p class="content-text">The simulated engine featured a 10 cm bore and stroke, with a 175 cm connecting rod. Fuel injection was modeled using a centrally located solid injector with a 150-micron nozzle, injecting 30 mg of mass over a 10° crank angle starting at -15° BTDC.</p>
+      <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=900&q=80" alt="ANSYS Forte Sector Mesh" class="proj-media"/>
+    </div>
+
+    <div class="content-box">
+      <h2>3. Geometry Comparison & Results</h2>
+      <p class="content-text">We conducted a comparative study between a Flat-top geometry, which relies almost entirely on the intake port for swirl and lacks squish motion, and a Circular Dish-type head, which significantly enhances squish and tumble ratios. The analysis confirmed the superior thermodynamic performance of the dish geometry.</p>
+      <p class="content-text">The dish geometry generated a peak turbulence velocity of 400 cm/sec, confirming high-intensity mixing. The simulation achieved a peak pressure of 135 bar and a peak temperature of 1550 K, indicating highly efficient, well-timed heat release. Additionally, a sharp transition in O2 and CO2 mole fractions at -10° CA validated that the dish geometry promotes near-complete combustion with minimal ignition delay.</p>
+      <img src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=900&q=80" alt="Velocity Contours and Turbulence Graphs" class="proj-media"/>
+    </div>
+
+    <div class="content-box">
+      <h2>4. Technical Challenges</h2>
+      <p class="content-text">The project involved a steep technical learning curve and computational limitations. Simulating complex bowl boundaries initially resulted in recurring solver errors and mesh instabilities, leading us to pivot and focus exclusively on the Flat and Dish-type heads for data reliability.</p>
+      <p class="content-text">Furthermore, the high CPU and RAM demands of the CHEMKIN chemistry solvers pushed our hardware limits, restricting the mesh density and number of iterations we could run without access to a High-Performance Computing (HPC) cluster.</p>
+    </div>
+
+  </div>
+
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Software & Solvers</div>
+      <span class="skill-pill">ANSYS Forte</span>
+      <span class="skill-pill">CHEMKIN-Pro</span>
+      <span class="skill-pill">RNG k-epsilon</span>
+      <span class="skill-pill">CFD</span>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Project Assets</div>
+      <button onclick="openPdfModal()" class="btn-warm" style="width: 100%;"><i class="fa-solid fa-file-pdf"></i> View Presentation</button>
+      <a href="index.html#contact" class="btn-ghost" style="width: 100%;"><i class="fa-solid fa-envelope"></i> Discuss this Project</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p><strong>Rudrapriya Rajesh Choudhari</strong> · IIT Bhubaneswar · School of Mechanical Sciences</p>
+</footer>
+
+<!-- =============================================
+     CUSTOM PDF VIEWER MODAL
+     ============================================= -->
+<div class="pdf-overlay" id="pdfOverlay" onclick="pdfOverlayClick(event)">
+  <div class="pdf-shell" id="pdfShell">
+
+    <!-- Toolbar -->
+    <div class="pdf-toolbar">
+      <div class="t-title">
+        <div class="t-icon"><i class="fa-solid fa-file-pdf"></i></div>
+        <span class="t-name">CFD Analysis Presentation</span>
+      </div>
+
+      <div class="t-sep"></div>
+
+      <!-- Page nav -->
+      <div class="t-cluster">
+        <button class="t-btn" id="pvPrev" onclick="pv.prev()" title="Previous (←)"><i class="fa-solid fa-chevron-left"></i></button>
+        <div class="t-page-wrap">
+          <input class="t-page-input" type="number" id="pvInput" value="1" min="1"
+            onchange="pv.go(this.value)" onkeydown="if(event.key==='Enter')pv.go(this.value)"/>
+          <span class="t-page-of" id="pvOf">/ —</span>
+        </div>
+        <button class="t-btn" id="pvNext" onclick="pv.next()" title="Next (→)"><i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+
+      <div class="t-sep"></div>
+
+      <!-- Zoom -->
+      <div class="t-cluster">
+        <button class="t-btn" onclick="pv.zoomOut()" title="Zoom out (−)"><i class="fa-solid fa-minus"></i></button>
+        <select class="t-zoom-select" id="pvZoom" onchange="pv.setZoom(this.value)">
+          <option value="0.5">50%</option>
+          <option value="0.75">75%</option>
+          <option value="1" selected>100%</option>
+          <option value="1.25">125%</option>
+          <option value="1.5">150%</option>
+          <option value="2">200%</option>
+          <option value="fit">Fit</option>
+        </select>
+        <button class="t-btn" onclick="pv.zoomIn()" title="Zoom in (+)"><i class="fa-solid fa-plus"></i></button>
+      </div>
+
+      <div class="t-sep"></div>
+
+      <button class="t-btn" onclick="pv.fullscreen()" title="Fullscreen (F)" id="pvFsBtn"><i class="fa-solid fa-expand"></i></button>
+      <button class="t-close" onclick="closePdfModal()" title="Close (Esc)"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <!-- Loading bar -->
+    <div class="pdf-loading-strip"><div class="pdf-loading-bar" id="pvBar"></div></div>
+
+    <!-- Canvas area -->
+    <div class="pdf-canvas-area" id="pvArea">
+      <div class="pdf-state" id="pvState">
+        <div class="pdf-state-icon"><i class="fa-solid fa-spinner fa-spin"></i></div>
+        <h3>Loading document…</h3>
+        <p>Fetching and rendering your presentation.</p>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="pdf-footer">
+      <div class="pdf-footer-left">
+        <span class="pdf-f-pill">PDF.js</span>
+        <span class="pdf-f-pill" id="pvPageBadge">Page 1</span>
+      </div>
+      <div class="pdf-footer-right">
+        <span class="pdf-kbd">←</span><span class="pdf-kbd">→</span> pages &nbsp;
+        <span class="pdf-kbd">+</span><span class="pdf-kbd">−</span> zoom &nbsp;
+        <span class="pdf-kbd">Esc</span> close
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- PDF.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+<script>
+/* ─────────────────────────────────────────────
+   ORIGINAL SITE FUNCTIONS — untouched
+───────────────────────────────────────────── */
+function toggleMenu() {
+  document.getElementById('navLinks').classList.toggle('active');
+}
+
+function toggleDark() {
+  const body = document.body;
+  const btn = document.getElementById('theme-btn');
+  body.classList.toggle('dark');
+  btn.textContent = body.classList.contains('dark') ? '☀️ Light' : '🌙 Dark';
+}
+
+// ── Interactive grid ──────────────────────────
+class InteractiveGrid {
+  constructor() {
+    this.canvas = document.getElementById('interactive-grid');
+    this.ctx = this.canvas.getContext('2d');
+    this.cellSize = 40;
+    this.mouse = { x: -1000, y: -1000, targetX: -1000, targetY: -1000 };
+    this.isHovering = false;
+    this.init();
+    this.bindEvents();
+    this.animate();
+  }
+  init() {
+    const dpr = window.devicePixelRatio || 1;
+    this.canvas.width = window.innerWidth * dpr;
+    this.canvas.height = window.innerHeight * dpr;
+    this.ctx.scale(dpr, dpr);
+    this.canvas.style.width = `${window.innerWidth}px`;
+    this.canvas.style.height = `${window.innerHeight}px`;
+  }
+  bindEvents() {
+    window.addEventListener('resize', () => this.init());
+    window.addEventListener('mousemove', (e) => {
+      this.mouse.targetX = e.clientX;
+      this.mouse.targetY = e.clientY;
+      this.isHovering = true;
+    });
+    window.addEventListener('mouseout', () => { this.isHovering = false; });
+  }
+  getThemeColors() {
+    const isDark = document.body.classList.contains('dark');
+    return {
+      lineColor: isDark ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.03)',
+      cellHighlight: isDark ? 'rgba(201,125,78,0.08)' : 'rgba(201,125,78,0.05)',
+      glowCenter: isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)',
+      glowEdge: 'rgba(0,0,0,0)'
+    };
+  }
+  draw() {
+    this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    const colors = this.getThemeColors();
+    this.ctx.beginPath();
+    this.ctx.strokeStyle = colors.lineColor;
+    this.ctx.lineWidth = 1;
+    for (let x = 0; x <= window.innerWidth; x += this.cellSize) {
+      this.ctx.moveTo(x, 0); this.ctx.lineTo(x, window.innerHeight);
+    }
+    for (let y = 0; y <= window.innerHeight; y += this.cellSize) {
+      this.ctx.moveTo(0, y); this.ctx.lineTo(window.innerWidth, y);
+    }
+    this.ctx.stroke();
+    if (this.isHovering || Math.abs(this.mouse.x - this.mouse.targetX) > 0.1) {
+      const cellX = Math.floor(this.mouse.x / this.cellSize) * this.cellSize;
+      const cellY = Math.floor(this.mouse.y / this.cellSize) * this.cellSize;
+      this.ctx.fillStyle = colors.cellHighlight;
+      this.ctx.fillRect(cellX, cellY, this.cellSize, this.cellSize);
+      const gradient = this.ctx.createRadialGradient(
+        this.mouse.x, this.mouse.y, 0, this.mouse.x, this.mouse.y, 150
+      );
+      gradient.addColorStop(0, colors.glowCenter);
+      gradient.addColorStop(1, colors.glowEdge);
+      this.ctx.fillStyle = gradient;
+      this.ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+    }
+  }
+  animate() {
+    this.mouse.x += (this.mouse.targetX - this.mouse.x) * 0.15;
+    this.mouse.y += (this.mouse.targetY - this.mouse.y) * 0.15;
+    if (!this.isHovering) { this.mouse.targetX = -1000; this.mouse.targetY = -1000; }
+    this.draw();
+    requestAnimationFrame(() => this.animate());
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => { new InteractiveGrid(); });
+
+/* ─────────────────────────────────────────────
+   CUSTOM PDF VIEWER
+───────────────────────────────────────────── */
+
+// Worker must be same version as pdf.min.js
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+  'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+// Build an absolute URL so PDF.js never misresolves the path
+const PDF_SRC = new URL(
+  './assests/documents/piston_cfd_analysis/piston_cfd_analysis.pdf',
+  window.location.href
+).href;
+
+const pv = (() => {
+  let _pdf = null, _total = 0, _cur = 1, _scale = 1, _fitScale = 1;
+  let _canvases = {};
+
+  const $    = id => document.getElementById(id);
+  const area  = () => $('pvArea');
+  const state = () => $('pvState');
+  const bar   = () => $('pvBar');
+
+  function setBar(pct) { bar().style.width = pct + '%'; }
+
+  function showError(msg) {
+    const s = state();
+    s.style.display = 'flex';
+    s.querySelector('.pdf-state-icon').innerHTML =
+      '<i class="fa-solid fa-triangle-exclamation" style="color:#c94e4e"></i>';
+    s.querySelector('h3').textContent = 'Could not load PDF';
+    s.querySelector('p').textContent  = msg;
+    setBar(0);
+  }
+
+  function updateUI() {
+    $('pvInput').value = _cur;
+    $('pvInput').max   = _total;
+    $('pvOf').textContent = '/ ' + _total;
+    $('pvPrev').disabled  = _cur <= 1;
+    $('pvNext').disabled  = _cur >= _total;
+    $('pvPageBadge').textContent = `Page ${_cur} / ${_total}`;
+  }
+
+  function updateZoomUI() {
+    const pct = Math.round(_scale * 100);
+    $('pvZoom').value = [50,75,100,125,150,200].includes(pct)
+      ? String(pct / 100) : 'fit';
+  }
+
+  async function renderPage(n) {
+    const canvas = _canvases[n];
+    if (!canvas || !_pdf) return;
+    const page = await _pdf.getPage(n);
+    const vp   = page.getViewport({ scale: _scale });
+    const dpr  = window.devicePixelRatio || 1;
+    const ctx  = canvas.getContext('2d');
+    canvas.width  = vp.width  * dpr;
+    canvas.height = vp.height * dpr;
+    canvas.style.width  = vp.width  + 'px';
+    canvas.style.height = vp.height + 'px';
+    ctx.scale(dpr, dpr);
+    canvas.parentElement.style.width  = vp.width  + 'px';
+    canvas.parentElement.style.height = vp.height + 'px';
+    await page.render({ canvasContext: ctx, viewport: vp }).promise;
+  }
+
+  async function buildPages() {
+    const a = area();
+    a.innerHTML = '';
+    _canvases = {};
+
+    const p1 = await _pdf.getPage(1);
+    const v1 = p1.getViewport({ scale: 1 });
+    _fitScale = (a.clientWidth - 40) / v1.width;
+    if (_scale === 1) _scale = Math.min(_fitScale, 1.3);
+    updateZoomUI();
+
+    for (let i = 1; i <= _total; i++) {
+      const page = await _pdf.getPage(i);
+      const vp   = page.getViewport({ scale: _scale });
+
+      const wrap = document.createElement('div');
+      wrap.className = 'pdf-page-wrap pdf-skeleton';
+      wrap.style.width  = vp.width  + 'px';
+      wrap.style.height = vp.height + 'px';
+      wrap.dataset.page = i;
+
+      const cv = document.createElement('canvas');
+      wrap.appendChild(cv);
+      a.appendChild(wrap);
+      _canvases[i] = cv;
+
+      const obs = new IntersectionObserver(async entries => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            const pn = +e.target.dataset.page;
+            await renderPage(pn);
+            e.target.classList.remove('pdf-skeleton');
+            obs.unobserve(e.target);
+          }
+        }
+      }, { root: a, rootMargin: '180px' });
+      obs.observe(wrap);
+    }
+  }
+
+  async function reRenderAll() {
+    for (let i = 1; i <= _total; i++) {
+      const wrap = _canvases[i]?.parentElement;
+      if (wrap && !wrap.classList.contains('pdf-skeleton')) await renderPage(i);
+    }
+  }
+
+  // Named pvScrollTo to avoid collision with window.scrollTo
+  function pvScrollTo(n) {
+    const target = area().querySelector(`[data-page="${n}"]`);
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function trackScroll() {
+    const a = area();
+    const rect = a.getBoundingClientRect();
+    let cur = 1;
+    a.querySelectorAll('.pdf-page-wrap').forEach(w => {
+      if (w.getBoundingClientRect().top - rect.top <= rect.height / 2) cur = +w.dataset.page;
+    });
+    if (cur !== _cur) { _cur = cur; updateUI(); }
+  }
+
+  return {
+    async load() {
+      state().style.display = 'flex';
+      // reset state icon in case of re-open after error
+      state().querySelector('.pdf-state-icon').innerHTML =
+        '<i class="fa-solid fa-spinner fa-spin"></i>';
+      state().querySelector('h3').textContent = 'Loading document…';
+      state().querySelector('p').textContent  = 'Fetching and rendering your presentation.';
+      setBar(8);
+
+      try {
+        const task = pdfjsLib.getDocument({
+          url: PDF_SRC,
+          cMapUrl: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/cmaps/',
+          cMapPacked: true,
+          disableRange: false,
+          disableStream: false,
+        });
+        task.onProgress = ({ loaded, total }) => {
+          if (total) setBar(10 + Math.round(loaded / total * 75));
+        };
+        _pdf   = await task.promise;
+        _total = _pdf.numPages;
+        _cur   = 1; _scale = 1;
+        updateUI();
+
+        state().style.display = 'none';
+        setBar(90);
+        await buildPages();
+        setBar(100);
+        setTimeout(() => { bar().style.opacity = '0'; }, 600);
+
+        area().addEventListener('scroll', trackScroll, { passive: true });
+      } catch (err) {
+        console.error('PDF.js error:', err);
+        // Give a specific message based on error type
+        let msg = `Error: ${err.message || err.name || 'Unknown error'}`;
+        if (err.name === 'MissingPDFException' || (err.message && err.message.includes('404'))) {
+          msg = 'File not found (404). Make sure the server is running and the path is correct.';
+        } else if (err.name === 'InvalidPDFException') {
+          msg = 'The file exists but is not a valid PDF.';
+        } else if (err.message && err.message.includes('NetworkError')) {
+          msg = 'Network error — open via a local server (e.g. VS Code Live Server), not file://.';
+        }
+        showError(msg);
+      }
+    },
+
+    unload() {
+      area().removeEventListener('scroll', trackScroll);
+      if (_pdf) { _pdf.destroy(); _pdf = null; }
+      area().innerHTML = '';
+      area().appendChild(state());
+      state().style.display = 'flex';
+      state().querySelector('.pdf-state-icon').innerHTML =
+        '<i class="fa-solid fa-spinner fa-spin"></i>';
+      state().querySelector('h3').textContent = 'Loading document…';
+      state().querySelector('p').textContent  = 'Fetching and rendering your presentation.';
+      bar().style.opacity = '1'; bar().style.width = '0%';
+      _pdf = null; _total = 0; _cur = 1; _scale = 1;
+    },
+
+    prev() { if (_cur > 1) { _cur--; updateUI(); pvScrollTo(_cur); } },
+    next() { if (_cur < _total) { _cur++; updateUI(); pvScrollTo(_cur); } },
+    go(n)  {
+      const p = Math.max(1, Math.min(_total, parseInt(n) || 1));
+      _cur = p; updateUI(); pvScrollTo(p);
+    },
+
+    async setZoom(v) {
+      _scale = v === 'fit' ? _fitScale : parseFloat(v);
+      updateZoomUI();
+      await reRenderAll();
+    },
+    async zoomIn()  {
+      const l = [.5,.75,1,1.25,1.5,2,2.5];
+      const n = l.find(x => x > _scale + .01);
+      if (n) { _scale = n; updateZoomUI(); await reRenderAll(); }
+    },
+    async zoomOut() {
+      const l = [.5,.75,1,1.25,1.5,2,2.5].reverse();
+      const n = l.find(x => x < _scale - .01);
+      if (n) { _scale = n; updateZoomUI(); await reRenderAll(); }
+    },
+
+    fullscreen() {
+      const shell = $('pdfShell');
+      if (!document.fullscreenElement) {
+        shell.requestFullscreen?.();
+        $('pvFsBtn').innerHTML = '<i class="fa-solid fa-compress"></i>';
+      } else {
+        document.exitFullscreen?.();
+        $('pvFsBtn').innerHTML = '<i class="fa-solid fa-expand"></i>';
+      }
+    }
+  };
+})();
+
+function openPdfModal() {
+  document.getElementById('pdfOverlay').classList.add('show');
+  pv.load();
+}
+
+function closePdfModal() {
+  document.getElementById('pdfOverlay').classList.remove('show');
+  setTimeout(() => pv.unload(), 350);
+}
+
+function pdfOverlayClick(e) {
+  if (e.target === document.getElementById('pdfOverlay')) closePdfModal();
+}
+
+// keyboard shortcuts
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('pdfOverlay').classList.contains('show')) return;
+  if (['ArrowLeft','ArrowRight','+','=','-','f','F','Escape'].includes(e.key)) e.preventDefault();
+  switch(e.key) {
+    case 'Escape':     closePdfModal(); break;
+    case 'ArrowLeft':  pv.prev();       break;
+    case 'ArrowRight': pv.next();       break;
+    case '+': case '=': pv.zoomIn();   break;
+    case '-':            pv.zoomOut();  break;
+    case 'f': case 'F': pv.fullscreen(); break;
+  }
+});
+
+// re-render on resize
+let _resizeT;
+window.addEventListener('resize', () => {
+  clearTimeout(_resizeT);
+  _resizeT = setTimeout(async () => {
+    if (document.getElementById('pdfOverlay').classList.contains('show')) await pv.setZoom('fit');
+  }, 300);
+});
+</script>
+</body>
+</html>
