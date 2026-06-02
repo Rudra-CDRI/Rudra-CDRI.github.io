@@ -806,7 +806,8 @@ const pv = (() => {
 
   async function buildPages() {
     const a = area();
-    a.innerHTML = '';
+    // Safely clear old pages without destroying the state UI
+    a.querySelectorAll('.pdf-page-wrap').forEach(el => el.remove());
     _canvases = {};
 
     const p1 = await _pdf.getPage(1);
@@ -878,10 +879,9 @@ const pv = (() => {
       state().querySelector('p').textContent  = 'Fetching and rendering your presentation.';
       setBar(8);
 
-      // Clean up previous instance before loading new one
+      // FIX: Clean up old canvases safely
       if (_pdf) { _pdf.destroy(); _pdf = null; }
-      area().innerHTML = '';
-      area().appendChild(state());
+      area().querySelectorAll('.pdf-page-wrap').forEach(el => el.remove());
 
       try {
         const task = pdfjsLib.getDocument({
@@ -914,7 +914,7 @@ const pv = (() => {
         } else if (err.name === 'InvalidPDFException') {
           msg = 'The file exists but is not a valid PDF.';
         } else if (err.message && err.message.includes('NetworkError')) {
-          msg = 'Network error — open via a local server (e.g. VS Code Live Server), not file://.';
+          msg = 'Network error — open via a local server, not file://.';
         }
         showError(msg);
       }
@@ -923,8 +923,10 @@ const pv = (() => {
     unload() {
       area().removeEventListener('scroll', trackScroll);
       if (_pdf) { _pdf.destroy(); _pdf = null; }
-      area().innerHTML = '';
-      area().appendChild(state());
+      
+      // FIX: Safely remove canvases
+      area().querySelectorAll('.pdf-page-wrap').forEach(el => el.remove());
+      
       state().style.display = 'flex';
       state().querySelector('.pdf-state-icon').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
       state().querySelector('h3').textContent = 'Loading document…';
@@ -968,7 +970,6 @@ const pv = (() => {
     }
   };
 })();
-
 function openPdfModal() {
   document.getElementById('pdfOverlay').classList.add('show');
   const selector = document.getElementById('pdfSelector');
