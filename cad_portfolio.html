@@ -5,8 +5,9 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>CAD Portfolio | Rudrapriya Rajesh Choudhari</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
 <style>
-
+/* --- CORE STYLES --- */
 *{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
 body{
@@ -14,9 +15,10 @@ body{
   background:#fafaf8;
   color:#1c1c1e;
   overflow-x:hidden;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><circle cx="8" cy="8" r="4" fill="%23c97d4e"/></svg>') 8 8, auto;
 }
-a,button,.content-box,.btn-warm,.btn-ghost,.menu-toggle,.theme-btn{
-  cursor:pointer;
+a,button,.content-box,.btn-warm,.btn-ghost,.menu-toggle,.theme-btn,.cad-card{
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><circle cx="10" cy="10" r="4" fill="%23c97d4e"/><circle cx="10" cy="10" r="8" stroke="%23c97d4e" stroke-width="1.5" fill="none"/></svg>') 10 10, pointer !important;
 }
 ::-webkit-scrollbar{width:8px;}
 ::-webkit-scrollbar-track{background:#fafaf8;}
@@ -119,54 +121,52 @@ body.dark .proj-header-wrap{
   display:grid;grid-template-columns:2fr .95fr;gap:58px;position:relative;z-index:1;
 }
 .main-content{min-width:0;}
-.content-box{
-  background:var(--card-bg);border:1px solid var(--card-border);border-radius:22px;
-  padding:36px;margin-bottom:34px;transition:transform .28s,box-shadow .28s;
-  box-shadow:0 0 0 rgba(0,0,0,0);
+
+/* CAD Grid Styles */
+.cad-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
 }
-.content-box:hover{transform:translateY(-4px);box-shadow:0 16px 36px rgba(0,0,0,.08);}
-body.dark .content-box:hover{box-shadow:0 16px 36px rgba(0,0,0,.38);}
-.content-box h2{
-  font-size:1.45rem;font-weight:800;margin-bottom:18px;letter-spacing:-.02em;
+.cad-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 18px;
+  padding: 18px;
+  transition: transform .28s, box-shadow .28s;
+  display: flex;
+  flex-direction: column;
 }
-.content-text{
-  font-size:1rem;color:var(--muted);line-height:1.85;margin-bottom:18px;
+.cad-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(0,0,0,.08);
 }
-.content-list{
-  padding-left:18px;color:var(--muted);line-height:1.85;
+body.dark .cad-card:hover {
+  box-shadow: 0 16px 36px rgba(0,0,0,.38);
 }
-.content-list li{margin-bottom:8px;}
-.hero-visual{
-  margin-top:18px;border-radius:18px;padding:22px;
-  border:1px solid var(--card-border);background:
-  radial-gradient(circle at top left, rgba(201,125,78,.17), transparent 35%),
-  linear-gradient(135deg, rgba(201,125,78,.07), rgba(255,255,255,0));
+.cad-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  background: #1a1a1a;
+  border: 1px solid var(--card-border);
 }
-body.dark .hero-visual{
-  background:
-  radial-gradient(circle at top left, rgba(201,125,78,.22), transparent 35%),
-  linear-gradient(135deg, rgba(255,255,255,.03), rgba(255,255,255,0));
+.cad-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+  color: var(--text);
 }
-.visual-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
-.visual-card{
-  min-height:112px;border-radius:16px;padding:16px;
-  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);
-  display:flex;flex-direction:column;justify-content:space-between;
+.cad-desc {
+  font-size: 0.9rem;
+  color: var(--muted);
+  line-height: 1.6;
+  flex-grow: 1;
 }
-body:not(.dark) .visual-card{
-  background:#fff;border-color:var(--card-border);
-}
-.visual-kicker{font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:#c97d4e;font-weight:700;}
-.visual-title{font-size:15px;font-weight:800;color:var(--text);line-height:1.3;}
-.visual-desc{font-size:12px;color:var(--muted);line-height:1.55;}
-.metric-grid{
-  display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:14px;
-}
-.metric{
-  background:var(--card-bg);border:1px solid var(--card-border);border-radius:16px;padding:14px;
-}
-.metric .n{font-size:22px;font-weight:800;letter-spacing:-.02em;color:var(--text);}
-.metric .l{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted-2);font-weight:700;margin-top:4px;}
+
+/* sidebar */
 .sidebar{position:sticky;top:98px;height:max-content;}
 .sidebar-section{margin-bottom:34px;}
 .sidebar-label{
@@ -178,56 +178,158 @@ body:not(.dark) .visual-card{
   font-size:12px;font-weight:600;padding:6px 13px;border-radius:20px;
   margin:0 8px 8px 0;border:1px solid var(--pill-border);font-family:monospace;
 }
-.btn-warm,.btn-ghost{
-  padding:14px 20px;border-radius:10px;font-size:13px;font-weight:700;text-decoration:none;
-  display:flex;align-items:center;justify-content:center;gap:10px;width:100%;
+
+/* Modals General */
+.overlay {
+  display: none; position: fixed; inset: 0; z-index: 1000;
+  background: rgba(0,0,0,0.6); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  align-items: center; justify-content: center; opacity: 0; transition: opacity .3s ease;
 }
-.btn-warm{
-  background:#c97d4e;color:#fff;border:none;
-  transition:transform .2s,background .2s;
+.overlay.show { display: flex; opacity: 1; }
+
+/* Info Modal */
+.info-modal {
+  background: var(--card-bg); border: 1px solid var(--card-border);
+  width: 90%; max-width: 500px; border-radius: 20px; padding: 36px;
+  position: relative; transform: translateY(20px); transition: transform .3s ease;
+  box-shadow: 0 20px 60px rgba(0,0,0,.4);
 }
-.btn-warm:hover{background:#b56e40;transform:translateY(-2px);}
-.btn-ghost{
-  background:transparent;color:#c97d4e;border:1.5px solid #c97d4e;
-  transition:background .2s;
+.overlay.show .info-modal { transform: translateY(0); }
+.info-close {
+  position: absolute; top: 16px; right: 20px; background: transparent; border: none;
+  font-size: 22px; color: var(--muted); transition: color .2s;
 }
-.btn-ghost:hover{background:#fdf0e8;}
-body.dark .btn-ghost:hover{background:rgba(201,125,78,.1);}
-.side-card{
-  background:var(--card-bg);border:1px solid var(--card-border);border-radius:20px;padding:22px;
+.info-close:hover { color: #c97d4e; }
+.info-title { font-size: 1.6rem; font-weight: 800; color: var(--text); margin-bottom: 12px; }
+.info-desc { font-size: 0.95rem; color: var(--muted); line-height: 1.7; margin-bottom: 24px; }
+.info-btn-row { display: flex; flex-direction: column; gap: 10px; }
+
+.btn-warm, .btn-ghost {
+  padding: 14px 20px; border-radius: 10px; font-size: 13px; font-weight: 700; text-decoration: none;
+  display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; border: none;
 }
-.side-card h3{font-size:16px;font-weight:800;margin-bottom:10px;}
-.side-card p{font-size:14px;line-height:1.7;color:var(--muted);}
-.link-row{display:grid;gap:12px;margin-top:16px;}
-.chip-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
-.mini-chip{
-  font-size:11px;padding:6px 10px;border-radius:999px;border:1px solid var(--card-border);
-  color:var(--muted);background:transparent;text-transform:uppercase;letter-spacing:.08em;font-weight:700;
+.btn-warm { background: #c97d4e; color: #fff; transition: transform .2s, background .2s; }
+.btn-warm:hover { background: #b56e40; transform: translateY(-2px); }
+.btn-ghost { background: transparent; color: #c97d4e; border: 1.5px solid #c97d4e; transition: background .2s; }
+.btn-ghost:hover { background: rgba(201,125,78,.1); }
+
+/* PDF & Media Shell (From CFD Page) */
+.media-shell {
+  position: relative; width: min(1100px, 96vw); height: min(91vh, 880px);
+  background: #111111; border: 1px solid #222222; border-radius: 18px;
+  display: flex; flex-direction: column; overflow: hidden;
+  box-shadow: 0 40px 120px rgba(0,0,0,.85); transform: translateY(20px) scale(.97);
+  transition: transform .35s cubic-bezier(.34,1.42,.64,1);
 }
-footer{
-  text-align:center;padding:40px 48px;border-top:1px solid var(--border-col);
-  background:var(--footer);position:relative;z-index:1;
+body:not(.dark) .media-shell { background: #fafaf8; border-color: #e8e4dc; }
+.overlay.show .media-shell { transform: translateY(0) scale(1); }
+
+/* Toolbar */
+.media-toolbar {
+  height: 54px; min-height: 54px; background: #111111; border-bottom: 1px solid #222222;
+  display: flex; align-items: center; padding: 0 14px; gap: 6px; user-select: none; flex-shrink: 0;
 }
+body:not(.dark) .media-toolbar { background: #fafaf8; border-bottom-color: #e8e4dc; }
+.media-toolbar .t-title { flex: 1; display: flex; align-items: center; gap: 9px; overflow: hidden; min-width: 0; }
+.media-toolbar .t-icon {
+  width: 28px; height: 28px; background: rgba(201,125,78,.12); border: 1px solid rgba(201,125,78,.22);
+  border-radius: 7px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 12px; color: #c97d4e;
+}
+.media-toolbar .t-name { font-size: 13px; font-weight: 700; color: #eaeaf0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+body:not(.dark) .media-toolbar .t-name { color: #1c1c1e; }
+.t-sep { width: 1px; height: 20px; background: #2a2a2a; margin: 0 4px; flex-shrink: 0; }
+body:not(.dark) .t-sep { background: #e0dcd4; }
+
+/* PDF specific controls */
+.t-cluster { display: flex; align-items: center; gap: 2px; background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 8px; padding: 2px; }
+body:not(.dark) .t-cluster { background: #f0ece8; border-color: #e0dcd4; }
+.t-btn {
+  width: 30px; height: 30px; background: transparent; border: none; border-radius: 6px; color: #666; font-size: 12px;
+  display: flex; align-items: center; justify-content: center; transition: background .15s, color .15s; flex-shrink: 0;
+}
+.t-btn:hover { background: #2a2a2a; color: #eaeaf0; }
+.t-btn:disabled { opacity: .25; pointer-events: none; }
+body:not(.dark) .t-btn:hover { background: #e4dfd8; color: #1c1c1e; }
+.t-page-wrap { display: flex; align-items: center; gap: 5px; padding: 0 5px; }
+.t-page-input {
+  width: 36px; height: 26px; background: #080808; border: 1px solid #2a2a2a; border-radius: 5px;
+  color: #eaeaf0; font-size: 12px; font-weight: 700; text-align: center; outline: none; transition: border-color .2s;
+}
+.t-page-input:focus { border-color: #c97d4e; }
+body:not(.dark) .t-page-input { background: #fff; border-color: #e0dcd4; color: #1c1c1e; }
+.t-page-of { font-size: 11px; color: #555; }
+.t-zoom-select { background: transparent; border: none; color: #eaeaf0; font-size: 12px; font-weight: 700; outline: none; padding: 0 4px; height: 26px; }
+body:not(.dark) .t-zoom-select { color: #1c1c1e; }
+.t-zoom-select option { background: #1a1a1a; color: #eaeaf0; }
+body:not(.dark) .t-zoom-select option { background: #fff; color: #1c1c1e; }
+
+/* Close */
+.t-close {
+  width: 30px; height: 30px; background: transparent; border: none; border-radius: 6px; color: #555; font-size: 14px;
+  display: flex; align-items: center; justify-content: center; transition: background .15s, color .15s; margin-left: 2px; flex-shrink: 0;
+}
+.t-close:hover { background: rgba(201,80,80,.15); color: #e05555; }
+
+/* Loading Bar */
+.pdf-loading-strip { height: 2px; min-height: 2px; background: #1a1a1a; flex-shrink: 0; overflow: hidden; }
+body:not(.dark) .pdf-loading-strip { background: #ede9e4; }
+.pdf-loading-bar { height: 100%; width: 0%; background: #c97d4e; transition: width .3s ease; border-radius: 2px; }
+
+/* Viewer Areas */
+.viewer-area { flex: 1; overflow: hidden; background: #0c0c0c; display: flex; flex-direction: column; position: relative; }
+body:not(.dark) .viewer-area { background: #e4e0da; }
+
+/* PDF Canvas specific */
+.pdf-canvas-area { overflow-y: auto; overflow-x: auto; align-items: center; padding: 28px 20px; gap: 16px; scroll-behavior: smooth; }
+.pdf-canvas-area::-webkit-scrollbar { width: 6px; }
+.pdf-canvas-area::-webkit-scrollbar-track { background: transparent; }
+.pdf-canvas-area::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 6px; }
+.pdf-canvas-area::-webkit-scrollbar-thumb:hover { background: #c97d4e; }
+.pdf-page-wrap {
+  position: relative; border-radius: 5px; overflow: hidden; box-shadow: 0 6px 32px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.04);
+  flex-shrink: 0; transition: box-shadow .2s;
+}
+.pdf-page-wrap:hover { box-shadow: 0 10px 44px rgba(0,0,0,.7), 0 0 0 1px rgba(201,125,78,.15); }
+.pdf-page-wrap canvas { display: block; }
+.pdf-skeleton { background: linear-gradient(90deg, #161616 25%, #1e1e1e 50%, #161616 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+body:not(.dark) .pdf-skeleton { background: linear-gradient(90deg, #dedad5 25%, #e8e4de 50%, #dedad5 75%); }
+@keyframes shimmer { 0%{ background-position:200% 0; } 100%{ background-position:-200% 0; } }
+
+/* PDF State */
+.pdf-state { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center; padding: 40px; }
+.pdf-state-icon { width: 52px; height: 52px; background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #555; }
+body:not(.dark) .pdf-state-icon { background: #f0ece8; border-color: #e0dcd4; }
+.pdf-state h3 { font-size: 14px; font-weight: 700; color: #eaeaf0; }
+body:not(.dark) .pdf-state h3 { color: #1c1c1e; }
+.pdf-state p  { font-size: 13px; color: #555; max-width: 300px; line-height: 1.6; }
+
+/* Footer */
+.pdf-footer { height: 36px; min-height: 36px; background: #111111; border-top: 1px solid #222222; display: flex; align-items: center; justify-content: space-between; padding: 0 14px; flex-shrink: 0; }
+body:not(.dark) .pdf-footer { background: #fafaf8; border-top-color: #e8e4dc; }
+.pdf-footer-left { display: flex; gap: 6px; }
+.pdf-f-pill { font-size: 10px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: #444; background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 20px; padding: 2px 9px; }
+body:not(.dark) .pdf-f-pill { color: #999; background: #f0ece8; border-color: #e0dcd4; }
+.pdf-footer-right { font-size: 11px; color: #333; }
+body:not(.dark) .pdf-footer-right { color: #bbb; }
+.pdf-kbd { display: inline-block; background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 3px; padding: 1px 4px; font-size: 10px; font-family: monospace; color: #555; }
+body:not(.dark) .pdf-kbd { background: #f0ece8; border-color: #e0dcd4; color: #aaa; }
+
+footer{ text-align:center; padding:40px 48px; border-top:1px solid var(--border-col); background:var(--footer); position:relative; z-index:1; }
 footer p{font-size:12px;color:var(--muted-2);}
 
 /* responsive */
 @media(max-width:900px){
-  nav{padding:0 20px;}
-  .menu-toggle{display:block;}
-  .nav-links{
-    display:none;position:absolute;top:60px;left:0;right:0;flex-direction:column;align-items:flex-start;
-    gap:16px;padding:18px 24px;background:var(--nav-bg);border-bottom:1px solid var(--border-col);
-  }
+  nav{padding:0 20px;} .menu-toggle{display:block;}
+  .nav-links{ display:none;position:absolute;top:60px;left:0;right:0;flex-direction:column;align-items:flex-start; gap:16px;padding:18px 24px;background:var(--nav-bg);border-bottom:1px solid var(--border-col); }
   .nav-links.active{display:flex;}
   .proj-header-wrap{padding:120px 24px 54px;}
   .proj-body{grid-template-columns:1fr;padding:36px 24px;gap:34px;}
   .sidebar{position:static;}
-  .content-box{padding:24px;}
-  .visual-grid{grid-template-columns:1fr;}
-  .metric-grid{grid-template-columns:1fr;}
+  .cad-grid{grid-template-columns:1fr;}
   footer{padding:32px 24px;}
+  .media-shell { width: 100%; height: 100vh; border-radius: 0; }
+  .overlay.show .media-shell { transform: none; }
 }
-
 </style>
 </head>
 <body class="dark">
@@ -245,122 +347,31 @@ footer p{font-size:12px;color:var(--muted-2);}
 <div class="proj-header-wrap">
   <span class="proj-eyebrow">Project 04 · Mechanical Design</span>
   <h1 class="proj-title">CAD Portfolio — Mechanical Design and 3D Modeling</h1>
-  <p class="proj-subtitle">A compact portfolio page for turning your CAD, analysis, and design coursework into a clean showcase of mechanical engineering skill.</p>
+  <p class="proj-subtitle">A collection of precision CAD models, engineering drawings, and assemblies exported for interactive web viewing.</p>
 </div>
 
 <div class="proj-body">
   <div class="main-content">
-    <div class="content-box">
-      <h2>Project Snapshot</h2>
-      <p class="content-text">This page gives you a neutral, reusable CAD hub based on your mechanical engineering background, coursework, and the design-heavy projects already in your resume.</p>
-      <div class="hero-visual">
-        <div class="visual-grid">
-          <div class="visual-card">
-          <div>
-            <div class="visual-kicker">Design</div>
-            <div class="visual-title">3D modeling workflow</div>
-          </div>
-          <div class="visual-desc">Solid geometry, assemblies, and design intent can be presented as separate study cards.</div>
-        </div>
-<div class="visual-card">
-          <div>
-            <div class="visual-kicker">Analysis</div>
-            <div class="visual-title">CAD to simulation</div>
-          </div>
-          <div class="visual-desc">Models can transition into kinematics, FEA, or flow analysis depending on the project.</div>
-        </div>
-<div class="visual-card">
-          <div>
-            <div class="visual-kicker">Foundation</div>
-            <div class="visual-title">Coursework backed</div>
-          </div>
-          <div class="visual-desc">Machine Design, Theory of Machines, and Solid Mechanics give the page academic depth.</div>
-        </div>
-        </div>
+    
+    <div class="cad-grid" id="cadGrid">
       </div>
-      <div class="metric-grid">
-        <div class="metric"><div class="n">8</div><div class="l">Core tools & themes</div></div>
-        <div class="metric"><div class="n">4</div><div class="l">Structured sections</div></div>
-      </div>
-    </div>
-    <div class="content-box">
-          <h2>1. What This Page Represents</h2>
-          
-            <p class="content-text">Since your resume already contains strong mechanical and design content, this page works as a general CAD portfolio hub. It is intentionally broad so that you can later drop in individual models, renders, and annotated drawings.</p>
-            <ul class="content-list">
-              <li>Best used for showcasing design process and not just final images.</li>
-              <li>Works well for SolidWorks renders, Simscape models, and analysis screenshots.</li>
-              <li>Can serve as the parent page for multiple subprojects.</li>
-            </ul>
-            
-        </div>
-<div class="content-box">
-          <h2>2. Skills and Design Foundation</h2>
-          
-            <p class="content-text">The resume lists SolidWorks, MATLAB, MATLAB Simulink, and ANSYS Forte in your technical skills. It also includes machine design, tolerances and fits, fatigue, fracture mechanics, CAD, and introductory FEA in your coursework.</p>
-            <ul class="content-list">
-              <li>Strong base for design-oriented internships and manufacturing support roles.</li>
-              <li>Shows knowledge of both geometry creation and engineering validation.</li>
-              <li>Lets you explain why your CAD choices are not just visual, but functional.</li>
-            </ul>
-            
-        </div>
-<div class="content-box">
-          <h2>3. Suggested Portfolio Sections</h2>
-          
-            <p class="content-text">A clean CAD portfolio page usually works best when it separates the work into categories. That makes the page feel organized and avoids looking like a random image dump.</p>
-            <ul class="content-list">
-              <li>Concept sketches and requirements.</li>
-              <li>Part modeling and assembly screenshots.</li>
-              <li>Motion study or kinematic checks.</li>
-              <li>Simulation results and design iterations.</li>
-              <li>Final takeaways and lessons learned.</li>
-            </ul>
-            
-        </div>
-<div class="content-box">
-          <h2>4. Good Candidates from Your Resume</h2>
-          
-            <p class="content-text">The strongest items to feature here are the 2-DOF robotic manipulator CAD model, the piston head geometries used in CFD, and any future drone or mechanism models you choose to publish.</p>
-            <ul class="content-list">
-              <li>2-DOF robotic manipulator CAD and Simscape work.</li>
-              <li>CFD piston geometry comparison model.</li>
-              <li>Drone / fixture / mechanism sketches from robotics projects.</li>
-            </ul>
-            
-        </div>
+
   </div>
 
   <div class="sidebar">
     <div class="sidebar-section">
       <div class="sidebar-label">Tech stack</div>
       <span class="skill-pill">SolidWorks</span>
-<span class="skill-pill">CAD</span>
-<span class="skill-pill">ANSYS Forte</span>
-<span class="skill-pill">MATLAB</span>
-<span class="skill-pill">Simulink</span>
-<span class="skill-pill">FEA</span>
-<span class="skill-pill">Machine Design</span>
-<span class="skill-pill">GD&T</span>
+      <span class="skill-pill">CAD</span>
+      <span class="skill-pill">Machine Design</span>
+      <span class="skill-pill">GD&T</span>
+      <span class="skill-pill">Assembly</span>
     </div>
-
-    <div class="sidebar-section">
-      <div class="side-card">
-        <h3>What this page highlights</h3>
-        <p>This page gives you a neutral, reusable CAD hub based on your mechanical engineering background, coursework, and the design-heavy projects already in your resume.</p>
-        <div class="chip-row">
-          <span class="mini-chip">Resume</span>
-          <span class="mini-chip">Project Layout</span>
-          <span class="mini-chip">Portfolio Style</span>
-        </div>
-      </div>
-    </div>
-
     <div class="sidebar-section">
       <div class="sidebar-label">Quick links</div>
-      <div class="link-row">
+      <div style="display:grid;gap:12px;margin-top:16px;">
         <a href="index.html#contact" class="btn-warm"><i class="fa-solid fa-envelope"></i> Contact Me</a>
-<a href="index.html#projects" class="btn-ghost"><i class="fa-solid fa-grid-2"></i> Back to Projects</a>
+        <a href="index.html#projects" class="btn-ghost"><i class="fa-solid fa-grid-2"></i> Back to Projects</a>
       </div>
     </div>
   </div>
@@ -370,17 +381,446 @@ footer p{font-size:12px;color:var(--muted-2);}
   <p><strong>Rudrapriya Rajesh Choudhari</strong> · IIT Bhubaneswar · Mechanical Engineering</p>
 </footer>
 
-<script>
 
-function toggleMenu() {
-  document.getElementById('navLinks').classList.toggle('active');
+<div class="overlay" id="infoOverlay" onclick="closeOnOutside(event, 'infoOverlay')">
+  <div class="info-modal" id="infoModalShell">
+    <button class="info-close" onclick="closeOverlay('infoOverlay')"><i class="fa-solid fa-xmark"></i></button>
+    <h2 class="info-title" id="infoTitle">Model Title</h2>
+    <p class="info-desc" id="infoDesc">Model Description goes here.</p>
+    <div class="info-btn-row">
+      <button class="btn-warm" id="btn3D" onclick="openMedia('3d')"><i class="fa-solid fa-cube"></i> View 3D Model</button>
+      <button class="btn-ghost" id="btnPdf" onclick="openMedia('pdf')"><i class="fa-solid fa-file-pdf"></i> View Engineering Drawing</button>
+      <button class="btn-ghost" id="btnVideo" onclick="openMedia('video')" style="display:none; border-color:#e05555; color:#e05555;"><i class="fa-solid fa-play"></i> Watch Animation Video</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="pdfOverlay" onclick="closeOnOutside(event, 'pdfOverlay')">
+  <div class="media-shell">
+    <div class="media-toolbar">
+      <div class="t-title">
+        <div class="t-icon"><i class="fa-solid fa-file-pdf"></i></div>
+        <span class="t-name" id="pdfTitle">Engineering Drawing</span>
+      </div>
+      <div class="t-sep"></div>
+      <div class="t-cluster">
+        <button class="t-btn" onclick="pv.prev()"><i class="fa-solid fa-chevron-left"></i></button>
+        <div class="t-page-wrap">
+          <input class="t-page-input" type="number" id="pvInput" value="1" min="1" onchange="pv.go(this.value)" onkeydown="if(event.key==='Enter')pv.go(this.value)"/>
+          <span class="t-page-of" id="pvOf">/ —</span>
+        </div>
+        <button class="t-btn" onclick="pv.next()"><i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+      <div class="t-sep"></div>
+      <div class="t-cluster">
+        <button class="t-btn" onclick="pv.zoomOut()"><i class="fa-solid fa-minus"></i></button>
+        <select class="t-zoom-select" id="pvZoom" onchange="pv.setZoom(this.value)">
+          <option value="0.5">50%</option>
+          <option value="0.75">75%</option>
+          <option value="1" selected>100%</option>
+          <option value="1.25">125%</option>
+          <option value="1.5">150%</option>
+          <option value="2">200%</option>
+          <option value="fit">Fit</option>
+        </select>
+        <button class="t-btn" onclick="pv.zoomIn()"><i class="fa-solid fa-plus"></i></button>
+      </div>
+      <div class="t-sep"></div>
+      <button class="t-btn" onclick="toggleFullscreen(this)"><i class="fa-solid fa-expand"></i></button>
+      <button class="t-close" onclick="closeOverlay('pdfOverlay')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="pdf-loading-strip"><div class="pdf-loading-bar" id="pvBar"></div></div>
+    <div class="viewer-area pdf-canvas-area" id="pvArea">
+      <div class="pdf-state" id="pvState">
+        <div class="pdf-state-icon"><i class="fa-solid fa-spinner fa-spin"></i></div>
+        <h3>Loading document…</h3>
+        <p>Fetching engineering drawing.</p>
+      </div>
+    </div>
+    <div class="pdf-footer">
+      <div class="pdf-footer-left">
+        <span class="pdf-f-pill">PDF.js</span>
+        <span class="pdf-f-pill" id="pvPageBadge">Page 1</span>
+      </div>
+      <div class="pdf-footer-right">
+        <span class="pdf-kbd">Esc</span> close
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="modelOverlay" onclick="closeOnOutside(event, 'modelOverlay')">
+  <div class="media-shell">
+    <div class="media-toolbar">
+      <div class="t-title">
+        <div class="t-icon"><i class="fa-solid fa-cube"></i></div>
+        <span class="t-name" id="modelTitle">3D Assembly Viewer</span>
+      </div>
+      <div class="t-sep"></div>
+      <button class="t-btn" onclick="toggleFullscreen(this)"><i class="fa-solid fa-expand"></i></button>
+      <button class="t-close" onclick="closeOverlay('modelOverlay')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="viewer-area">
+      <model-viewer id="cadModelViewer" src="" camera-controls auto-rotate shadow-intensity="1" environment-image="neutral" style="width:100%; height:100%; background-color: #111; outline:none;"></model-viewer>
+    </div>
+    <div class="pdf-footer">
+      <div class="pdf-footer-left">
+        <span class="pdf-f-pill">&lt;model-viewer&gt;</span>
+      </div>
+      <div class="pdf-footer-right">Drag to rotate · Scroll to zoom</div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="videoOverlay" onclick="closeOnOutside(event, 'videoOverlay')">
+  <div class="media-shell">
+    <div class="media-toolbar">
+      <div class="t-title">
+        <div class="t-icon" style="color:#e05555; border-color:rgba(224,85,85,0.22); background:rgba(224,85,85,0.12);"><i class="fa-solid fa-play"></i></div>
+        <span class="t-name" id="videoTitle">Animation Video</span>
+      </div>
+      <div class="t-sep"></div>
+      <button class="t-btn" onclick="toggleFullscreen(this)"><i class="fa-solid fa-expand"></i></button>
+      <button class="t-close" onclick="closeOverlay('videoOverlay')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="viewer-area" style="background:#000;">
+      <video id="cadVideoPlayer" controls style="width:100%; height:100%; outline:none;">
+        <source src="" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </div>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+<script>
+/* ─────────────────────────────────────────────
+   1. DATA & UI INITIALIZATION
+───────────────────────────────────────────── */
+const cadModels = {
+  'knuckle_joint': {
+    title: 'Knuckle Joint',
+    desc: 'A mechanical joint used to connect two intersecting cylindrical rods. Permits angular movement in one plane while transmitting axial tensile loads.',
+    img: 'assests/images/knuckle_joint_pic.jpg',
+    glb: 'assests/models/knuckle_joint/knuckle_joint_assem.glb',
+    pdf: 'assests/models/knuckle_joint/knuckle_joint_ED.pdf',
+    vid: null
+  },
+  'oldham_coupling': {
+    title: 'Oldham Coupling',
+    desc: 'A mechanism used to transmit rotational motion between two parallel but non-collinear shafts. Consists of three discs ensuring constant velocity transmission.',
+    img: 'assests/images/oldham_coupling_pic.jpg',
+    glb: 'assests/models/oldham_coupling/oldham_coupling_assem.glb',
+    pdf: 'assests/models/oldham_coupling/oldham_coupling_ED.pdf',
+    vid: null
+  },
+  'pedastal_bearing': {
+    title: 'Pedestal Bearing',
+    desc: 'Also known as a plummer block, this assembly provides support for a rotating shaft with the help of compatible bearings and various accessories.',
+    img: 'assests/images/pedastal_bearing_pic.jpg',
+    glb: 'assests/models/pedastal_bearing/pedastal_bearing_assem.glb',
+    pdf: 'assests/models/pedastal_bearing/pedastal_bearing_assem.pdf',
+    vid: null
+  },
+  'radial_engine': {
+    title: 'Radial Engine',
+    desc: 'A reciprocating type internal combustion engine configuration in which the cylinders radiate outward from a central crankcase like the spokes of a wheel.',
+    img: 'assests/images/radial_engine_pic.jpg',
+    glb: 'assests/models/radial_engine/radial_engine_assem.glb',
+    pdf: 'assests/models/radial_engine/radial_engine_ED.pdf',
+    vid: 'assests/models/radial_engine/radial_engine_VID.mp4'
+  },
+  'screw_jack': {
+    title: 'Screw Jack',
+    desc: 'A mechanical device used for lifting heavy loads or applying great forces utilizing a heavy-duty lead screw.',
+    img: 'assests/images/screw_jack_pic.jpg',
+    glb: 'assests/models/screw_jack/screw_jack_assem.glb',
+    pdf: 'assests/models/screw_jack/screw_jack_ED.pdf',
+    vid: 'assests/models/screw_jack/screw_jack_VID.mp4'
+  },
+  'stuffing_box': {
+    title: 'Stuffing Box',
+    desc: 'An assembly which houses a gland seal used to prevent leakage of fluid, such as water or steam, between sliding or turning parts of machine elements.',
+    img: 'assests/images/stuffing_box_pic.jpg',
+    glb: 'assests/models/stuffing_box/stuffing_box_assem.glb',
+    pdf: 'assests/models/stuffing_box/stuffing_box_ED.pdf',
+    vid: null
+  },
+  'v_engine': {
+    title: 'V-Engine',
+    desc: 'An internal combustion engine configuration where the cylinders are arranged in two banks forming a "V" angle, offering high power in a compact block.',
+    img: 'assests/images/v_engine_pic.jpg',
+    glb: 'assests/models/v_engine/v_engine_assem.glb',
+    pdf: 'assests/models/v_engine/v_engine_ED.pdf',
+    vid: 'assests/models/v_engine/v_engine_VID.mp4'
+  }
+};
+
+let currentActiveModel = null;
+
+function renderGrid() {
+  const grid = document.getElementById('cadGrid');
+  grid.innerHTML = '';
+  Object.keys(cadModels).forEach(key => {
+    const model = cadModels[key];
+    const card = document.createElement('div');
+    card.className = 'cad-card';
+    card.onclick = () => openInfoModal(key);
+    card.innerHTML = `
+      <img src="${model.img}" alt="${model.title}" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'100\\' height=\\'100\\'><rect width=\\'100\\' height=\\'100\\' fill=\\'%23222\\'/><text x=\\'50%\\' y=\\'50%\\' fill=\\'%23666\\' text-anchor=\\'middle\\' dy=\\'.3em\\'>Image Placeholder</text></svg>'">
+      <div class="cad-title">${model.title}</div>
+      <div class="cad-desc">${model.desc}</div>
+    `;
+    grid.appendChild(card);
+  });
 }
+
+function openInfoModal(key) {
+  currentActiveModel = cadModels[key];
+  document.getElementById('infoTitle').textContent = currentActiveModel.title;
+  document.getElementById('infoDesc').textContent = currentActiveModel.desc;
+  
+  // Toggle video button based on availability
+  const vidBtn = document.getElementById('btnVideo');
+  if(currentActiveModel.vid) {
+    vidBtn.style.display = 'flex';
+  } else {
+    vidBtn.style.display = 'none';
+  }
+  
+  document.getElementById('infoOverlay').classList.add('show');
+}
+
+function openMedia(type) {
+  // Close info modal first
+  document.getElementById('infoOverlay').classList.remove('show');
+  
+  setTimeout(() => {
+    if (type === 'pdf') {
+      document.getElementById('pdfTitle').textContent = currentActiveModel.title + " - Drawing";
+      document.getElementById('pdfOverlay').classList.add('show');
+      pv.load(currentActiveModel.pdf);
+    } else if (type === '3d') {
+      document.getElementById('modelTitle').textContent = currentActiveModel.title + " - 3D Assembly";
+      document.getElementById('cadModelViewer').src = currentActiveModel.glb;
+      document.getElementById('modelOverlay').classList.add('show');
+    } else if (type === 'video') {
+      document.getElementById('videoTitle').textContent = currentActiveModel.title + " - Animation";
+      const vidPlayer = document.getElementById('cadVideoPlayer');
+      vidPlayer.src = currentActiveModel.vid;
+      document.getElementById('videoOverlay').classList.add('show');
+      vidPlayer.play();
+    }
+  }, 300);
+}
+
+function closeOverlay(id) {
+  document.getElementById(id).classList.remove('show');
+  if (id === 'pdfOverlay') {
+    setTimeout(() => pv.unload(), 350);
+  } else if (id === 'videoOverlay') {
+    const vidPlayer = document.getElementById('cadVideoPlayer');
+    vidPlayer.pause();
+    vidPlayer.src = '';
+  }
+}
+
+function closeOnOutside(e, id) {
+  if (e.target === document.getElementById(id)) closeOverlay(id);
+}
+
+function toggleFullscreen(btn) {
+  const shell = btn.closest('.media-shell');
+  if (!document.fullscreenElement) {
+    shell.requestFullscreen?.();
+    btn.innerHTML = '<i class="fa-solid fa-compress"></i>';
+  } else {
+    document.exitFullscreen?.();
+    btn.innerHTML = '<i class="fa-solid fa-expand"></i>';
+  }
+}
+
+/* ─────────────────────────────────────────────
+   2. CUSTOM PDF VIEWER ENGINE
+───────────────────────────────────────────── */
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+const pv = (() => {
+  let _pdf = null, _total = 0, _cur = 1, _scale = 1, _fitScale = 1;
+  let _canvases = {};
+
+  const $    = id => document.getElementById(id);
+  const area  = () => $('pvArea');
+  const state = () => $('pvState');
+  const bar   = () => $('pvBar');
+
+  function setBar(pct) { bar().style.width = pct + '%'; }
+
+  function showError(msg) {
+    const s = state();
+    s.style.display = 'flex';
+    s.querySelector('.pdf-state-icon').innerHTML = '<i class="fa-solid fa-triangle-exclamation" style="color:#c94e4e"></i>';
+    s.querySelector('h3').textContent = 'Could not load PDF';
+    s.querySelector('p').textContent  = msg;
+    setBar(0);
+  }
+
+  function updateUI() {
+    $('pvInput').value = _cur;
+    $('pvInput').max   = _total;
+    $('pvOf').textContent = '/ ' + _total;
+    $('pvPageBadge').textContent = `Page ${_cur} / ${_total}`;
+  }
+
+  function updateZoomUI() {
+    const pct = Math.round(_scale * 100);
+    $('pvZoom').value = [50,75,100,125,150,200].includes(pct) ? String(pct / 100) : 'fit';
+  }
+
+  async function renderPage(n) {
+    const canvas = _canvases[n];
+    if (!canvas || !_pdf) return;
+    const page = await _pdf.getPage(n);
+    const vp   = page.getViewport({ scale: _scale });
+    const dpr  = window.devicePixelRatio || 1;
+    const ctx  = canvas.getContext('2d');
+    canvas.width  = vp.width  * dpr;
+    canvas.height = vp.height * dpr;
+    canvas.style.width  = vp.width  + 'px';
+    canvas.style.height = vp.height + 'px';
+    ctx.scale(dpr, dpr);
+    canvas.parentElement.style.width  = vp.width  + 'px';
+    canvas.parentElement.style.height = vp.height + 'px';
+    await page.render({ canvasContext: ctx, viewport: vp }).promise;
+  }
+
+  async function buildPages() {
+    const a = area();
+    a.innerHTML = '';
+    _canvases = {};
+
+    const p1 = await _pdf.getPage(1);
+    const v1 = p1.getViewport({ scale: 1 });
+    _fitScale = (a.clientWidth - 40) / v1.width;
+    if (_scale === 1) _scale = Math.min(_fitScale, 1.3);
+    updateZoomUI();
+
+    for (let i = 1; i <= _total; i++) {
+      const page = await _pdf.getPage(i);
+      const vp   = page.getViewport({ scale: _scale });
+      const wrap = document.createElement('div');
+      wrap.className = 'pdf-page-wrap pdf-skeleton';
+      wrap.style.width  = vp.width  + 'px';
+      wrap.style.height = vp.height + 'px';
+      wrap.dataset.page = i;
+
+      const cv = document.createElement('canvas');
+      wrap.appendChild(cv);
+      a.appendChild(wrap);
+      _canvases[i] = cv;
+
+      const obs = new IntersectionObserver(async entries => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            const pn = +e.target.dataset.page;
+            await renderPage(pn);
+            e.target.classList.remove('pdf-skeleton');
+            obs.unobserve(e.target);
+          }
+        }
+      }, { root: a, rootMargin: '180px' });
+      obs.observe(wrap);
+    }
+  }
+
+  async function reRenderAll() {
+    for (let i = 1; i <= _total; i++) {
+      const wrap = _canvases[i]?.parentElement;
+      if (wrap && !wrap.classList.contains('pdf-skeleton')) await renderPage(i);
+    }
+  }
+
+  function pvScrollTo(n) {
+    const target = area().querySelector(`[data-page="${n}"]`);
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function trackScroll() {
+    const a = area();
+    const rect = a.getBoundingClientRect();
+    let cur = 1;
+    a.querySelectorAll('.pdf-page-wrap').forEach(w => {
+      if (w.getBoundingClientRect().top - rect.top <= rect.height / 2) cur = +w.dataset.page;
+    });
+    if (cur !== _cur) { _cur = cur; updateUI(); }
+  }
+
+  return {
+    async load(urlStr) {
+      state().style.display = 'flex';
+      state().querySelector('.pdf-state-icon').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+      state().querySelector('h3').textContent = 'Loading document…';
+      state().querySelector('p').textContent  = 'Fetching engineering drawing.';
+      setBar(8);
+
+      try {
+        const absoluteUrl = new URL(urlStr, window.location.href).href;
+        const task = pdfjsLib.getDocument({
+          url: absoluteUrl,
+          cMapUrl: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/cmaps/',
+          cMapPacked: true
+        });
+        task.onProgress = ({ loaded, total }) => {
+          if (total) setBar(10 + Math.round(loaded / total * 75));
+        };
+        _pdf   = await task.promise;
+        _total = _pdf.numPages;
+        _cur   = 1; _scale = 1;
+        updateUI();
+
+        state().style.display = 'none';
+        setBar(90);
+        await buildPages();
+        setBar(100);
+        setTimeout(() => { bar().style.opacity = '0'; }, 600);
+        area().addEventListener('scroll', trackScroll, { passive: true });
+      } catch (err) {
+        showError(`Error: ${err.message || 'File not found. Make sure the path is correct.'}`);
+      }
+    },
+    unload() {
+      area().removeEventListener('scroll', trackScroll);
+      if (_pdf) { _pdf.destroy(); _pdf = null; }
+      area().innerHTML = '';
+      area().appendChild(state());
+      state().style.display = 'flex';
+      state().querySelector('.pdf-state-icon').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+      state().querySelector('h3').textContent = 'Loading document…';
+      bar().style.opacity = '1'; bar().style.width = '0%';
+      _total = 0; _cur = 1; _scale = 1;
+    },
+    prev() { if (_cur > 1) { _cur--; updateUI(); pvScrollTo(_cur); } },
+    next() { if (_cur < _total) { _cur++; updateUI(); pvScrollTo(_cur); } },
+    go(n)  { const p = Math.max(1, Math.min(_total, parseInt(n) || 1)); _cur = p; updateUI(); pvScrollTo(p); },
+    async setZoom(v) { _scale = v === 'fit' ? _fitScale : parseFloat(v); updateZoomUI(); await reRenderAll(); },
+    async zoomIn()  { const l = [.5,.75,1,1.25,1.5,2,2.5]; const n = l.find(x => x > _scale + .01); if (n) { _scale = n; updateZoomUI(); await reRenderAll(); } },
+    async zoomOut() { const l = [.5,.75,1,1.25,1.5,2,2.5].reverse(); const n = l.find(x => x < _scale - .01); if (n) { _scale = n; updateZoomUI(); await reRenderAll(); } }
+  };
+})();
+
+/* ─────────────────────────────────────────────
+   3. BACKGROUND & NAV
+───────────────────────────────────────────── */
+function toggleMenu() { document.getElementById('navLinks').classList.toggle('active'); }
 function toggleDark() {
   const body = document.body;
   const btn = document.getElementById('theme-btn');
   body.classList.toggle('dark');
   btn.textContent = body.classList.contains('dark') ? '☀️ Light' : '🌙 Dark';
 }
+
 class InteractiveGrid {
   constructor() {
     this.canvas = document.getElementById('interactive-grid');
@@ -424,21 +864,15 @@ class InteractiveGrid {
     this.ctx.beginPath();
     this.ctx.strokeStyle = colors.lineColor;
     this.ctx.lineWidth = 1;
-    for (let x = 0; x <= window.innerWidth; x += this.cellSize) {
-      this.ctx.moveTo(x, 0); this.ctx.lineTo(x, window.innerHeight);
-    }
-    for (let y = 0; y <= window.innerHeight; y += this.cellSize) {
-      this.ctx.moveTo(0, y); this.ctx.lineTo(window.innerWidth, y);
-    }
+    for (let x = 0; x <= window.innerWidth; x += this.cellSize) { this.ctx.moveTo(x, 0); this.ctx.lineTo(x, window.innerHeight); }
+    for (let y = 0; y <= window.innerHeight; y += this.cellSize) { this.ctx.moveTo(0, y); this.ctx.lineTo(window.innerWidth, y); }
     this.ctx.stroke();
     if (this.isHovering || Math.abs(this.mouse.x - this.mouse.targetX) > 0.1) {
       const cellX = Math.floor(this.mouse.x / this.cellSize) * this.cellSize;
       const cellY = Math.floor(this.mouse.y / this.cellSize) * this.cellSize;
       this.ctx.fillStyle = colors.cellHighlight;
       this.ctx.fillRect(cellX, cellY, this.cellSize, this.cellSize);
-      const gradient = this.ctx.createRadialGradient(
-        this.mouse.x, this.mouse.y, 0, this.mouse.x, this.mouse.y, 150
-      );
+      const gradient = this.ctx.createRadialGradient(this.mouse.x, this.mouse.y, 0, this.mouse.x, this.mouse.y, 150);
       gradient.addColorStop(0, colors.glowCenter);
       gradient.addColorStop(1, colors.glowEdge);
       this.ctx.fillStyle = gradient;
@@ -453,8 +887,21 @@ class InteractiveGrid {
     requestAnimationFrame(() => this.animate());
   }
 }
-document.addEventListener('DOMContentLoaded', () => { new InteractiveGrid(); });
 
+document.addEventListener('DOMContentLoaded', () => { 
+  new InteractiveGrid(); 
+  renderGrid();
+});
+
+// Escape key to close overlays
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape') {
+    if(document.getElementById('pdfOverlay').classList.contains('show')) closeOverlay('pdfOverlay');
+    if(document.getElementById('modelOverlay').classList.contains('show')) closeOverlay('modelOverlay');
+    if(document.getElementById('videoOverlay').classList.contains('show')) closeOverlay('videoOverlay');
+    if(document.getElementById('infoOverlay').classList.contains('show')) closeOverlay('infoOverlay');
+  }
+});
 </script>
 </body>
 </html>
