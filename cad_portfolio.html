@@ -585,7 +585,7 @@ const cadModels = {
     desc: 'A mechanism used to transmit rotational motion between two parallel but non-collinear shafts. Consists of three discs ensuring constant velocity transmission.',
     img: 'assests/images/oldham_coupling_pic.jpg',
     glb: 'assests/models/oldham_coupling/oldham_coupling_assem.glb',
-    pdf: 'assests\models\oldham_coupling\oldham_coupling_ED.pdf',
+    pdf: 'assests/models/oldham_coupling/oldham_coupling_ED.pdf',
     vid: null
   },
   'pedastal_bearing': {
@@ -786,7 +786,8 @@ const pv = (() => {
 
   async function buildPages() {
     const a = area();
-    a.innerHTML = '';
+    // Safely remove only the PDF pages, keeping the loading state intact
+    a.querySelectorAll('.pdf-page-wrap').forEach(el => el.remove());
     _canvases = {};
 
     const p1 = await _pdf.getPage(1);
@@ -881,8 +882,10 @@ const pv = (() => {
     unload() {
       area().removeEventListener('scroll', trackScroll);
       if (_pdf) { _pdf.destroy(); _pdf = null; }
-      area().innerHTML = '';
-      area().appendChild(state());
+      
+      // Safely clear old pages without destroying the UI
+      area().querySelectorAll('.pdf-page-wrap').forEach(el => el.remove());
+      
       state().style.display = 'flex';
       state().querySelector('.pdf-state-icon').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
       state().querySelector('h3').textContent = 'Loading document…';
