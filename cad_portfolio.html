@@ -17,7 +17,7 @@ body{
   overflow-x:hidden;
   cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><circle cx="8" cy="8" r="4" fill="%23c97d4e"/></svg>') 8 8, auto;
 }
-a,button,.content-box,.btn-warm,.btn-ghost,.menu-toggle,.theme-btn,.cad-card{
+a,button,.content-box,.btn-warm,.btn-ghost,.menu-toggle,.theme-btn,.cad-card,.view-btn{
   cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><circle cx="10" cy="10" r="4" fill="%23c97d4e"/><circle cx="10" cy="10" r="8" stroke="%23c97d4e" stroke-width="1.5" fill="none"/></svg>') 10 10, pointer !important;
 }
 ::-webkit-scrollbar{width:8px;}
@@ -122,7 +122,44 @@ body.dark .proj-header-wrap{
 }
 .main-content{min-width:0;}
 
-/* CAD Grid Styles */
+/* View Controls */
+.content-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 24px;
+}
+.view-controls {
+  display: flex;
+  gap: 8px;
+  background: var(--card-bg);
+  padding: 6px;
+  border-radius: 12px;
+  border: 1px solid var(--card-border);
+}
+.view-btn {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .2s;
+  font-size: 15px;
+}
+.view-btn:hover {
+  color: var(--text);
+  background: rgba(201,125,78,0.1);
+}
+.view-btn.active {
+  background: #c97d4e;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(201,125,78,0.3);
+}
+
+/* CAD Grid Styles (Default: Grid/Small) */
 .cad-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -152,6 +189,7 @@ body.dark .cad-card:hover {
   margin-bottom: 16px;
   background: #1a1a1a;
   border: 1px solid var(--card-border);
+  transition: height .3s ease, width .3s ease;
 }
 .cad-title {
   font-size: 1.15rem;
@@ -164,6 +202,30 @@ body.dark .cad-card:hover {
   color: var(--muted);
   line-height: 1.6;
   flex-grow: 1;
+}
+
+/* Layout: Large (One per row) */
+.cad-grid.layout-large {
+  grid-template-columns: 1fr;
+}
+.cad-grid.layout-large .cad-card img {
+  height: 380px;
+}
+
+/* Layout: List (Image left, text right) */
+.cad-grid.layout-list {
+  grid-template-columns: 1fr;
+}
+.cad-grid.layout-list .cad-card {
+  flex-direction: row;
+  align-items: center;
+  gap: 24px;
+}
+.cad-grid.layout-list .cad-card img {
+  width: 240px;
+  height: 160px;
+  margin-bottom: 0;
+  flex-shrink: 0;
 }
 
 /* sidebar */
@@ -326,6 +388,8 @@ footer p{font-size:12px;color:var(--muted-2);}
   .proj-body{grid-template-columns:1fr;padding:36px 24px;gap:34px;}
   .sidebar{position:static;}
   .cad-grid{grid-template-columns:1fr;}
+  .cad-grid.layout-list .cad-card { flex-direction: column; }
+  .cad-grid.layout-list .cad-card img { width: 100%; height: 200px; }
   footer{padding:32px 24px;}
   .media-shell { width: 100%; height: 100vh; border-radius: 0; }
   .overlay.show .media-shell { transform: none; }
@@ -353,6 +417,14 @@ footer p{font-size:12px;color:var(--muted-2);}
 <div class="proj-body">
   <div class="main-content">
     
+    <div class="content-header">
+      <div class="view-controls">
+        <button class="view-btn active" id="btn-grid" onclick="changeLayout('grid')" title="Small Grid View"><i class="fa-solid fa-grid-2"></i></button>
+        <button class="view-btn" id="btn-list" onclick="changeLayout('list')" title="List View"><i class="fa-solid fa-list"></i></button>
+        <button class="view-btn" id="btn-large" onclick="changeLayout('large')" title="Large Single Row View"><i class="fa-solid fa-square"></i></button>
+      </div>
+    </div>
+
     <div class="cad-grid" id="cadGrid">
       </div>
 
@@ -513,7 +585,7 @@ const cadModels = {
     desc: 'A mechanism used to transmit rotational motion between two parallel but non-collinear shafts. Consists of three discs ensuring constant velocity transmission.',
     img: 'assests/images/oldham_coupling_pic.jpg',
     glb: 'assests/models/oldham_coupling/oldham_coupling_assem.glb',
-    pdf: 'assests/models/oldham_coupling/oldham_coupling_ED.pdf',
+    pdf: 'assests\models\oldham_coupling\oldham_coupling_ED.pdf',
     vid: null
   },
   'pedastal_bearing': {
@@ -570,11 +642,27 @@ function renderGrid() {
     card.onclick = () => openInfoModal(key);
     card.innerHTML = `
       <img src="${model.img}" alt="${model.title}" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'100\\' height=\\'100\\'><rect width=\\'100\\' height=\\'100\\' fill=\\'%23222\\'/><text x=\\'50%\\' y=\\'50%\\' fill=\\'%23666\\' text-anchor=\\'middle\\' dy=\\'.3em\\'>Image Placeholder</text></svg>'">
-      <div class="cad-title">${model.title}</div>
-      <div class="cad-desc">${model.desc}</div>
+      <div>
+        <div class="cad-title">${model.title}</div>
+        <div class="cad-desc">${model.desc}</div>
+      </div>
     `;
     grid.appendChild(card);
   });
+}
+
+function changeLayout(layout) {
+  const grid = document.getElementById('cadGrid');
+  const btns = document.querySelectorAll('.view-btn');
+  
+  // Update button active state
+  btns.forEach(btn => btn.classList.remove('active'));
+  document.getElementById('btn-' + layout).classList.add('active');
+  
+  // Update grid classes
+  grid.className = 'cad-grid'; // reset to default
+  if(layout === 'list') grid.classList.add('layout-list');
+  if(layout === 'large') grid.classList.add('layout-large');
 }
 
 function openInfoModal(key) {
