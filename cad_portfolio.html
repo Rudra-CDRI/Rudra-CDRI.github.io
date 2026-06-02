@@ -130,33 +130,37 @@ body.dark .proj-header-wrap{
 }
 .view-controls {
   display: flex;
-  gap: 8px;
-  background: var(--card-bg);
-  padding: 6px;
-  border-radius: 12px;
-  border: 1px solid var(--card-border);
+  align-items: center;
+  gap: 4px;
+  background: #111111;
+  padding: 6px 8px;
+  border-radius: 30px; /* Pill shape container */
+  border: 1px solid #222222;
+}
+body:not(.dark) .view-controls {
+  background: #f5f2ee;
+  border-color: #e8e4dc;
 }
 .view-btn {
   background: transparent;
   border: none;
   color: var(--muted);
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
+  width: 38px;
+  height: 32px;
+  border-radius: 10px; /* Rounded square inner button */
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all .2s;
+  transition: all .2s ease;
   font-size: 15px;
 }
 .view-btn:hover {
   color: var(--text);
-  background: rgba(201,125,78,0.1);
 }
 .view-btn.active {
   background: #c97d4e;
   color: #fff;
-  box-shadow: 0 4px 12px rgba(201,125,78,0.3);
+  box-shadow: 0 0 16px rgba(201, 125, 78, 0.4); /* Soft glowing shadow */
 }
 
 /* CAD Grid Styles (Default: Grid/Small) */
@@ -440,7 +444,7 @@ footer p{font-size:12px;color:var(--muted-2);}
     
     <div class="content-header">
       <div class="view-controls">
-        <button class="view-btn active" id="btn-grid" onclick="changeLayout('grid')" title="Small Grid View"><i class="fa-solid fa-grid-2"></i></button>
+        <button class="view-btn active" id="btn-grid" onclick="changeLayout('grid')" title="Small Grid View"><i class="fa-solid fa-table-cells"></i></button>
         <button class="view-btn" id="btn-list" onclick="changeLayout('list')" title="List View"><i class="fa-solid fa-list"></i></button>
         <button class="view-btn" id="btn-large" onclick="changeLayout('large')" title="Large Single Row View"><i class="fa-solid fa-square"></i></button>
       </div>
@@ -596,7 +600,7 @@ const cadModels = {
   'knuckle_joint': {
     title: 'Knuckle Joint',
     desc: 'A mechanical joint used to connect two intersecting cylindrical rods. Permits angular movement in one plane while transmitting axial tensile loads.',
-    img: 'assests/images/knuckle_joint_pic.jpg',
+    img: 'assests/models/knuckle_joint/knuckle_joint_pic.jpg',
     glb: 'assests/models/knuckle_joint/knuckle_joint_assem.glb',
     pdf: 'assests/models/knuckle_joint/knuckle_joint_ED.pdf',
     vid: null
@@ -604,7 +608,7 @@ const cadModels = {
   'oldham_coupling': {
     title: 'Oldham Coupling',
     desc: 'A mechanism used to transmit rotational motion between two parallel but non-collinear shafts. Consists of three discs ensuring constant velocity transmission.',
-    img: 'assests/images/oldham_coupling_pic.jpg',
+    img: 'assests/models/oldham_coupling/oldham_coupling_pic.png',
     glb: 'assests/models/oldham_coupling/oldham_coupling_assem.glb',
     pdf: 'assests/models/oldham_coupling/oldham_coupling_ED.pdf',
     vid: null
@@ -612,7 +616,7 @@ const cadModels = {
   'pedastal_bearing': {
     title: 'Pedestal Bearing',
     desc: 'Also known as a plummer block, this assembly provides support for a rotating shaft with the help of compatible bearings and various accessories.',
-    img: 'assests/images/pedastal_bearing_pic.jpg',
+    img: 'assests/models/pedastal_bearing/pedastal_bearing_pic.jpg',
     glb: 'assests/models/pedastal_bearing/pedastal_bearing_assem.glb',
     pdf: 'assests/models/pedastal_bearing/pedastal_bearing_assem.pdf',
     vid: null
@@ -620,7 +624,7 @@ const cadModels = {
   'radial_engine': {
     title: 'Radial Engine',
     desc: 'A reciprocating type internal combustion engine configuration in which the cylinders radiate outward from a central crankcase like the spokes of a wheel.',
-    img: 'assests/images/radial_engine_pic.jpg',
+    img: 'assests/models/radial_engine/radial_engine_pic.png',
     glb: 'assests/models/radial_engine/radial_engine_assem.glb',
     pdf: 'assests/models/radial_engine/radial_engine_ED.pdf',
     vid: 'assests/models/radial_engine/radial_engine_VID.mp4'
@@ -628,7 +632,7 @@ const cadModels = {
   'screw_jack': {
     title: 'Screw Jack',
     desc: 'A mechanical device used for lifting heavy loads or applying great forces utilizing a heavy-duty lead screw.',
-    img: 'assests/images/screw_jack_pic.jpg',
+    img: 'assests/models/screw_jack/screw_jack_pic.jpg',
     glb: 'assests/models/screw_jack/screw_jack_assem.glb',
     pdf: 'assests/models/screw_jack/screw_jack_ED.pdf',
     vid: 'assests/models/screw_jack/screw_jack_VID.mp4'
@@ -636,7 +640,7 @@ const cadModels = {
   'stuffing_box': {
     title: 'Stuffing Box',
     desc: 'An assembly which houses a gland seal used to prevent leakage of fluid, such as water or steam, between sliding or turning parts of machine elements.',
-    img: 'assests/images/stuffing_box_pic.jpg',
+    img: 'assests/models/stuffing_box/stuffing_box_pic.jpg',
     glb: 'assests/models/stuffing_box/stuffing_box_assem.glb',
     pdf: 'assests/models/stuffing_box/stuffing_box_ED.pdf',
     vid: null
@@ -644,7 +648,7 @@ const cadModels = {
   'v_engine': {
     title: 'V-Engine',
     desc: 'An internal combustion engine configuration where the cylinders are arranged in two banks forming a "V" angle, offering high power in a compact block.',
-    img: 'assests/images/v_engine_pic.jpg',
+    img: 'assests/models/v_engine/v_engine_pic.jpg',
     glb: 'assests/models/v_engine/v_engine_assem.glb',
     pdf: 'assests/models/v_engine/v_engine_ED.pdf',
     vid: 'assests/models/v_engine/v_engine_VID.mp4'
