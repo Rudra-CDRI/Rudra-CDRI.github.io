@@ -362,6 +362,27 @@ footer strong{color:#888;}
   .musicians-grid, .skills-grid { grid-template-columns: 1fr; }
   .contact-img { height: 280px; }
 }
+
+/* --- FULLSCREEN OVERRIDES --- */
+.media-shell:fullscreen {
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: none !important;
+  max-height: none !important;
+  border-radius: 0 !important;
+  border: none !important;
+}
+
+/* Safari/Chrome specific fallback */
+.media-shell:-webkit-full-screen {
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: none !important;
+  max-height: none !important;
+  border-radius: 0 !important;
+  border: none !important;
+}
+
 </style>
 </head>
 <body class="dark">

@@ -394,6 +394,27 @@ footer p{font-size:12px;color:var(--muted-2);}
   .media-shell { width: 100%; height: 100vh; border-radius: 0; }
   .overlay.show .media-shell { transform: none; }
 }
+
+/* --- FULLSCREEN OVERRIDES --- */
+.media-shell:fullscreen {
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: none !important;
+  max-height: none !important;
+  border-radius: 0 !important;
+  border: none !important;
+}
+
+/* Safari/Chrome specific fallback */
+.media-shell:-webkit-full-screen {
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: none !important;
+  max-height: none !important;
+  border-radius: 0 !important;
+  border: none !important;
+}
+
 </style>
 </head>
 <body class="dark">
