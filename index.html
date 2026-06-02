@@ -468,7 +468,7 @@ footer strong{color:#888;}
       </div>
 
       <div class="proj-panel active" id="pp0" onclick="openModal('ionic')">
-        <img src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=900&q=80" alt="Fluid dynamics" class="proj-img"/>
+        <img src="assests/images/iwg2.png" alt="Fluid dynamics" class="proj-img"/>
         <div class="proj-content">
           <div class="proj-num">Project 01 · Ongoing</div>
           <div class="proj-title">Ionic Wind Generator (EHD Thruster)</div>
@@ -483,7 +483,7 @@ footer strong{color:#888;}
       </div>
 
       <div class="proj-panel" id="pp1" onclick="openModal('drone')">
-        <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=900&q=80" alt="Robotics" class="proj-img"/>
+        <img src="assests/images/krishi_drone.png" alt="Robotics" class="proj-img"/>
         <div class="proj-content">
           <div class="proj-num">Project 02 · e-Yantra IIT Bombay</div>
           <div class="proj-title">Krishi Drone Precision Agriculture UAV</div>
@@ -498,7 +498,7 @@ footer strong{color:#888;}
       </div>
 
       <div class="proj-panel" id="pp2" onclick="openModal('cfd')">
-        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=900&q=80" alt="CFD Engine" class="proj-img"/>
+        <img src="assests/images/piston_cfd.png" alt="CFD Engine" class="proj-img"/>
         <div class="proj-content">
           <div class="proj-num">Project 03 · Simulation</div>
           <div class="proj-title">CFD Analysis of IC Engine Piston Heads</div>
@@ -513,7 +513,7 @@ footer strong{color:#888;}
       </div>
 
       <div class="proj-panel" id="pp3" onclick="openModal('manipulator')">
-        <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=900&q=80" alt="Robotic Arm" class="proj-img"/>
+        <img src="assests/images/2dof_robot_arm.png" alt="Robotic Arm" class="proj-img"/>
         <div class="proj-content">
           <div class="proj-num">Project 04 · Kinematics</div>
           <div class="proj-title">2DOF Robotic Manipulator Kinematics</div>
@@ -538,7 +538,7 @@ footer strong{color:#888;}
     <p class="sec-sub">Selected coursework and problem-solving initiatives.</p>
     <div class="mini-grid">
       <div class="mini-card" onclick="openModal('cad_portfolio')">
-        <img src="https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?w=600&q=80" alt="CAD modelling" class="mini-card-img"/>
+        <img src="https://images.unsplash.com/photo-1537462715879-360eeb61a0ad?w=600&q=80" alt="CAD modelling" class="mini-card-img"/>
         <div class="mini-card-body">
           <div class="mini-card-num">Coursework</div>
           <div class="mini-card-title">CAD Modelling Portfolio</div>
@@ -848,29 +848,29 @@ const projectData = {
   'ionic': {
     title: 'Ionic Wind Generator',
     desc: 'This project focuses on designing a solid-state electrohydrodynamic (EHD) thruster. The goal is to generate directed airflow with no moving parts for miniaturized cooling applications and drag reduction. Working under Dr. Venugopal Arumuru, I have built and tested a prototype, mapping flow rates and iterating on electrode geometries to maximize thrust efficiency.',
-    buttons: '<a href="ionic_wind.html" class="btn-ghost"><i class="fa-solid fa-file-pdf"></i> Learn More</a>'
+    buttons: '<a href="ionic_wind.html" class="btn-warm">Learn More</a>'
   },
   'drone': {
     title: 'Krishi Drone UAV',
     desc: 'Developed as part of the e-Yantra Robotics initiative, this autonomous quadrotor is designed for precision agriculture. Using ROS 2 and Gazebo, we implemented a navigation stack for waypoint following. Real-time image feedback from an overhead camera allows the drone to localize diseased crops and selectively deploy biopesticides.',
-    buttons: '<a href="krishi_drone.html" class="btn-ghost"><i class="fa-brands fa-github"></i> View GitHub Repo</a> <a href="krishi_drone.html" class="btn-warm"><i class="fa-solid fa-play"></i>Learn More</a>'
+    buttons: '<a href="krishi_drone.html" class="btn-warm">Learn More</a>'
   },
   'cfd': {
     title: 'CFD Analysis of Piston Heads',
     desc: 'An analytical project conducting reactive-flow CFD simulations in ANSYS Forte to evaluate CI engine combustion. By comparing Flat-top and Circular Dish geometries, we utilized the RANS RNG k-epsilon turbulence model and CHEMKIN-Pro solver. The dish geometry demonstrated superior squish-driven air-fuel mixing, resulting in near-complete combustion.',
-    buttons: '<a href="piston_cfd_analysis.html" class="btn-ghost"><i class="fa-solid fa-file-powerpoint"></i> Learn More</a>'
+    buttons: '<a href="piston_cfd_analysis.html" class="btn-warm">Learn More</a>'
   },
   'manipulator': {
     title: '2DOF Robotic Manipulator',
     desc: 'A complete kinematic mapping and trajectory planning model built in MATLAB Simulink. The project involved exporting a Simscape Multibody Rigid Body Tree, establishing Forward Kinematics for pose estimation, and utilizing the Levenberg-Marquardt solver for Inverse Kinematics. This enables the end-effector to trace accurate geometric paths with governed acceleration.',
-    buttons: '<a href="2-dof_robotiic_manipulator.html" class="btn-ghost"><i class="fa-solid fa-file-powerpoint"></i> Learn More</a> <a href="2-dof_robotiic_manipulator.html" class="btn-warm"><i class="fa-solid fa-code"></i> View MATLAB Code</a>'
+    buttons: '<a href="2-dof_robotiic_manipulator.html" class="btn-warm">Learn More</a>'
   },
   
   // Other Work (Mini Projects)
   'cad_portfolio': {
     title: 'CAD Modelling Portfolio',
     desc: 'An extensive assembly and detail-drawing collection spanning engine sub-assemblies, precision jigs, and mechanical linkages. The designs place heavy emphasis on GD&T compliance and standard design-for-manufacture conventions.',
-    buttons: '<a href="cad_portfolio.html" class="btn-ghost"><i class="fa-solid fa-cube"></i>Learn More</a>'
+    buttons: '<a href="cad_portfolio.html" class="btn-warm">Learn More</a>'
   },
   'booksolver_sme': {
     title: 'Physics & Maths Expert - Booksolver',
@@ -915,7 +915,6 @@ const projectData = {
     buttons: ''
   }
 };
-
 const modalOverlay = document.getElementById('projectModal');
 const modalTitle = document.getElementById('modalTitle');
 const modalDesc = document.getElementById('modalDesc');
