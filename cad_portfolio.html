@@ -1009,14 +1009,31 @@ document.addEventListener('DOMContentLoaded', () => {
   renderGrid();
 });
 
-// Escape key to close overlays
+// Keydown event listener for overlays and PDF keyboard controls
 document.addEventListener('keydown', e => {
-  if(e.key === 'Escape') {
-    if(document.getElementById('pdfOverlay').classList.contains('show')) closeOverlay('pdfOverlay');
+  if (document.getElementById('pdfOverlay').classList.contains('show')) {
+    if (['ArrowLeft','ArrowRight','+','=','-','Escape'].includes(e.key)) e.preventDefault();
+    switch(e.key) {
+      case 'Escape':     closeOverlay('pdfOverlay'); break;
+      case 'ArrowLeft':  pv.prev();       break;
+      case 'ArrowRight': pv.next();       break;
+      case '+': case '=': pv.zoomIn();   break;
+      case '-':            pv.zoomOut();  break;
+    }
+  } else if (e.key === 'Escape') {
     if(document.getElementById('modelOverlay').classList.contains('show')) closeOverlay('modelOverlay');
     if(document.getElementById('videoOverlay').classList.contains('show')) closeOverlay('videoOverlay');
     if(document.getElementById('infoOverlay').classList.contains('show')) closeOverlay('infoOverlay');
   }
+});
+
+// Re-render PDF on resize
+let _resizeT;
+window.addEventListener('resize', () => {
+  clearTimeout(_resizeT);
+  _resizeT = setTimeout(async () => {
+    if (document.getElementById('pdfOverlay').classList.contains('show')) await pv.setZoom('fit');
+  }, 300);
 });
 </script>
 </body>

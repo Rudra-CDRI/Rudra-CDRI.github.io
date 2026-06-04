@@ -18,8 +18,13 @@ body{
 }
 
 /* CUSTOM POINTER CURSOR FOR CLICKABLES */
-a, button, .ptab, .proj-panel, .mini-card, .interactive-course, input, textarea, .modal-close {
+a, button, .ptab, .proj-panel, .mini-card, .interactive-course, .modal-close {
   cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><circle cx="10" cy="10" r="4" fill="%23c97d4e"/><circle cx="10" cy="10" r="8" stroke="%23c97d4e" stroke-width="1.5" fill="none"/></svg>') 10 10, pointer !important;
+}
+
+/* RESTORE STANDARD TEXT CURSOR FOR FORMS */
+input, textarea {
+  cursor: text !important;
 }
 
 /* CUSTOM SCROLLBAR */
@@ -86,7 +91,7 @@ body.dark #hero { background:linear-gradient(135deg,#0a0a0a 0%,#050505 100%); }
 body.dark .astat-label { color:#666; }
 body.dark .mini-card-img { filter:brightness(.8); }
 body.dark .proj-tabs { border-color:#222222; }
-body.dark .proj-panel.active, body.dark div[style*="background:#fff"] { background:#111111; }
+body.dark .proj-panel.active { background:#111111; }
 body.dark .about-stats .astat-num { color:#c97d4e; }
 body.dark .modal-title { color:#eaeaf0; }
 body.dark .modal-desc { color:#aaa; }
@@ -225,8 +230,27 @@ h1.name span{color:#c97d4e;}
 .skill-pill{display:inline-block;background:#f5f2ee;color:#555;font-size:11px;font-weight:600;padding:5px 12px;border-radius:20px;margin:4px 4px 0 0;}
 
 /* COURSEWORK */
-.interactive-course { transition: transform .2s, box-shadow .2s; }
+.interactive-course {
+  background: #fff;
+  border: 1px solid #e8e4dc;
+  border-radius: 14px;
+  padding: 20px 22px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: transform .2s, box-shadow .2s, background-color .3s, border-color .3s;
+}
 .interactive-course:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,.08); }
+.interactive-course .course-title { font-size: .875rem; font-weight: 700; color: #1c1c1e; transition: color .3s; }
+.interactive-course .course-type { font-size: 11px; color: #aaa; margin-top: 2px; }
+
+body.dark .interactive-course {
+  background: #111111;
+  border-color: #222222;
+}
+body.dark .interactive-course .course-title {
+  color: #eaeaf0;
+}
 
 /* TIMELINE */
 .timeline{display:flex;flex-direction:column;gap:0;position:relative;padding-left:32px;}
@@ -605,39 +629,39 @@ footer strong{color:#888;}
     <p class="sec-sub">Core and elective courses that shape my technical foundation. (Click for details)</p>
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;">
       
-      <div class="interactive-course" onclick="openModal('cw_robotics')" style="background:#fff;border:1px solid #e8e4dc;border-radius:14px;padding:20px 22px;display:flex;align-items:center;gap:14px;">
+      <div class="interactive-course" onclick="openModal('cw_robotics')">
         <span style="font-size:22px;">🤖</span>
-        <div><div style="font-size:.875rem;font-weight:700;color:#1c1c1e;">Robotics</div><div style="font-size:11px;color:#aaa;margin-top:2px;">Core</div></div>
+        <div><div class="course-title">Robotics</div><div class="course-type">Core</div></div>
       </div>
       
-      <div class="interactive-course" onclick="openModal('cw_syscontrol')" style="background:#fff;border:1px solid #e8e4dc;border-radius:14px;padding:20px 22px;display:flex;align-items:center;gap:14px;">
+      <div class="interactive-course" onclick="openModal('cw_syscontrol')">
         <span style="font-size:22px;">⚙️</span>
-        <div><div style="font-size:.875rem;font-weight:700;color:#1c1c1e;">System and Control</div><div style="font-size:11px;color:#aaa;margin-top:2px;">Core</div></div>
+        <div><div class="course-title">System and Control</div><div class="course-type">Core</div></div>
       </div>
       
-      <div class="interactive-course" onclick="openModal('cw_tom')" style="background:#fff;border:1px solid #e8e4dc;border-radius:14px;padding:20px 22px;display:flex;align-items:center;gap:14px;">
+      <div class="interactive-course" onclick="openModal('cw_tom')">
         <span style="font-size:22px;">🔩</span>
-        <div><div style="font-size:.875rem;font-weight:700;color:#1c1c1e;">Theory of Machines</div><div style="font-size:11px;color:#aaa;margin-top:2px;">Core</div></div>
+        <div><div class="course-title">Theory of Machines</div><div class="course-type">Core</div></div>
       </div>
       
-      <div class="interactive-course" onclick="openModal('cw_fluids')" style="background:#fff;border:1px solid #e8e4dc;border-radius:14px;padding:20px 22px;display:flex;align-items:center;gap:14px;">
+      <div class="interactive-course" onclick="openModal('cw_fluids')">
         <span style="font-size:22px;">💧</span>
-        <div><div style="font-size:.875rem;font-weight:700;color:#1c1c1e;">Fluid Dynamics</div><div style="font-size:11px;color:#aaa;margin-top:2px;">Core</div></div>
+        <div><div class="course-title">Fluid Dynamics</div><div class="course-type">Core</div></div>
       </div>
       
-      <div class="interactive-course" onclick="openModal('cw_heat')" style="background:#fff;border:1px solid #e8e4dc;border-radius:14px;padding:20px 22px;display:flex;align-items:center;gap:14px;">
+      <div class="interactive-course" onclick="openModal('cw_heat')">
         <span style="font-size:22px;">🌡️</span>
-        <div><div style="font-size:.875rem;font-weight:700;color:#1c1c1e;">Heat Transfer & Thermo</div><div style="font-size:11px;color:#aaa;margin-top:2px;">Core</div></div>
+        <div><div class="course-title">Heat Transfer & Thermo</div><div class="course-type">Core</div></div>
       </div>
       
-      <div class="interactive-course" onclick="openModal('cw_programming')" style="background:#fff;border:1px solid #e8e4dc;border-radius:14px;padding:20px 22px;display:flex;align-items:center;gap:14px;">
+      <div class="interactive-course" onclick="openModal('cw_programming')">
         <span style="font-size:22px;">💻</span>
-        <div><div style="font-size:.875rem;font-weight:700;color:#1c1c1e;">Programming & Data Str.</div><div style="font-size:11px;color:#aaa;margin-top:2px;">Core</div></div>
+        <div><div class="course-title">Programming & Data Str.</div><div class="course-type">Core</div></div>
       </div>
       
-      <div class="interactive-course" onclick="openModal('cw_math')" style="background:#fff;border:1px solid #e8e4dc;border-radius:14px;padding:20px 22px;display:flex;align-items:center;gap:14px;">
+      <div class="interactive-course" onclick="openModal('cw_math')">
         <span style="font-size:22px;">📈</span>
-        <div><div style="font-size:.875rem;font-weight:700;color:#1c1c1e;">Linear Alg & Numerical</div><div style="font-size:11px;color:#aaa;margin-top:2px;">Core</div></div>
+        <div><div class="course-title">Linear Alg & Numerical</div><div class="course-type">Core</div></div>
       </div>
 
     </div>
@@ -792,11 +816,6 @@ function toggleDark() {
   body.classList.toggle('dark');
   const isDark = body.classList.contains('dark');
   btn.textContent = isDark ? '☀️ Light' : '🌙 Dark';
-  document.querySelectorAll('#coursework [style*="background:#fff"]').forEach(el => {
-    el.style.background = isDark ? '#111111' : '#fff';
-    el.style.borderColor = isDark ? '#222222' : '#e8e4dc';
-    el.querySelector('div > div:first-child').style.color = isDark ? '#eaeaf0' : '#1c1c1e';
-  });
 }
 
 // Project Tabs Logic
@@ -940,14 +959,7 @@ function closeModalOnOutsideClick(event) {
   }
 }
 
-// Initialize dark mode card colors on page load
-if (document.body.classList.contains('dark')) {
-  document.querySelectorAll('#coursework [style*="background:#fff"]').forEach(el => {
-    el.style.background = '#111111';
-    el.style.borderColor = '#222222';
-    el.querySelector('div > div:first-child').style.color = '#eaeaf0';
-  });
-}
+
 
 // ==========================================
 // HIGH-PERFORMANCE INTERACTIVE CANVAS GRID

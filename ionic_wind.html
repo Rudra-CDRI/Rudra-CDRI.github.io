@@ -14,9 +14,10 @@ body{
   background:#fafaf8;
   color:#1c1c1e;
   overflow-x:hidden;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><circle cx="8" cy="8" r="4" fill="%23c97d4e"/></svg>') 8 8, auto;
 }
-a,button,.content-box,.btn-warm,.btn-ghost,.menu-toggle,.theme-btn{
-  cursor:pointer;
+a,button,.content-box,.btn-warm,.btn-ghost,.menu-toggle,.theme-btn, .t-btn, .t-close{
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><circle cx="10" cy="10" r="4" fill="%23c97d4e"/><circle cx="10" cy="10" r="8" stroke="%23c97d4e" stroke-width="1.5" fill="none"/></svg>') 10 10, pointer !important;
 }
 ::-webkit-scrollbar{width:8px;}
 ::-webkit-scrollbar-track{background:#fafaf8;}
@@ -212,6 +213,9 @@ footer p{font-size:12px;color:var(--muted-2);}
 
 /* responsive */
 @media(max-width:900px){
+  body, a, button, .content-box, .btn-warm, .btn-ghost, .menu-toggle, .theme-btn, .t-btn, .t-close {
+    cursor: auto !important;
+  }
   nav{padding:0 20px;}
   .menu-toggle{display:block;}
   .nav-links{
@@ -506,7 +510,7 @@ body:not(.dark) .pdf-kbd { background: #f0ece8; border-color: #e0dcd4; color: #a
 </nav>
 
 <div class="proj-header-wrap">
-  <span class="proj-eyebrow">Project 02 · Thermal / Fluid Systems</span>
+  <span class="proj-eyebrow">Project 01 · Thermal / Fluid Systems</span>
   <h1 class="proj-title">Ionic Wind Generator — EHD Thruster Prototype</h1>
   <p class="proj-subtitle">A solid-state electrohydrodynamic thruster that produces directed airflow with no moving parts, aimed at compact cooling and flow-control applications.</p>
 </div>

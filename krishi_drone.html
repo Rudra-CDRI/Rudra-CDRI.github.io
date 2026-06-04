@@ -14,9 +14,10 @@ body{
   background:#fafaf8;
   color:#1c1c1e;
   overflow-x:hidden;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><circle cx="8" cy="8" r="4" fill="%23c97d4e"/></svg>') 8 8, auto;
 }
 a,button,.content-box,.btn-warm,.btn-ghost,.menu-toggle,.theme-btn{
-  cursor:pointer;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><circle cx="10" cy="10" r="4" fill="%23c97d4e"/><circle cx="10" cy="10" r="8" stroke="%23c97d4e" stroke-width="1.5" fill="none"/></svg>') 10 10, pointer !important;
 }
 ::-webkit-scrollbar{width:8px;}
 ::-webkit-scrollbar-track{background:#fafaf8;}
@@ -212,6 +213,9 @@ footer p{font-size:12px;color:var(--muted-2);}
 
 /* responsive */
 @media(max-width:900px){
+  body, a, button, .content-box, .btn-warm, .btn-ghost, .menu-toggle, .theme-btn {
+    cursor: auto !important;
+  }
   nav{padding:0 20px;}
   .menu-toggle{display:block;}
   .nav-links{
@@ -263,7 +267,7 @@ footer p{font-size:12px;color:var(--muted-2);}
 </nav>
 
 <div class="proj-header-wrap">
-  <span class="proj-eyebrow">Project 01 · Robotics + Vision</span>
+  <span class="proj-eyebrow">Project 02 · Robotics + Vision</span>
   <h1 class="proj-title">Krishi Drone — Autonomous Precision Agriculture UAV</h1>
   <p class="proj-subtitle">A ROS 2 based farming drone concept that detects infected plants, navigates to the right spot, and sprays biopesticide only where it is needed.</p>
 </div>
