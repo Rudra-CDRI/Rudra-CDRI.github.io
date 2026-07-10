@@ -488,18 +488,34 @@ footer strong{color:#888;}
     <div class="main-proj-wrapper">
       <div class="proj-tabs-container" id="tabsContainer">
         <div class="proj-tabs" id="projTabs">
-          <button class="ptab active" onclick="showProj(0,this)">01 · Ionic Wind Generator</button>
-          <button class="ptab" onclick="showProj(1,this)">02 · Autonomous UAV Drone</button>
-          <button class="ptab" onclick="showProj(2,this)">03 · Piston CFD Analysis</button>
-          <button class="ptab" onclick="showProj(3,this)">04 · 2DOF Robotic Manipulator</button>
-          <button class="ptab" onclick="showProj(4,this)">05 · ROS 2 Gesture Teleoperation</button>
+          <button class="ptab active" onclick="showProj(0,this)">01 · ROS 2 Gesture Teleoperation</button>
+          <button class="ptab" onclick="showProj(1,this)">02 · Ionic Wind Generator</button>
+          <button class="ptab" onclick="showProj(2,this)">03 · Autonomous UAV Drone</button>
+          <button class="ptab" onclick="showProj(3,this)">04 · Piston CFD Analysis</button>
+          <button class="ptab" onclick="showProj(4,this)">05 · 2DOF Robotic Manipulator</button>
         </div>
       </div>
 
-      <div class="proj-panel active" id="pp0" onclick="openModal('ionic')">
+      <div class="proj-panel active" id="pp0" onclick="openModal('teleop')">
+        <img src="assests/images/gesture_teleop.png" alt="Gesture Teleoperation" class="proj-img"/>
+        <div class="proj-content">
+          <div class="proj-num">Project 01 · Robotics & CV</div>
+          <div class="proj-title">ROS 2 Gesture-Controlled Robotic Arm</div>
+          <p class="proj-body">Real-time teleoperation of a simulated OpenManipulator-X robotic arm in Gazebo using 3D hand tracking and computer vision. MediaPipe extracts 21 3D landmarks, a PyTorch classifier determines the gesture, and a control node maps gestures to velocity control commands computed using inverse kinematics.</p>
+          <div class="proj-tags">
+            <span class="proj-tag">Robotics</span>
+            <span class="proj-tag">ROS 2</span>
+            <span class="proj-tag">Computer Vision</span>
+            <span class="proj-tag">Deep Learning</span>
+          </div>
+          <div class="proj-tools">Tools: <span>ROS 2 Humble · Gazebo · PyTorch · MediaPipe · OpenCV · Python</span></div>
+        </div>
+      </div>
+
+      <div class="proj-panel" id="pp1" onclick="openModal('ionic')">
         <img src="assests/images/iwg2.png" alt="Fluid dynamics" class="proj-img"/>
         <div class="proj-content">
-          <div class="proj-num">Project 01 · Ongoing</div>
+          <div class="proj-num">Project 02 · Ongoing</div>
           <div class="proj-title">Ionic Wind Generator (EHD Thruster)</div>
           <p class="proj-body">Designing a solid-state electrohydrodynamic (EHD) thruster to generate directed airflow with no moving parts. Successfully identified and integrated a high-voltage DC source to drive corona discharge, and currently iterating on electrode geometry to optimize thrust. Investigating boundary layer control effects for potential drag-reduction applications.</p>
           <div class="proj-tags">
@@ -511,10 +527,10 @@ footer strong{color:#888;}
         </div>
       </div>
 
-      <div class="proj-panel" id="pp1" onclick="openModal('drone')">
+      <div class="proj-panel" id="pp2" onclick="openModal('drone')">
         <img src="assests/images/krishi_drone.png" alt="Robotics" class="proj-img"/>
         <div class="proj-content">
-          <div class="proj-num">Project 02 · e-Yantra IIT Bombay</div>
+          <div class="proj-num">Project 03 · e-Yantra IIT Bombay</div>
           <div class="proj-title">Krishi Drone Precision Agriculture UAV</div>
           <p class="proj-body">Contributed to the development of an autonomous quadrotor for pest and disease detection using overhead camera-based computer vision. The system architecture is built on ROS 2, featuring a navigation stack that handles precision waypoint following guided by real-time image feedback.</p>
           <div class="proj-tags">
@@ -526,10 +542,10 @@ footer strong{color:#888;}
         </div>
       </div>
 
-      <div class="proj-panel" id="pp2" onclick="openModal('cfd')">
+      <div class="proj-panel" id="pp3" onclick="openModal('cfd')">
         <img src="assests/images/piston_cfd.png" alt="CFD Engine" class="proj-img"/>
         <div class="proj-content">
-          <div class="proj-num">Project 03 · Simulation</div>
+          <div class="proj-num">Project 04 · Simulation</div>
           <div class="proj-title">CFD Analysis of IC Engine Piston Heads</div>
           <p class="proj-body">Performed reactive-flow CFD simulations in ANSYS Forte to compare combustion performance of Flat-top and Circular Dish piston geometries in a CI engine. Configured RANS RNG k-epsilon turbulence model with CHEMKIN-Pro chemistry solver to confirm superior air-fuel mixing in dish-type geometry.</p>
           <div class="proj-tags">
@@ -541,10 +557,10 @@ footer strong{color:#888;}
         </div>
       </div>
 
-      <div class="proj-panel" id="pp3" onclick="openModal('manipulator')">
+      <div class="proj-panel" id="pp4" onclick="openModal('manipulator')">
         <img src="assests/images/2dof_robot_arm.png" alt="Robotic Arm" class="proj-img"/>
         <div class="proj-content">
-          <div class="proj-num">Project 04 · Kinematics</div>
+          <div class="proj-num">Project 05 · Kinematics</div>
           <div class="proj-title">2DOF Robotic Manipulator Kinematics</div>
           <p class="proj-body">Designed a CAD model of a 2-DOF planar robotic arm using Simscape Multibody and exported its Rigid Body Tree to implement Forward Kinematics. Implemented Inverse Kinematics using the iterative Levenberg-Marquardt solver to trace geometric waypoints and generated smooth Cartesian paths.</p>
           <div class="proj-tags">
@@ -553,22 +569,6 @@ footer strong{color:#888;}
             <span class="proj-tag">Robotics</span>
           </div>
           <div class="proj-tools">Tools: <span>MATLAB Simulink · Simscape Multibody</span></div>
-        </div>
-      </div>
-
-      <div class="proj-panel" id="pp4" onclick="openModal('teleop')">
-        <img src="assests/images/gesture_teleop.png" alt="Gesture Teleoperation" class="proj-img"/>
-        <div class="proj-content">
-          <div class="proj-num">Project 05 · Robotics & CV</div>
-          <div class="proj-title">ROS 2 Gesture-Controlled Robotic Arm</div>
-          <p class="proj-body">Real-time teleoperation of a simulated OpenManipulator-X robotic arm in Gazebo using 3D hand tracking and computer vision. MediaPipe extracts 21 3D landmarks, a PyTorch classifier determines the gesture, and a control node maps gestures to velocity control commands computed using inverse kinematics.</p>
-          <div class="proj-tags">
-            <span class="proj-tag">Robotics</span>
-            <span class="proj-tag">ROS 2</span>
-            <span class="proj-tag">Computer Vision</span>
-            <span class="proj-tag">Deep Learning</span>
-          </div>
-          <div class="proj-tools">Tools: <span>ROS 2 Humble · Gazebo · PyTorch · MediaPipe · OpenCV · Python</span></div>
         </div>
       </div>
 
