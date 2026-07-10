@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ROS 2 Gesture Teleoperation | Rudrapriya Rajesh Choudhari</title>
+<link rel="icon" type="image/png" href="assests/images/portfolio_logo_transparent.png"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<!-- MathJax for rendering gorgeous equations -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Segoe UI',system-ui,sans-serif;
+  background:#fafaf8;
+  color:#1c1c1e;
+  overflow-x:hidden;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><circle cx="8" cy="8" r="4" fill="%23c97d4e"/></svg>') 8 8, auto;
+}
+a,button,.content-box,.btn-warm,.btn-ghost,.menu-toggle,.theme-btn{
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><circle cx="10" cy="10" r="4" fill="%23c97d4e"/><circle cx="10" cy="10" r="8" stroke="%23c97d4e" stroke-width="1.5" fill="none"/></svg>') 10 10, pointer !important;
+}
+::-webkit-scrollbar{width:8px;}
+::-webkit-scrollbar-track{background:#fafaf8;}
+::-webkit-scrollbar-thumb{background:#d1ccc0;border-radius:10px;}
+::-webkit-scrollbar-thumb:hover{background:#c97d4e;}
+
+#interactive-grid{
+  position:fixed;inset:0;z-index:-1;pointer-events:none;
+}
+
+/* theme */
+body.dark{
+  --nav-bg: rgba(10,10,10,.92);
+  --border-col:#222;
+  --page-bg:#080808;
+  --card-bg:#111;
+  --card-border:#222;
+  --text:#eaeaf0;
+  --muted:#aaa;
+  --muted-2:#777;
+  --pill-bg:#1a1a1a;
+  --pill-border:#303030;
+  --pill-text:#cfcfcf;
+  --footer:#080808;
+  background:var(--page-bg);
+  color:var(--text);
+}
+body:not(.dark){
+  --nav-bg: rgba(250,250,248,.9);
+  --border-col:#e8e4dc;
+  --page-bg:#fafaf8;
+  --card-bg:#fff;
+  --card-border:#e8e4dc;
+  --text:#1c1c1e;
+  --muted:#555;
+  --muted-2:#888;
+  --pill-bg:#f5f2ee;
+  --pill-border:#e8e4dc;
+  --pill-text:#555;
+  --footer:#fff;
+  background:var(--page-bg);
+  color:var(--text);
+}
+body.dark ::-webkit-scrollbar-track{background:#080808;}
+body.dark ::-webkit-scrollbar-thumb{background:#222;}
+body.dark ::-webkit-scrollbar-thumb:hover{background:#c97d4e;}
+
+/* nav */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  background:var(--nav-bg);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border-col);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 48px;height:60px;
+}
+.nav-logo{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:700;letter-spacing:-.01em;color:var(--text);}
+.nav-logo img{height:24px;width:24px;object-fit:contain;}
+.nav-logo span{color:#c97d4e;}
+.nav-links{display:flex;gap:18px;align-items:center;}
+.nav-links a{
+  font-size:13px;color:var(--muted);text-decoration:none;font-weight:500;
+  transition:color .2s;
+}
+.nav-links a:hover{color:#c97d4e;}
+.theme-btn{
+  background:none;border:1.5px solid var(--card-border);color:var(--muted);
+  border-radius:20px;padding:5px 14px;font-size:12px;font-weight:700;
+  transition:all .2s;
+}
+.theme-btn:hover{border-color:#c97d4e;color:#c97d4e;}
+.menu-toggle{
+  display:none;background:none;border:none;font-size:20px;color:var(--text);
+}
+
+/* header */
+.proj-header-wrap{
+  padding:140px 48px 70px;
+  background:linear-gradient(135deg,#fdf6ee 0%,#fafaf8 60%,#f0ece8 100%);
+  border-bottom:1px solid var(--border-col);
+  text-align:center;position:relative;z-index:1;
+}
+body.dark .proj-header-wrap{
+  background:linear-gradient(135deg,#0a0a0a 0%,#050505 100%);
+}
+.proj-eyebrow{
+  font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#c97d4e;
+  font-weight:700;margin-bottom:16px;display:block;
+}
+.proj-title{
+  font-size:clamp(2rem,4vw,3.2rem);font-weight:800;line-height:1.08;
+  letter-spacing:-.03em;color:var(--text);max-width:920px;margin:0 auto 18px;
+}
+.proj-subtitle{
+  font-size:1.08rem;color:var(--muted);max-width:720px;margin:0 auto;line-height:1.7;
+}
+
+/* body */
+.proj-body{
+  padding:72px 48px;max-width:1180px;margin:0 auto;
+  display:grid;grid-template-columns:2fr .95fr;gap:58px;position:relative;z-index:1;
+}
+.main-content{min-width:0;}
+.content-box{
+  background:var(--card-bg);border:1px solid var(--card-border);border-radius:22px;
+  padding:36px;margin-bottom:34px;transition:transform .28s,box-shadow .28s;
+  box-shadow:0 0 0 rgba(0,0,0,0);
+}
+.content-box:hover{transform:translateY(-4px);box-shadow:0 16px 36px rgba(0,0,0,.08);}
+body.dark .content-box:hover{box-shadow:0 16px 36px rgba(0,0,0,.38);}
+.content-box h2{
+  font-size:1.45rem;font-weight:800;margin-bottom:18px;letter-spacing:-.02em;
+}
+.content-text{
+  font-size:1rem;color:var(--muted);line-height:1.85;margin-bottom:18px;
+}
+.content-list{
+  padding-left:18px;color:var(--muted);line-height:1.85;
+}
+.content-list li{margin-bottom:8px;}
+.hero-visual{
+  margin-top:18px;border-radius:18px;padding:22px;
+  border:1px solid var(--card-border);background:
+  radial-gradient(circle at top left, rgba(201,125,78,.17), transparent 35%),
+  linear-gradient(135deg, rgba(201,125,78,.07), rgba(255,255,255,0));
+}
+body.dark .hero-visual{
+  background:
+  radial-gradient(circle at top left, rgba(201,125,78,.22), transparent 35%),
+  linear-gradient(135deg, rgba(255,255,255,.03), rgba(255,255,255,0));
+}
+.visual-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;}
+.visual-card{
+  background:var(--card-bg);border:1px solid var(--card-border);border-radius:12px;
+  padding:18px;display:flex;flex-direction:column;justify-content:space-between;
+}
+.visual-kicker{font-size:10px;text-transform:uppercase;color:#c97d4e;font-weight:700;margin-bottom:4px;}
+.visual-title{font-size:1.15rem;font-weight:700;color:var(--text);margin-bottom:8px;}
+.visual-desc{font-size:12px;color:var(--muted-2);line-height:1.5;}
+
+.metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;}
+.metric{
+  background:var(--card-bg);border:1px solid var(--card-border);border-radius:12px;
+  padding:20px;text-align:center;
+}
+.metric .n{font-size:2rem;font-weight:800;color:#c97d4e;}
+.metric .l{font-size:12px;color:var(--muted-2);font-weight:500;}
+
+/* sidebar */
+.sidebar{min-width:0;}
+.sidebar-section{margin-bottom:38px;}
+.sidebar-label{
+  font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:#c97d4e;
+  font-weight:700;margin-bottom:14px;
+}
+.skill-pill{
+  display:inline-block;background:var(--pill-bg);border:1px solid var(--pill-border);
+  color:var(--pill-text);border-radius:20px;padding:5px 12px;font-size:12px;
+  font-weight:600;margin:0 6px 8px 0;
+}
+.side-card{
+  background:var(--card-bg);border:1px solid var(--card-border);border-radius:18px;
+  padding:24px;
+}
+.side-card h3{font-size:1.05rem;font-weight:700;margin-bottom:12px;color:var(--text);}
+.side-card p{font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:16px;}
+.chip-row{display:flex;flex-wrap:wrap;gap:6px;}
+.mini-chip{
+  background:var(--pill-bg);border:1px solid var(--pill-border);color:var(--pill-text);
+  font-size:10px;font-weight:700;border-radius:4px;padding:2px 6px;text-transform:uppercase;
+}
+.link-row{display:flex;flex-direction:column;gap:10px;}
+.link-row .btn-warm, .link-row .btn-ghost{
+  display:block;text-align:center;padding:12px;font-size:13px;text-decoration:none;
+}
+
+.btn-warm{
+  background:#c97d4e;color:#fff;border:none;border-radius:8px;font-weight:600;
+  transition:all .2s;
+}
+.btn-warm:hover{background:#b86c3d;transform:translateY(-2px);box-shadow:0 6px 14px rgba(201,125,78,.25);}
+.btn-ghost{
+  background:none;border:1.5px solid var(--border-col);color:var(--text);border-radius:8px;
+  font-weight:600;transition:all .2s;
+}
+.btn-ghost:hover{border-color:var(--text);background:rgba(0,0,0,.02);}
+body.dark .btn-ghost:hover{background:rgba(255,255,255,.02);}
+
+/* code block style */
+code, pre {
+  font-family: 'Courier New', Courier, monospace;
+}
+pre {
+  background: #111;
+  color: #eaeaf0;
+  border-radius: 8px;
+  padding: 18px;
+  overflow-x: auto;
+  font-size: 13px;
+  margin: 14px 0;
+  border: 1px solid #222;
+}
+
+/* footer */
+footer{
+  border-top:1px solid var(--border-col);background:var(--footer);
+  padding:48px;text-align:center;font-size:13px;color:var(--muted-2);
+}
+
+@media(max-width:900px){
+  nav{padding:0 24px;}
+  .nav-links{
+    position:fixed;top:60px;left:0;right:0;background:var(--nav-bg);
+    border-bottom:1px solid var(--border-col);flex-direction:column;
+    padding:24px;gap:16px;display:none;
+  }
+  .nav-links.active{display:flex;}
+  .menu-toggle{display:block;}
+  .proj-header-wrap{padding:110px 24px 48px;}
+  .proj-body{grid-template-columns:1fr;gap:40px;padding:48px 24px;}
+  .sidebar{order:-1;}
+  body{cursor:auto !important;}
+  a,button,.content-box,.btn-warm,.btn-ghost,.menu-toggle,.theme-btn{cursor:pointer !important;}
+}
+
+</style>
+</head>
+<body class="dark"> <!-- Default to dark mode matching user preference -->
+
+<canvas id="interactive-grid"></canvas>
+
+<nav>
+  <div class="nav-logo">
+    <img src="assests/images/portfolio_logo_transparent.png" alt="Rudra Logo"/>
+    Rudra<span>.</span>
+  </div>
+  <button class="menu-toggle" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
+  <div class="nav-links" id="navLinks">
+    <a href="index.html">Home</a>
+    <a href="index.html#projects">Projects</a>
+    <a href="index.html#contact">Contact</a>
+    <button class="theme-btn" id="theme-btn" onclick="toggleDark()">☀️ Light</button>
+  </div>
+</nav>
+
+<div class="proj-header-wrap">
+  <span class="proj-eyebrow">Project 05 · Robotics & CV</span>
+  <h1 class="proj-title">ROS 2 Gesture-Controlled Robotic Arm</h1>
+  <p class="proj-subtitle">Real-time teleoperation of an OpenManipulator-X robotic arm in Gazebo using 3D hand tracking, lightweight PyTorch MLP gesture classification, and numerical inverse kinematics.</p>
+</div>
+
+<div class="proj-body">
+  <div class="main-content">
+    <div class="content-box">
+      <h2>Project Overview</h2>
+      <p class="content-text">This project establishes a low-latency, intuitive teleoperation interface for a 4-DOF OpenManipulator-X robotic arm. By tracking hand gestures via a webcam, the system maps human movements directly to Cartesian joint trajectories in simulation (Gazebo & RViz) without requiring specialized hardware controllers.</p>
+      
+      <div class="hero-visual">
+        <div class="visual-grid">
+          <div class="visual-card">
+            <div>
+              <div class="visual-kicker">Perception</div>
+              <div class="visual-title">Webcam Tracker</div>
+            </div>
+            <div class="visual-desc">MediaPipe hand landmarker extracts 21 3D coordinates at 30 FPS.</div>
+          </div>
+          <div class="visual-card">
+            <div>
+              <div class="visual-kicker">Classification</div>
+              <div class="visual-title">PyTorch MLP</div>
+            </div>
+            <div class="visual-desc">Classifies landmarks into POINT, PALM, or FIST commands with >85% confidence.</div>
+          </div>
+          <div class="visual-card">
+            <div>
+              <div class="visual-kicker">Kinematics</div>
+              <div class="visual-title">Numerical IK</div>
+            </div>
+            <div class="visual-desc">Converts target Cartesian velocities to joint deltas using ikpy.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-box">
+      <h2>1. System Architecture</h2>
+      <p class="content-text">The teleoperation system is modular, dividing computer vision processes from ROS 2 robot controls. The computer vision pipeline runs in an isolated Python environment to manage ML dependencies, communicating with the ROS 2 workspace via a custom message interface.</p>
+      <pre>
+┌─────────────────────┐       /gesture_commands        ┌────────────────────────┐
+│   hand_tracker.py   │ ──────── CVOutput ──────────▶  │   robot_controller.py  │
+│                     │          (ROS 2)               │                        │
+│  Webcam capture     │                                │  Subscribe CVOutput    │
+│  MediaPipe detect   │                                │  Compute IK (ikpy)     │
+│  PyTorch classify   │                                │  Publish JointTraj     │
+│  Publish CVOutput   │                                │  Gripper action client │
+└─────────────────────┘                                └───────────┬────────────┘
+                                                                   │
+                                                      /arm_controller/joint_trajectory
+                                                      /gripper_controller/gripper_cmd
+                                                                   │
+                                                                   ▼
+                                                        ┌──────────────────┐
+                                                        │   Gazebo + RViz  │
+                                                        │  OpenManipulator │
+                                                        └──────────────────┘
+      </pre>
+      <p class="content-text">The hand tracker node publishes a custom <code>gesture_teleoperation_interfaces/CVOutput</code> message, containing hand tracking enable states, index fingertip coordinate offsets, and classified gesture labels.</p>
+    </div>
+
+    <div class="content-box">
+      <h2>2. Hand Landmark Preprocessing & Classification</h2>
+      <p class="content-text">The webcam captures a raw frame, and MediaPipe locates the coordinates of 21 hand landmarks. To make gesture classification invariant to camera distance and position, raw coordinate landmarks \(\mathbf{l}_i\) undergo normalization before classification:</p>
+      <p class="content-text"><strong>Wrist Normalization:</strong> Translates the hand coordinates relative to the wrist (landmark 0) to make them translation-invariant:</p>
+      \[\mathbf{l}_i' = \mathbf{l}_i - \mathbf{l}_0, \quad i = 0, 1, \ldots, 20\]
+      
+      <p class="content-text"><strong>Scale Normalization:</strong> Scales the landmarks by dividing by the maximum absolute coordinate value, establishing scale invariance:</p>
+      \[\mathbf{l}_i'' = \frac{\mathbf{l}_i'}{\max_j |\mathbf{l}_j'|}\]
+
+      <p class="content-text">A fitted <code>StandardScaler</code> normalizes the 63-dimensional vector (21 coordinates \(\times\) 3 dimensions) to zero-mean and unit-variance. This vector is passed to a 4-layer fully connected Neural Network (MLP) trained in PyTorch:</p>
+      \[63 \xrightarrow{\text{Linear}} 128 \xrightarrow{\text{ReLU + Dropout}} 64 \xrightarrow{\text{ReLU + Dropout}} 32 \xrightarrow{\text{ReLU}} 3\]
+      <p class="content-text">A softmax activation outputs logits for the three gesture classes: <strong>POINT</strong> (enable tracking), <strong>OPEN PALM</strong> (release gripper), and <strong>CLOSED FIST</strong> (close gripper). The command is executed only if the highest class probability exceeds 85%.</p>
+    </div>
+
+    <div class="content-box">
+      <h2>3. Coordinate Mapping & Velocity Control Model</h2>
+      <p class="content-text">Because the webcam frame and the Gazebo simulation utilize different coordinate conventions, the displacement of the hand \(\Delta\mathbf{h}\) in the camera frame is mapped to the robot base frame using a rotation matrix \(\mathbf{R}\):</p>
+      \[\mathbf{d}_{\text{robot}} = \mathbf{R} \cdot \Delta\mathbf{h}, \quad \mathbf{R} = \begin{bmatrix} 0 & 0 & 1 \\ -1 & 0 & 0 \\ 0 & -1 & 0 \end{bmatrix}\]
+      
+      <p class="content-text">Rather than mapping hand coordinates directly to absolute space (which leads to fatigue and awkward postures), this model treats hand displacement as a <strong>velocity command</strong>, functioning like a virtual joystick:</p>
+      <ul class="content-list">
+        <li><strong>Smoothing Filter:</strong> Dual exponential moving average (EMA) filters are applied to hand positions and velocities to suppress landmark detection jitter:
+        \[\mathbf{h}_{\text{filtered}} \mathrel{+}= \alpha_h \cdot (\mathbf{h}_{\text{raw}} - \mathbf{h}_{\text{filtered}}), \quad \alpha_h = \frac{\Delta t}{\tau_h + \Delta t}\]
+        with a time constant \(\tau_h = 0.12\text{ s}\).</li>
+        <li><strong>Response Curve:</strong> We apply a deadzone (\(d_{\text{dead}} = 0.02\)) and an exponential velocity response curve (\(\gamma = 1.6\)) to permit both fine precision adjustments near the center and rapid traverses at outer boundaries:
+        \[t = \min\left(\frac{|\mathbf{d}| - d_{\text{dead}}}{r_{\text{expo}}}, 1\right), \quad v = v_{\max} \cdot t^{\gamma}, \quad \mathbf{v}_{\text{target}} = \frac{\mathbf{d}}{|\mathbf{d}|} \cdot v\]
+        with \(v_{\max} = 0.15\text{ m/s}\) and \(r_{\text{expo}} = 0.15\text{ m}\).</li>
+      </ul>
+    </div>
+
+    <div class="content-box">
+      <h2>4. Inverse Kinematics & Safety Clamping</h2>
+      <p class="content-text">The target velocity vector is integrated to yield a Cartesian coordinate target \(\mathbf{p}_{\text{cmd}}\). This target is converted to joint velocities and positions via the <code>ikpy</code> numerical inverse kinematics solver using the robot's URDF model.</p>
+      <p class="content-text">To prevent robot damage and singularities, several layers of workspace protection are integrated directly into the controller:</p>
+      <ul class="content-list">
+        <li><strong>Workspace Clamping:</strong> The target is clamped to a radial shell centered at the robot base. This preserves full 360° reachability while preventing the arm from exceeding its mechanical range:
+        \[r = |\mathbf{p} - \mathbf{p}_{\text{base}}|\]
+        \[r_{\text{clamped}} = \text{clamp}(r, 0.06\text{ m}, 0.30\text{ m}), \quad z_{\text{clamped}} = \text{clamp}(z, 0.02\text{ m}, 0.35\text{ m})\]</li>
+        <li><strong>Velocity Limiting:</strong> A per-joint velocity cap prevents rapid, dangerous joint sweeps when passing near mechanical singularities:
+        \[\Delta\mathbf{q} = \text{clamp}(\mathbf{q}_{\text{new}} - \mathbf{q}_{\text{prev}}, -\omega_{\max} \cdot \Delta t, +\omega_{\max} \cdot \Delta t)\]
+        with maximum speed limit \(\omega_{\max} = 2.0\text{ rad/s}\).</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Tech Stack</div>
+      <span class="skill-pill">ROS 2 Humble</span>
+      <span class="skill-pill">Python 3.10</span>
+      <span class="skill-pill">PyTorch</span>
+      <span class="skill-pill">MediaPipe</span>
+      <span class="skill-pill">OpenCV</span>
+      <span class="skill-pill">Gazebo</span>
+      <span class="skill-pill">ikpy (IK)</span>
+      <span class="skill-pill">Control Systems</span>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="side-card">
+        <h3>Project Focus</h3>
+        <p>This project highlights expertise in system integration across different runtimes (ROS 2 and ML-specific PyTorch/MediaPipe environments), numerical inverse kinematics solving, computer vision pipelines, and safety-centric control system design.</p>
+        <div class="chip-row">
+          <span class="mini-chip">ROS 2</span>
+          <span class="mini-chip">Deep Learning</span>
+          <span class="mini-chip">Control</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Project Assets</div>
+      <div class="link-row">
+        <a href="index.html#contact" class="btn-warm"><i class="fa-solid fa-envelope"></i> Contact Me</a>
+        <a href="https://github.com/Rudra-CDRI/gesture_teleoperation_ros2" target="_blank" class="btn-ghost"><i class="fa-brands fa-github"></i> View Repository</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p><strong>Rudrapriya Rajesh Choudhari</strong> · IIT Bhubaneswar · Mechanical Engineering</p>
+</footer>
+
+<script>
+
+function toggleMenu() {
+  document.getElementById('navLinks').classList.toggle('active');
+}
+function toggleDark() {
+  const body = document.body;
+  const btn = document.getElementById('theme-btn');
+  body.classList.toggle('dark');
+  btn.textContent = body.classList.contains('dark') ? '☀️ Light' : '🌙 Dark';
+}
+class InteractiveGrid {
+  constructor() {
+    this.canvas = document.getElementById('interactive-grid');
+    this.ctx = this.canvas.getContext('2d');
+    this.cellSize = 40;
+    this.mouse = { x: -1000, y: -1000, targetX: -1000, targetY: -1000 };
+    this.isHovering = false;
+    this.init();
+    this.bindEvents();
+    this.animate();
+  }
+  init() {
+    const dpr = window.devicePixelRatio || 1;
+    this.canvas.width = window.innerWidth * dpr;
+    this.canvas.height = window.innerHeight * dpr;
+    this.ctx.scale(dpr, dpr);
+    this.canvas.style.width = `${window.innerWidth}px`;
+    this.canvas.style.height = `${window.innerHeight}px`;
+  }
+  bindEvents() {
+    window.addEventListener('resize', () => this.init());
+    window.addEventListener('mousemove', (e) => {
+      this.mouse.targetX = e.clientX;
+      this.mouse.targetY = e.clientY;
+      this.isHovering = true;
+    });
+    window.addEventListener('mouseout', () => { this.isHovering = false; });
+  }
+  getThemeColors() {
+    const isDark = document.body.classList.contains('dark');
+    return {
+      lineColor: isDark ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.03)',
+      cellHighlight: isDark ? 'rgba(201,125,78,0.08)' : 'rgba(201,125,78,0.05)',
+      glowCenter: isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)',
+      glowEdge: 'rgba(0,0,0,0)'
+    };
+  }
+  draw() {
+    this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    const colors = this.getThemeColors();
+    
+    // Smooth mouse coordinates
+    this.mouse.x += (this.mouse.targetX - this.mouse.x) * 0.15;
+    this.mouse.y += (this.mouse.targetY - this.mouse.y) * 0.15;
+    
+    const cols = Math.ceil(window.innerWidth / this.cellSize);
+    const rows = Math.ceil(window.innerHeight / this.cellSize);
+    
+    this.ctx.strokeStyle = colors.lineColor;
+    this.ctx.lineWidth = 0.5;
+    
+    // Draw grid lines
+    this.ctx.beginPath();
+    for (let c = 0; c <= cols; c++) {
+      this.ctx.moveTo(c * this.cellSize, 0);
+      this.ctx.lineTo(c * this.cellSize, window.innerHeight);
+    }
+    for (let r = 0; r <= rows; r++) {
+      this.ctx.moveTo(0, r * this.cellSize);
+      this.ctx.lineTo(window.innerWidth, r * this.cellSize);
+    }
+    this.ctx.stroke();
+    
+    // Draw mouse glow
+    if (this.isHovering) {
+      const grad = this.ctx.createRadialGradient(
+        this.mouse.x, this.mouse.y, 0,
+        this.mouse.x, this.mouse.y, 180
+      );
+      grad.addColorStop(0, colors.glowCenter);
+      grad.addColorStop(1, colors.glowEdge);
+      this.ctx.fillStyle = grad;
+      this.ctx.beginPath();
+      this.ctx.arc(this.mouse.x, this.mouse.y, 180, 0, Math.PI * 2);
+      this.ctx.fill();
+    }
+  }
+  animate() {
+    this.draw();
+    requestAnimationFrame(() => this.animate());
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  new InteractiveGrid();
+});
+
+</script>
+</body>
+</html>

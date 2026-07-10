@@ -492,6 +492,7 @@ footer strong{color:#888;}
           <button class="ptab" onclick="showProj(1,this)">02 · Autonomous UAV Drone</button>
           <button class="ptab" onclick="showProj(2,this)">03 · Piston CFD Analysis</button>
           <button class="ptab" onclick="showProj(3,this)">04 · 2DOF Robotic Manipulator</button>
+          <button class="ptab" onclick="showProj(4,this)">05 · ROS 2 Gesture Teleoperation</button>
         </div>
       </div>
 
@@ -552,6 +553,22 @@ footer strong{color:#888;}
             <span class="proj-tag">Robotics</span>
           </div>
           <div class="proj-tools">Tools: <span>MATLAB Simulink · Simscape Multibody</span></div>
+        </div>
+      </div>
+
+      <div class="proj-panel" id="pp4" onclick="openModal('teleop')">
+        <img src="assests/images/gesture_teleop.png" alt="Gesture Teleoperation" class="proj-img"/>
+        <div class="proj-content">
+          <div class="proj-num">Project 05 · Robotics & CV</div>
+          <div class="proj-title">ROS 2 Gesture-Controlled Robotic Arm</div>
+          <p class="proj-body">Real-time teleoperation of a simulated OpenManipulator-X robotic arm in Gazebo using 3D hand tracking and computer vision. MediaPipe extracts 21 3D landmarks, a PyTorch classifier determines the gesture, and a control node maps gestures to velocity control commands computed using inverse kinematics.</p>
+          <div class="proj-tags">
+            <span class="proj-tag">Robotics</span>
+            <span class="proj-tag">ROS 2</span>
+            <span class="proj-tag">Computer Vision</span>
+            <span class="proj-tag">Deep Learning</span>
+          </div>
+          <div class="proj-tools">Tools: <span>ROS 2 Humble · Gazebo · PyTorch · MediaPipe · OpenCV · Python</span></div>
         </div>
       </div>
 
@@ -887,6 +904,11 @@ const projectData = {
     title: '2DOF Robotic Manipulator',
     desc: 'A complete kinematic mapping and trajectory planning model built in MATLAB Simulink. The project involved exporting a Simscape Multibody Rigid Body Tree, establishing Forward Kinematics for pose estimation, and utilizing the Levenberg-Marquardt solver for Inverse Kinematics. This enables the end-effector to trace accurate geometric paths with governed acceleration.',
     buttons: '<a href="2-dof_robotiic_manipulator.html" class="btn-warm">Learn More</a>'
+  },
+  'teleop': {
+    title: 'ROS 2 Gesture Teleoperation',
+    desc: 'Real-time teleoperation of a simulated OpenManipulator-X robotic arm using hand gestures, ROS 2 Humble, and computer vision. A webcam captures hand movements, MediaPipe extracts 21 3D landmarks, a lightweight PyTorch classifier maps the pose to a gesture, and a ROS 2 control node converts that gesture into joint commands via numerical inverse kinematics.',
+    buttons: '<a href="gesture_teleoperation.html" class="btn-warm">Learn More</a>'
   },
   
   // Other Work (Mini Projects)
