@@ -1302,5 +1302,220 @@ async function handleContactSubmit(event) {
   </div>
 </div>
 
+<!-- PDF.js Engine -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+const pv = (() => {
+  let _pdf = null, _total = 0, _cur = 1, _scale = 1, _fitScale = 1;
+  let _canvases = {};
+
+  const $    = id => document.getElementById(id);
+  const area  = () => $('pvArea');
+  const state = () => $('pvState');
+  const bar   = () => $('pvBar');
+
+  function setBar(pct) { bar().style.width = pct + '%'; }
+
+  function showError(msg) {
+    const s = state();
+    s.style.display = 'flex';
+    s.querySelector('.pdf-state-icon').innerHTML = '<i class="fa-solid fa-triangle-exclamation" style="color:#c94e4e"></i>';
+    s.querySelector('h3').textContent = 'Could not load PDF';
+    s.querySelector('p').textContent  = msg;
+    setBar(0);
+  }
+
+  function updateUI() {
+    $('pvInput').value = _cur;
+    $('pvInput').max   = _total;
+    $('pvOf').textContent = '/ ' + _total;
+    $('pvPageBadge').textContent = `Page ${_cur} / ${_total}`;
+  }
+
+  function updateZoomUI() {
+    const pct = Math.round(_scale * 100);
+    $('pvZoom').value = [50,75,100,125,150,200].includes(pct) ? String(pct / 100) : 'fit';
+  }
+
+  async function renderPage(n) {
+    const canvas = _canvases[n];
+    if (!canvas || !_pdf) return;
+    const page = await _pdf.getPage(n);
+    const vp   = page.getViewport({ scale: _scale });
+    const dpr  = window.devicePixelRatio || 1;
+    const ctx  = canvas.getContext('2d');
+    canvas.width  = vp.width  * dpr;
+    canvas.height = vp.height * dpr;
+    canvas.style.width  = vp.width  + 'px';
+    canvas.style.height = vp.height + 'px';
+    ctx.scale(dpr, dpr);
+    canvas.parentElement.style.width  = vp.width  + 'px';
+    canvas.parentElement.style.height = vp.height + 'px';
+    await page.render({ canvasContext: ctx, viewport: vp }).promise;
+  }
+
+  async function buildPages() {
+    const a = area();
+    a.querySelectorAll('.pdf-page-wrap').forEach(el => el.remove());
+    _canvases = {};
+
+    const p1 = await _pdf.getPage(1);
+    const v1 = p1.getViewport({ scale: 1 });
+    _fitScale = (a.clientWidth - 40) / v1.width;
+    if (_scale === 1) _scale = Math.min(_fitScale, 1.3);
+    updateZoomUI();
+
+    for (let i = 1; i <= _total; i++) {
+      const page = await _pdf.getPage(i);
+      const vp   = page.getViewport({ scale: _scale });
+      const wrap = document.createElement('div');
+      wrap.className = 'pdf-page-wrap pdf-skeleton';
+      wrap.style.width  = vp.width  + 'px';
+      wrap.style.height = vp.height + 'px';
+      wrap.dataset.page = i;
+
+      const cv = document.createElement('canvas');
+      wrap.appendChild(cv);
+      a.appendChild(wrap);
+      _canvases[i] = cv;
+
+      const obs = new IntersectionObserver(async entries => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            const pn = +e.target.dataset.page;
+            await renderPage(pn);
+            e.target.classList.remove('pdf-skeleton');
+            obs.unobserve(e.target);
+          }
+        }
+      }, { root: a, rootMargin: '180px' });
+      obs.observe(wrap);
+    }
+  }
+
+  async function reRenderAll() {
+    for (let i = 1; i <= _total; i++) {
+      const wrap = _canvases[i]?.parentElement;
+      if (wrap && !wrap.classList.contains('pdf-skeleton')) await renderPage(i);
+    }
+  }
+
+  function pvScrollTo(n) {
+    const target = area().querySelector(`[data-page="${n}"]`);
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function trackScroll() {
+    const a = area();
+    const rect = a.getBoundingClientRect();
+    let cur = 1;
+    a.querySelectorAll('.pdf-page-wrap').forEach(w => {
+      if (w.getBoundingClientRect().top - rect.top <= rect.height / 2) cur = +w.dataset.page;
+    });
+    if (cur !== _cur) { _cur = cur; updateUI(); }
+  }
+
+  return {
+    async load(urlStr) {
+      state().style.display = 'flex';
+      state().querySelector('.pdf-state-icon').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+      state().querySelector('h3').textContent = 'Loading document…';
+      state().querySelector('p').textContent  = 'Fetching resume.';
+      setBar(8);
+
+      try {
+        const absoluteUrl = new URL(urlStr, window.location.href).href;
+        const task = pdfjsLib.getDocument({
+          url: absoluteUrl,
+          cMapUrl: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/cmaps/',
+          cMapPacked: true
+        });
+        task.onProgress = ({ loaded, total }) => {
+          if (total) setBar(10 + Math.round(loaded / total * 75));
+        };
+        _pdf   = await task.promise;
+        _total = _pdf.numPages;
+        _cur   = 1; _scale = 1;
+        updateUI();
+
+        state().style.display = 'none';
+        setBar(90);
+        await buildPages();
+        setBar(100);
+        setTimeout(() => { bar().style.opacity = '0'; }, 600);
+        area().addEventListener('scroll', trackScroll, { passive: true });
+      } catch (err) {
+        showError(`Error: ${err.message || 'File not found. Make sure the path is correct.'}`);
+      }
+    },
+    unload() {
+      area().removeEventListener('scroll', trackScroll);
+      if (_pdf) { _pdf.destroy(); _pdf = null; }
+      area().querySelectorAll('.pdf-page-wrap').forEach(el => el.remove());
+      state().style.display = 'flex';
+      state().querySelector('.pdf-state-icon').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+      state().querySelector('h3').textContent = 'Loading document…';
+      bar().style.opacity = '1'; bar().style.width = '0%';
+      _total = 0; _cur = 1; _scale = 1;
+    },
+    prev() { if (_cur > 1) { _cur--; updateUI(); pvScrollTo(_cur); } },
+    next() { if (_cur < _total) { _cur++; updateUI(); pvScrollTo(_cur); } },
+    go(n)  { const p = Math.max(1, Math.min(_total, parseInt(n) || 1)); _cur = p; updateUI(); pvScrollTo(p); },
+    async setZoom(v) { _scale = v === 'fit' ? _fitScale : parseFloat(v); updateZoomUI(); await reRenderAll(); },
+    async zoomIn()  { const l = [.5,.75,1,1.25,1.5,2,2.5]; const n = l.find(x => x > _scale + .01); if (n) { _scale = n; updateZoomUI(); await reRenderAll(); } },
+    async zoomOut() { const l = [.5,.75,1,1.25,1.5,2,2.5].reverse(); const n = l.find(x => x < _scale - .01); if (n) { _scale = n; updateZoomUI(); await reRenderAll(); } }
+  };
+})();
+
+function openResume() {
+  document.getElementById('pdfOverlay').classList.add('show');
+  pv.load('assests/documents/my_resume.pdf');
+}
+
+function closeOverlay(id) {
+  document.getElementById(id).classList.remove('show');
+  if (id === 'pdfOverlay') setTimeout(() => pv.unload(), 350);
+}
+
+function closeOnOutside(e, id) {
+  if (e.target === document.getElementById(id)) closeOverlay(id);
+}
+
+function toggleFullscreen(btn) {
+  const shell = btn.closest('.media-shell');
+  if (!document.fullscreenElement) {
+    shell.requestFullscreen?.();
+    btn.innerHTML = '<i class="fa-solid fa-compress"></i>';
+  } else {
+    document.exitFullscreen?.();
+    btn.innerHTML = '<i class="fa-solid fa-expand"></i>';
+  }
+}
+
+let _resizeT;
+window.addEventListener('resize', () => {
+  clearTimeout(_resizeT);
+  _resizeT = setTimeout(async () => {
+    const ov = document.getElementById('pdfOverlay');
+    if (ov && ov.classList.contains('show')) await pv.setZoom('fit');
+  }, 300);
+});
+
+document.addEventListener('keydown', e => {
+  const ov = document.getElementById('pdfOverlay');
+  if (ov && ov.classList.contains('show')) {
+    if (['ArrowLeft','ArrowRight','+','=','-','Escape'].includes(e.key)) e.preventDefault();
+    switch(e.key) {
+      case 'Escape':     closeOverlay('pdfOverlay'); break;
+      case 'ArrowLeft':  pv.prev();       break;
+      case 'ArrowRight': pv.next();       break;
+      case '+': case '=': pv.zoomIn();   break;
+      case '-':            pv.zoomOut();  break;
+    }
+  }
+});
+</script>
 </body>
 </html>
