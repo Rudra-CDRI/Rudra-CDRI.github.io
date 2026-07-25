@@ -589,16 +589,14 @@ body:not(.dark) .pdf-kbd { background: #f0ece8; border-color: #e0dcd4; color: #a
 
     <div class="main-proj-wrapper">
       <div class="proj-tabs-container" id="tabsContainer">
-        <div class="proj-tabs" id="projTabs">
+                <div class="proj-tabs" id="projTabs">
           <button class="ptab active" onclick="showProj(0,this)">01 · ROS 2 Gesture Teleoperation</button>
           <button class="ptab" onclick="showProj(1,this)">02 · Ionic Wind Generator</button>
-          <button class="ptab" onclick="showProj(2,this)">03 · Autonomous UAV Drone</button>
-          <button class="ptab" onclick="showProj(3,this)">04 · Piston CFD Analysis</button>
-          <button class="ptab" onclick="showProj(4,this)">05 · 2DOF Robotic Manipulator</button>
+          <button class="ptab" onclick="showProj(2,this)">03 · Piston CFD Analysis</button>
         </div>
       </div>
 
-      <div class="proj-panel active" id="pp0" onclick="openModal('teleop')">
+            <div class="proj-panel active" id="pp0" onclick="openModal('teleop')">
         <img src="assests/images/gesture_teleop.png" alt="Gesture Teleoperation" class="proj-img"/>
         <div class="proj-content">
           <div class="proj-num">Project 01 · Robotics & CV</div>
@@ -629,25 +627,10 @@ body:not(.dark) .pdf-kbd { background: #f0ece8; border-color: #e0dcd4; color: #a
         </div>
       </div>
 
-      <div class="proj-panel" id="pp2" onclick="openModal('drone')">
-        <img src="assests/images/krishi_drone.png" alt="Robotics" class="proj-img"/>
-        <div class="proj-content">
-          <div class="proj-num">Project 03 · e-Yantra IIT Bombay</div>
-          <div class="proj-title">Krishi Drone Precision Agriculture UAV</div>
-          <p class="proj-body">Contributed to the development of an autonomous quadrotor for pest and disease detection using overhead camera-based computer vision. The system architecture is built on ROS 2, featuring a navigation stack that handles precision waypoint following guided by real-time image feedback.</p>
-          <div class="proj-tags">
-            <span class="proj-tag">Robotics</span>
-            <span class="proj-tag">Computer Vision</span>
-            <span class="proj-tag">UAV Control</span>
-          </div>
-          <div class="proj-tools">Tools: <span>ROS 2 · Gazebo · Python · YOLO</span></div>
-        </div>
-      </div>
-
-      <div class="proj-panel" id="pp3" onclick="openModal('cfd')">
+      <div class="proj-panel" id="pp2" onclick="openModal('cfd')">
         <img src="assests/images/piston_cfd.png" alt="CFD Engine" class="proj-img"/>
         <div class="proj-content">
-          <div class="proj-num">Project 04 · Simulation</div>
+          <div class="proj-num">Project 03 · Simulation</div>
           <div class="proj-title">CFD Analysis of IC Engine Piston Heads</div>
           <p class="proj-body">Performed reactive-flow CFD simulations in ANSYS Forte to compare combustion performance of Flat-top and Circular Dish piston geometries in a CI engine. Configured RANS RNG k-epsilon turbulence model with CHEMKIN-Pro chemistry solver to confirm superior air-fuel mixing in dish-type geometry.</p>
           <div class="proj-tags">
@@ -656,21 +639,6 @@ body:not(.dark) .pdf-kbd { background: #f0ece8; border-color: #e0dcd4; color: #a
             <span class="proj-tag">Combustion</span>
           </div>
           <div class="proj-tools">Tools: <span>ANSYS Forte · CHEMKIN-Pro</span></div>
-        </div>
-      </div>
-
-      <div class="proj-panel" id="pp4" onclick="openModal('manipulator')">
-        <img src="assests/images/2dof_robot_arm.png" alt="Robotic Arm" class="proj-img"/>
-        <div class="proj-content">
-          <div class="proj-num">Project 05 · Kinematics</div>
-          <div class="proj-title">2DOF Robotic Manipulator Kinematics</div>
-          <p class="proj-body">Designed a CAD model of a 2-DOF planar robotic arm using Simscape Multibody and exported its Rigid Body Tree to implement Forward Kinematics. Implemented Inverse Kinematics using the iterative Levenberg-Marquardt solver to trace geometric waypoints and generated smooth Cartesian paths.</p>
-          <div class="proj-tags">
-            <span class="proj-tag">Kinematics</span>
-            <span class="proj-tag">Trajectory Planning</span>
-            <span class="proj-tag">Robotics</span>
-          </div>
-          <div class="proj-tools">Tools: <span>MATLAB Simulink · Simscape Multibody</span></div>
         </div>
       </div>
 
@@ -683,7 +651,7 @@ body:not(.dark) .pdf-kbd { background: #f0ece8; border-color: #e0dcd4; color: #a
     <div class="sec-eyebrow">Coursework & Content</div>
     <h2 class="sec-title">Other Work</h2>
     <p class="sec-sub">Selected coursework and problem-solving initiatives.</p>
-    <div class="mini-grid">
+        <div class="mini-grid">
       <div class="mini-card" onclick="openModal('cad_portfolio')">
         <img src="https://images.unsplash.com/photo-1537462715879-360eeb61a0ad?w=600&q=80" alt="CAD modelling" class="mini-card-img"/>
         <div class="mini-card-body">
@@ -700,6 +668,24 @@ body:not(.dark) .pdf-kbd { background: #f0ece8; border-color: #e0dcd4; color: #a
           <div class="mini-card-title">Physics & Maths Expert</div>
           <p style="font-size:.8rem;color:#888;line-height:1.65;margin:6px 0 8px;">Produced detailed video solutions for JEE Advanced-level Physics and Mathematics problems, emphasizing conceptual clarity.</p>
           <div class="mini-card-tools">Content Creation · EdTech</div>
+        </div>
+      </div>
+      <div class="mini-card" onclick="openModal('drone')">
+        <img src="assests/images/krishi_drone.png" alt="Robotics" class="mini-card-img"/>
+        <div class="mini-card-body">
+          <div class="mini-card-num">e-Yantra IIT Bombay</div>
+          <div class="mini-card-title">Krishi Drone Precision Agriculture UAV</div>
+          <p style="font-size:.8rem;color:#888;line-height:1.65;margin:6px 0 8px;">Contributed to the development of an autonomous quadrotor for pest and disease detection using overhead camera-based computer vision. The system architecture is built on ROS 2, featuring a navigation stack that handles precision waypoint following guided by real-time image feedback.</p>
+          <div class="mini-card-tools">ROS 2 · Gazebo · Python · YOLO</div>
+        </div>
+      </div>
+      <div class="mini-card" onclick="openModal('manipulator')">
+        <img src="assests/images/2dof_robot_arm.png" alt="Robotic Arm" class="mini-card-img"/>
+        <div class="mini-card-body">
+          <div class="mini-card-num">Kinematics</div>
+          <div class="mini-card-title">2DOF Robotic Manipulator Kinematics</div>
+          <p style="font-size:.8rem;color:#888;line-height:1.65;margin:6px 0 8px;">Designed a CAD model of a 2-DOF planar robotic arm using Simscape Multibody and exported its Rigid Body Tree to implement Forward Kinematics. Implemented Inverse Kinematics using the iterative Levenberg-Marquardt solver to trace geometric waypoints and generated smooth Cartesian paths.</p>
+          <div class="mini-card-tools">MATLAB Simulink · Simscape Multibody</div>
         </div>
       </div>
     </div>
