@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Industrial Gripper | Rudrapriya Rajesh Choudhari</title>
+<link rel="icon" type="image/png" href="assests/images/portfolio_logo_transparent.png"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+<style>
+/* --- CORE STYLES --- */
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Segoe UI',system-ui,sans-serif;
+  background:#fafaf8;
+  color:#1c1c1e;
+  overflow-x:hidden;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><circle cx="8" cy="8" r="4" fill="%23c97d4e"/></svg>') 8 8, auto;
+}
+a,button,.content-box,.btn-warm,.btn-ghost,.menu-toggle,.theme-btn,.cad-card,.view-btn{
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><circle cx="10" cy="10" r="4" fill="%23c97d4e"/><circle cx="10" cy="10" r="8" stroke="%23c97d4e" stroke-width="1.5" fill="none"/></svg>') 10 10, pointer !important;
+}
+::-webkit-scrollbar{width:8px;}
+::-webkit-scrollbar-track{background:#fafaf8;}
+::-webkit-scrollbar-thumb{background:#d1ccc0;border-radius:10px;}
+::-webkit-scrollbar-thumb:hover{background:#c97d4e;}
+
+#interactive-grid{
+  position:fixed;inset:0;z-index:-1;pointer-events:none;
+}
+
+/* theme */
+body.dark{
+  --nav-bg: rgba(10,10,10,.92);
+  --border-col:#222;
+  --page-bg:#080808;
+  --card-bg:#111;
+  --card-border:#222;
+  --text:#eaeaf0;
+  --muted:#aaa;
+  --muted-2:#777;
+  --pill-bg:#1a1a1a;
+  --pill-border:#303030;
+  --pill-text:#cfcfcf;
+  --footer:#080808;
+  background:var(--page-bg);
+  color:var(--text);
+}
+body:not(.dark){
+  --nav-bg: rgba(250,250,248,.9);
+  --border-col:#e8e4dc;
+  --page-bg:#fafaf8;
+  --card-bg:#fff;
+  --card-border:#e8e4dc;
+  --text:#1c1c1e;
+  --muted:#555;
+  --muted-2:#888;
+  --pill-bg:#f5f2ee;
+  --pill-border:#e8e4dc;
+  --pill-text:#555;
+  --footer:#fff;
+  background:var(--page-bg);
+  color:var(--text);
+}
+body.dark ::-webkit-scrollbar-track{background:#080808;}
+body.dark ::-webkit-scrollbar-thumb{background:#222;}
+body.dark ::-webkit-scrollbar-thumb:hover{background:#c97d4e;}
+
+/* nav */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  background:var(--nav-bg);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border-col);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 48px;height:60px;
+}
+.nav-logo{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:700;letter-spacing:-.01em;color:var(--text);}
+.nav-logo span{color:#c97d4e;}
+.nav-links{display:flex;gap:18px;align-items:center;}
+.nav-links a{
+  font-size:13px;color:var(--muted);text-decoration:none;font-weight:500;
+  transition:color .2s;
+}
+.nav-links a:hover{color:#c97d4e;}
+.theme-btn{
+  background:none;border:1.5px solid var(--card-border);color:var(--muted);
+  border-radius:20px;padding:5px 14px;font-size:12px;font-weight:700;
+  transition:all .2s;
+}
+.theme-btn:hover{border-color:#c97d4e;color:#c97d4e;}
+.menu-toggle{
+  display:none;background:none;border:none;font-size:20px;color:var(--text);
+}
+
+/* header */
+.proj-header-wrap{
+  padding:140px 48px 70px;
+  background:linear-gradient(135deg,#fdf6ee 0%,#fafaf8 60%,#f0ece8 100%);
+  border-bottom:1px solid var(--border-col);
+  text-align:center;position:relative;z-index:1;
+}
+body.dark .proj-header-wrap{
+  background:linear-gradient(135deg,#0a0a0a 0%,#050505 100%);
+}
+.proj-eyebrow{
+  font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#c97d4e;
+  font-weight:700;margin-bottom:16px;display:block;
+}
+.proj-title{
+  font-size:clamp(2rem,4vw,3.2rem);font-weight:800;line-height:1.08;
+  letter-spacing:-.03em;color:var(--text);max-width:920px;margin:0 auto 18px;
+}
+.proj-subtitle{
+  font-size:1.08rem;color:var(--muted);max-width:720px;margin:0 auto;line-height:1.7;
+}
+
+/* body */
+.proj-body{
+  padding:72px 48px;max-width:1180px;margin:0 auto;
+  display:grid;grid-template-columns:2fr .95fr;gap:58px;position:relative;z-index:1;
+}
+.main-content{min-width:0;}
+
+/* View Controls */
+.content-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 24px;
+}
+.view-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: #111111;
+  padding: 6px 8px;
+  border-radius: 30px; /* Pill shape container */
+  border: 1px solid #222222;
+}
+body:not(.dark) .view-controls {
+  background: #f5f2ee;
+  border-color: #e8e4dc;
+}
+.view-btn {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  width: 38px;
+  height: 32px;
+  border-radius: 10px; /* Rounded square inner button */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .2s ease;
+  font-size: 15px;
+}
+.view-btn:hover {
+  color: var(--text);
+}
+.view-btn.active {
+  background: #c97d4e;
+  color: #fff;
+  box-shadow: 0 0 16px rgba(201, 125, 78, 0.4); /* Soft glowing shadow */
+}
+
+/* CAD Grid Styles (Default: Grid/Small) */
+.cad-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+.cad-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 18px;
+  padding: 18px;
+  transition: transform .28s, box-shadow .28s;
+  display: flex;
+  flex-direction: column;
+}
+.cad-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(0,0,0,.08);
+}
+body.dark .cad-card:hover {
+  box-shadow: 0 16px 36px rgba(0,0,0,.38);
+}
+.cad-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  background: #1a1a1a;
+  border: 1px solid var(--card-border);
+  transition: height .3s ease, width .3s ease;
+}
+.cad-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+.cad-desc {
+  font-size: 0.9rem;
+  color: var(--muted);
+  line-height: 1.6;
+  flex-grow: 1;
+}
+
+/* Layout: Large (One per row) */
+.cad-grid.layout-large {
+  grid-template-columns: 1fr;
+}
+.cad-grid.layout-large .cad-card img {
+  height: 380px;
+}
+
+/* Layout: List (Image left, text right) */
+.cad-grid.layout-list {
+  grid-template-columns: 1fr;
+}
+.cad-grid.layout-list .cad-card {
+  flex-direction: row;
+  align-items: center;
+  gap: 24px;
+}
+.cad-grid.layout-list .cad-card img {
+  width: 240px;
+  height: 160px;
+  margin-bottom: 0;
+  flex-shrink: 0;
+}
+
+/* sidebar */
+.sidebar{position:sticky;top:98px;height:max-content;}
+.sidebar-section{margin-bottom:34px;}
+.sidebar-label{
+  font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-2);
+  font-weight:700;margin-bottom:12px;
+}
+.skill-pill{
+  display:inline-block;background:var(--pill-bg);color:var(--pill-text);
+  font-size:12px;font-weight:600;padding:6px 13px;border-radius:20px;
+  margin:0 8px 8px 0;border:1px solid var(--pill-border);font-family:monospace;
+}
+
+/* Modals General */
+.overlay {
+  display: none; position: fixed; inset: 0; z-index: 1000;
+  background: rgba(0,0,0,0.6); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  align-items: center; justify-content: center; opacity: 0; transition: opacity .3s ease;
+}
+.overlay.show { display: flex; opacity: 1; }
+
+/* Info Modal */
+.info-modal {
+  background: var(--card-bg); border: 1px solid var(--card-border);
+  width: 90%; max-width: 500px; border-radius: 20px; padding: 36px;
+  position: relative; transform: translateY(20px); transition: transform .3s ease;
+  box-shadow: 0 20px 60px rgba(0,0,0,.4);
+}
+.overlay.show .info-modal { transform: translateY(0); }
+.info-close {
+  position: absolute; top: 16px; right: 20px; background: transparent; border: none;
+  font-size: 22px; color: var(--muted); transition: color .2s;
+}
+.info-close:hover { color: #c97d4e; }
+.info-title { font-size: 1.6rem; font-weight: 800; color: var(--text); margin-bottom: 12px; }
+.info-desc { font-size: 0.95rem; color: var(--muted); line-height: 1.7; margin-bottom: 24px; }
+.info-btn-row { display: flex; flex-direction: column; gap: 10px; }
+
+.btn-warm, .btn-ghost {
+  padding: 14px 20px; border-radius: 10px; font-size: 13px; font-weight: 700; text-decoration: none;
+  display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; border: none;
+}
+.btn-warm { background: #c97d4e; color: #fff; transition: transform .2s, background .2s; }
+.btn-warm:hover { background: #b56e40; transform: translateY(-2px); }
+.btn-ghost { background: transparent; color: #c97d4e; border: 1.5px solid #c97d4e; transition: background .2s; }
+.btn-ghost:hover { background: rgba(201,125,78,.1); }
+
+/* PDF & Media Shell (From CFD Page) */
+.media-shell {
+  position: relative; width: min(1100px, 96vw); height: min(91vh, 880px);
+  background: #111111; border: 1px solid #222222; border-radius: 18px;
+  display: flex; flex-direction: column; overflow: hidden;
+  box-shadow: 0 40px 120px rgba(0,0,0,.85); transform: translateY(20px) scale(.97);
+  transition: transform .35s cubic-bezier(.34,1.42,.64,1);
+}
+body:not(.dark) .media-shell { background: #fafaf8; border-color: #e8e4dc; }
+.overlay.show .media-shell { transform: translateY(0) scale(1); }
+
+/* Toolbar */
+.media-toolbar {
+  height: 54px; min-height: 54px; background: #111111; border-bottom: 1px solid #222222;
+  display: flex; align-items: center; padding: 0 14px; gap: 6px; user-select: none; flex-shrink: 0;
+}
+body:not(.dark) .media-toolbar { background: #fafaf8; border-bottom-color: #e8e4dc; }
+.media-toolbar .t-title { flex: 1; display: flex; align-items: center; gap: 9px; overflow: hidden; min-width: 0; }
+.media-toolbar .t-icon {
+  width: 28px; height: 28px; background: rgba(201,125,78,.12); border: 1px solid rgba(201,125,78,.22);
+  border-radius: 7px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 12px; color: #c97d4e;
+}
+.media-toolbar .t-name { font-size: 13px; font-weight: 700; color: #eaeaf0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+body:not(.dark) .media-toolbar .t-name { color: #1c1c1e; }
+.t-sep { width: 1px; height: 20px; background: #2a2a2a; margin: 0 4px; flex-shrink: 0; }
+body:not(.dark) .t-sep { background: #e0dcd4; }
+
+/* PDF specific controls */
+.t-cluster { display: flex; align-items: center; gap: 2px; background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 8px; padding: 2px; }
+body:not(.dark) .t-cluster { background: #f0ece8; border-color: #e0dcd4; }
+.t-btn {
+  width: 30px; height: 30px; background: transparent; border: none; border-radius: 6px; color: #666; font-size: 12px;
+  display: flex; align-items: center; justify-content: center; transition: background .15s, color .15s; flex-shrink: 0;
+}
+.t-btn:hover { background: #2a2a2a; color: #eaeaf0; }
+.t-btn:disabled { opacity: .25; pointer-events: none; }
+body:not(.dark) .t-btn:hover { background: #e4dfd8; color: #1c1c1e; }
+.t-page-wrap { display: flex; align-items: center; gap: 5px; padding: 0 5px; }
+.t-page-input {
+  width: 36px; height: 26px; background: #080808; border: 1px solid #2a2a2a; border-radius: 5px;
+  color: #eaeaf0; font-size: 12px; font-weight: 700; text-align: center; outline: none; transition: border-color .2s;
+}
+.t-page-input:focus { border-color: #c97d4e; }
+body:not(.dark) .t-page-input { background: #fff; border-color: #e0dcd4; color: #1c1c1e; }
+.t-page-of { font-size: 11px; color: #555; }
+.t-zoom-select { background: transparent; border: none; color: #eaeaf0; font-size: 12px; font-weight: 700; outline: none; padding: 0 4px; height: 26px; }
+body:not(.dark) .t-zoom-select { color: #1c1c1e; }
+.t-zoom-select option { background: #1a1a1a; color: #eaeaf0; }
+body:not(.dark) .t-zoom-select option { background: #fff; color: #1c1c1e; }
+
+/* Close */
+.t-close {
+  width: 30px; height: 30px; background: transparent; border: none; border-radius: 6px; color: #555; font-size: 14px;
+  display: flex; align-items: center; justify-content: center; transition: background .15s, color .15s; margin-left: 2px; flex-shrink: 0;
+}
+.t-close:hover { background: rgba(201,80,80,.15); color: #e05555; }
+
+/* Loading Bar */
+.pdf-loading-strip { height: 2px; min-height: 2px; background: #1a1a1a; flex-shrink: 0; overflow: hidden; }
+body:not(.dark) .pdf-loading-strip { background: #ede9e4; }
+.pdf-loading-bar { height: 100%; width: 0%; background: #c97d4e; transition: width .3s ease; border-radius: 2px; }
+
+/* Viewer Areas */
+.viewer-area { flex: 1; overflow: hidden; background: #0c0c0c; display: flex; flex-direction: column; position: relative; }
+body:not(.dark) .viewer-area { background: #e4e0da; }
+
+/* PDF Canvas specific */
+.pdf-canvas-area { overflow-y: auto; overflow-x: auto; align-items: center; padding: 28px 20px; gap: 16px; scroll-behavior: smooth; }
+.pdf-canvas-area::-webkit-scrollbar { width: 6px; }
+.pdf-canvas-area::-webkit-scrollbar-track { background: transparent; }
+.pdf-canvas-area::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 6px; }
+.pdf-canvas-area::-webkit-scrollbar-thumb:hover { background: #c97d4e; }
+.pdf-page-wrap {
+  position: relative; border-radius: 5px; overflow: hidden; box-shadow: 0 6px 32px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.04);
+  flex-shrink: 0; transition: box-shadow .2s;
+}
+.pdf-page-wrap:hover { box-shadow: 0 10px 44px rgba(0,0,0,.7), 0 0 0 1px rgba(201,125,78,.15); }
+.pdf-page-wrap canvas { display: block; }
+.pdf-skeleton { background: linear-gradient(90deg, #161616 25%, #1e1e1e 50%, #161616 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+body:not(.dark) .pdf-skeleton { background: linear-gradient(90deg, #dedad5 25%, #e8e4de 50%, #dedad5 75%); }
+@keyframes shimmer { 0%{ background-position:200% 0; } 100%{ background-position:-200% 0; } }
+
+/* PDF State */
+.pdf-state { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center; padding: 40px; }
+.pdf-state-icon { width: 52px; height: 52px; background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #555; }
+body:not(.dark) .pdf-state-icon { background: #f0ece8; border-color: #e0dcd4; }
+.pdf-state h3 { font-size: 14px; font-weight: 700; color: #eaeaf0; }
+body:not(.dark) .pdf-state h3 { color: #1c1c1e; }
+.pdf-state p  { font-size: 13px; color: #555; max-width: 300px; line-height: 1.6; }
+
+/* Footer */
+.pdf-footer { height: 36px; min-height: 36px; background: #111111; border-top: 1px solid #222222; display: flex; align-items: center; justify-content: space-between; padding: 0 14px; flex-shrink: 0; }
+body:not(.dark) .pdf-footer { background: #fafaf8; border-top-color: #e8e4dc; }
+.pdf-footer-left { display: flex; gap: 6px; }
+.pdf-f-pill { font-size: 10px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: #444; background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 20px; padding: 2px 9px; }
+body:not(.dark) .pdf-f-pill { color: #999; background: #f0ece8; border-color: #e0dcd4; }
+.pdf-footer-right { font-size: 11px; color: #333; }
+body:not(.dark) .pdf-footer-right { color: #bbb; }
+.pdf-kbd { display: inline-block; background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 3px; padding: 1px 4px; font-size: 10px; font-family: monospace; color: #555; }
+body:not(.dark) .pdf-kbd { background: #f0ece8; border-color: #e0dcd4; color: #aaa; }
+
+footer{ text-align:center; padding:40px 48px; border-top:1px solid var(--border-col); background:var(--footer); position:relative; z-index:1; }
+footer p{font-size:12px;color:var(--muted-2);}
+
+/* responsive */
+@media(max-width:900px){
+  nav{padding:0 20px;} .menu-toggle{display:block;}
+  .nav-links{ display:none;position:absolute;top:60px;left:0;right:0;flex-direction:column;align-items:flex-start; gap:16px;padding:18px 24px;background:var(--nav-bg);border-bottom:1px solid var(--border-col); }
+  .nav-links.active{display:flex;}
+  .proj-header-wrap{padding:120px 24px 54px;}
+  .proj-body{grid-template-columns:1fr;padding:36px 24px;gap:34px;}
+  .sidebar{position:static;}
+  .cad-grid{grid-template-columns:1fr;}
+  .cad-grid.layout-list .cad-card { flex-direction: column; }
+  .cad-grid.layout-list .cad-card img { width: 100%; height: 200px; }
+  footer{padding:32px 24px;}
+  .media-shell { width: 100%; height: 100vh; border-radius: 0; }
+  .overlay.show .media-shell { transform: none; }
+}
+
+/* --- FULLSCREEN OVERRIDES --- */
+.media-shell:fullscreen {
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: none !important;
+  max-height: none !important;
+  border-radius: 0 !important;
+  border: none !important;
+}
+
+/* Safari/Chrome specific fallback */
+.media-shell:-webkit-full-screen {
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: none !important;
+  max-height: none !important;
+  border-radius: 0 !important;
+  border: none !important;
+}
+
+</style>
+</head>
+<body class="dark">
+<canvas id="interactive-grid"></canvas>
+
+<nav>
+  <div class="nav-logo">
+    <img src="assests/images/portfolio_logo_transparent.png" alt="Rudra Logo" style="height:24px;width:24px;object-fit:contain;border-radius:4px;"/>
+    Rudra<span>.</span>
+  </div>
+  <button class="menu-toggle" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
+  <div class="nav-links" id="navLinks">
+    <a href="index.html#projects"><i class="fa-solid fa-arrow-left"></i> Back to Portfolio</a>
+    <button onclick="toggleDark()" id="theme-btn" class="theme-btn">☀️ Light</button>
+  </div>
+</nav>
+
+<div class="proj-header-wrap">
+  <span class="proj-eyebrow">Mini Project · Industrial Design</span>
+  <h1 class="proj-title">Design and FEA of a 2-Finger Industrial Gripper</h1>
+  <p class="proj-subtitle">Parametric design and static structural validation of a gear-driven parallel jaw mechanism for 10 kg payloads.</p>
+</div>
+
+<div class="proj-body">
+  <div class="main-content">
+    
+    <div class="content-header">
+      <div class="view-controls">
+        <button class="view-btn active" id="btn-grid" onclick="changeLayout('grid')" title="Small Grid View"><i class="fa-solid fa-table-cells"></i></button>
+        <button class="view-btn" id="btn-list" onclick="changeLayout('list')" title="List View"><i class="fa-solid fa-list"></i></button>
+        <button class="view-btn" id="btn-large" onclick="changeLayout('large')" title="Large Single Row View"><i class="fa-solid fa-square"></i></button>
+      </div>
+    </div>
+
+    <div class="cad-grid" id="cadGrid">
+      <div class="cad-card">
+        <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&q=80" alt="Problem Statement">
+        <div>
+          <div class="cad-title">1. Problem Statement & Scope</div>
+          <div class="cad-desc">Designed a 2-finger parallel jaw industrial gripper for robotic applications capable of holding payloads between 5 kg and 10 kg. The design required fully parametric 3D modeling of the fingers, base, and actuation interface, followed by rigorous static stress validation under peak gripping loads with a target Factor of Safety (FoS) &gt; 1.5.</div>
+        </div>
+      </div>
+      
+      <div class="cad-card">
+        <img src="https://images.unsplash.com/photo-1537462715879-360eeb61a0ad?w=600&q=80" alt="Mechanism Design">
+        <div>
+          <div class="cad-title">2. Mechanism & Kinematics</div>
+          <div class="cad-desc">Implemented a gear-driven dual parallelogram linkage. A rotary actuator drives a primary gear meshed 1:1 with a secondary gear, resulting in symmetric contra-rotation. Integrated crank arms connect to the gripping elements via revolute pin joints. Aligner links prevent finger rotation, enforcing pure parallel Cartesian motion. Hand calculations demanded a normal clamping force of 122.6 N per finger to hold a 10 kg payload securely.</div>
+        </div>
+      </div>
+      
+      <div class="cad-card">
+        <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=600&q=80" alt="FEA Simulation">
+        <div>
+          <div class="cad-title">3. Finite Element Analysis (FEA)</div>
+          <div class="cad-desc">Static structural analysis was conducted in ANSYS Workbench 2026 R1. With an adaptive mesh of 78,446 nodes, ramped actuation (61.3 N) and gripping (150 N) loads were applied. The analysis returned a peak von-Mises stress of 73.25 MPa at the linkage arm roots and a maximum tip deflection of 0.38 mm, yielding a minimum FoS of 3.41 against the 250 MPa yield strength of structural steel.</div>
+        </div>
+      </div>
+</div>
+
+  </div>
+
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Tech stack</div>
+      <span class="skill-pill">SolidWorks</span>
+      <span class="skill-pill">ANSYS</span>
+      <span class="skill-pill">FEA Simulation</span>
+      <span class="skill-pill">Kinematics</span>
+      <span class="skill-pill">Mechanism Design</span>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Quick links</div>
+      <div style="display:grid;gap:12px;margin-top:16px;">
+        <a href="index.html#contact" class="btn-warm"><i class="fa-solid fa-envelope"></i> Contact Me</a>
+        <a href="index.html#projects" class="btn-ghost"><i class="fa-solid fa-grid-2"></i> Back to Projects</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p><strong>Rudrapriya Rajesh Choudhari</strong> · IIT Bhubaneswar · Mechanical Engineering</p>
+</footer>
+
+
+
+</body>
+</html>

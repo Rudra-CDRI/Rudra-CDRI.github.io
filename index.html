@@ -688,7 +688,7 @@ body:not(.dark) .pdf-kbd { background: #f0ece8; border-color: #e0dcd4; color: #a
           <div class="mini-card-tools">MATLAB Simulink · Simscape Multibody</div>
         </div>
       </div>
-      <div class="mini-card" onclick="window.open('assests/documents/Gripper_Report.pdf', '_blank')">
+      <div class="mini-card" onclick="openModal('gripper_design')">
         <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&q=80" alt="Industrial Gripper" class="mini-card-img"/>
         <div class="mini-card-body">
           <div class="mini-card-num">Industrial Design</div>
@@ -1006,6 +1006,11 @@ const projectData = {
     title: 'ROS 2 Gesture Teleoperation',
     desc: 'Real-time teleoperation of a simulated OpenManipulator-X robotic arm using hand gestures, ROS 2 Humble, and computer vision. A webcam captures hand movements, MediaPipe extracts 21 3D landmarks, a lightweight PyTorch classifier maps the pose to a gesture, and a ROS 2 control node converts that gesture into joint commands via numerical inverse kinematics.',
     buttons: '<a href="gesture_teleoperation.html" class="btn-warm">Learn More</a>'
+  },
+  'gripper_design': {
+    title: '2-Finger Industrial Gripper',
+    desc: 'Designed a gear-driven parallel jaw gripper for 10 kg payloads. Modelled the dual parallelogram linkage in SolidWorks and validated the design with static structural FEA in ANSYS.',
+    buttons: '<a href="industrial_gripper.html" class="btn-warm">Learn More</a>'
   },
   
   // Other Work (Mini Projects)
