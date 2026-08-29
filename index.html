@@ -652,6 +652,15 @@ body:not(.dark) .pdf-kbd { background: #f0ece8; border-color: #e0dcd4; color: #a
     <h2 class="sec-title">Mini Projects</h2>
     <p class="sec-sub">Selected coursework and problem-solving initiatives.</p>
         <div class="mini-grid">
+      <div class="mini-card" onclick="openModal('iot_weather')">
+        <img src="assests/images/iot_dashboard.png" alt="IoT Weather Station" class="mini-card-img"/>
+        <div class="mini-card-body">
+          <div class="mini-card-num">Internet of Things</div>
+          <div class="mini-card-title">IoT Weather Station & Alert System</div>
+          <p style="font-size:.8rem;color:#888;line-height:1.65;margin:6px 0 8px;">Simulated a complete sensor-to-cloud data pipeline using ESP32 and DHT22 in Wokwi. Configured live visualization and threshold-based email alerts via ThingSpeak.</p>
+          <div class="mini-card-tools">ESP32 · C++ · ThingSpeak · Wokwi</div>
+        </div>
+      </div>
       <div class="mini-card" onclick="openModal('cad_portfolio')">
         <img src="https://images.unsplash.com/photo-1537462715879-360eeb61a0ad?w=600&q=80" alt="CAD modelling" class="mini-card-img"/>
         <div class="mini-card-body">
@@ -1014,6 +1023,11 @@ const projectData = {
   },
   
   // Other Work (Mini Projects)
+  'iot_weather': {
+    title: 'IoT Weather Station & Alert System',
+    desc: 'Developed a robust proof-of-concept IoT weather monitoring system using an ESP32 and DHT22 sensor within the Wokwi simulation environment. The system establishes a Wi-Fi connection to transmit real-time temperature and humidity data to the ThingSpeak cloud via HTTP. Features a custom dashboard with trend graphs and gauges, and utilizes ThingSpeak\'s React capability to trigger automated email alerts when predefined environmental thresholds (>35°C or >80% Humidity) are exceeded.',
+    buttons: '<a href="https://github.com/Rudra-CDRI/esp32-iot-weather-station" target="_blank" class="btn-warm"><i class="fa-brands fa-github"></i> View on GitHub</a>'
+  },
   'cad_portfolio': {
     title: 'CAD Modelling Portfolio',
     desc: 'An extensive assembly and detail-drawing collection spanning engine sub-assemblies, precision jigs, and mechanical linkages. The designs place heavy emphasis on GD&T compliance and standard design-for-manufacture conventions.',
