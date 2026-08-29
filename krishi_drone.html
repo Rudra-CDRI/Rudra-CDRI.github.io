@@ -280,7 +280,7 @@ footer p{font-size:12px;color:var(--muted-2);}
   <div class="main-content">
     <div class="content-box">
       <h2>Project Snapshot</h2>
-      <p class="content-text">Based on your resume and the repository, this page emphasizes plant-disease detection, waypoint navigation, simulation-to-hardware transfer, and targeted spraying for precision agriculture.</p>
+      <p class="content-text">Krishi Drone (KD) is an autonomous quadrotor developed for the e-Yantra robotics competition. It addresses the need for precision agriculture by utilizing computer vision to detect infected plants and an autonomous navigation stack to deploy targeted biopesticide, minimizing the need for manual inspection and field-wide chemical spraying.</p>
       <div class="hero-visual">
         <div class="visual-grid">
           <div class="visual-card">
@@ -307,47 +307,46 @@ footer p{font-size:12px;color:var(--muted-2);}
         </div>
       </div>
       <div class="metric-grid">
-        <div class="metric"><div class="n">8</div><div class="l">Core tools & themes</div></div>
-        <div class="metric"><div class="n">4</div><div class="l">Structured sections</div></div>
+        <div class="metric"><div class="n">ROS 2</div><div class="l">Robotics Middleware</div></div>
+        <div class="metric"><div class="n">Gazebo</div><div class="l">Simulation</div></div>
       </div>
     </div>
     <div class="content-box">
           <h2>1. Problem Statement</h2>
           
-            <p class="content-text">The page is framed around the agricultural automation problem shown in your resume and the Krishi Drone repository: detect plant disease early, reduce manual inspection, and avoid blanket pesticide use.</p>
+            <p class="content-text">Early detection of plant infections is critical to prevent disease spread and reduce unnecessary pesticide use. Common indicators like yellowing leaves or necrosis need to be identified quickly and consistently.</p>
             <ul class="content-list">
-              <li>Vision checks the tray or field area and isolates suspicious plants.</li>
-              <li>The mission logic sends the drone only to the affected zone.</li>
-              <li>The final action is a controlled spray, not a field-wide pass.</li>
+              <li>This project automates detection and intervention using an autonomous UAV.</li>
+              <li>The drone navigates over fields to localize infected crops.</li>
+              <li>The final action is a controlled, targeted biopesticide spray, eliminating the need for blanket spraying.</li>
             </ul>
             
         </div>
 <div class="content-box">
           <h2>2. Detection Pipeline</h2>
           
-            <p class="content-text">The repository describes a sequence of ArUco marker detection, perspective transformation, tray cropping, block segmentation, and plant-wise HSV analysis. That makes the workflow easy to explain visually on a portfolio page.</p>
+            <p class="content-text">The vision pipeline is designed to robustly identify diseased plants from overhead camera feeds, executing in both simulation and real-time hardware environments.</p>
             <ul class="content-list">
-              <li>Marker detection gives the camera a stable spatial reference.</li>
-              <li>Perspective correction converts a skewed frame into a top-down view.</li>
-              <li>HSV-based analysis estimates the infection ratio per plant region.</li>
-              <li>The most infected plant is selected as the mission target.</li>
+              <li><b>ArUco Marker Detection & Perspective Transformation:</b> Provides spatial reference and converts the skewed camera view into an aligned top-down perspective using OpenCV.</li>
+              <li><b>Block Segmentation:</b> Splits the tray into analyzable plant cells and isolates regions via morphology cleanup.</li>
+              <li><b>HSV Analysis:</b> Quantifies the infection ratio per plant region by evaluating color-space thresholds (e.g., yellowing/browning).</li>
+              <li><b>Target Selection:</b> The most infected plant is localized and passed as a coordinate to the mission stack.</li>
             </ul>
             
         </div>
 <div class="content-box">
           <h2>3. Control, Simulation, and Hardware</h2>
           
-            <p class="content-text">Your resume says the system was built on ROS 2 and validated in Gazebo before deployment on hardware. The repository also shows a PID hovering controller and waypoint/action-service architecture for mission execution.</p>
+            <p class="content-text">The flight stack utilizes a ROS 2 Action and Service architecture for reliable waypoint navigation and hover stabilization.</p>
             <ul class="content-list">
-              <li>Simulation and hardware use a similar software flow.</li>
-              <li>PID control is used for stable hovering and target tracking.</li>
-              <li>Action + service nodes sequence mission steps cleanly.</li>
-              <li>Hardware work includes camera calibration, safety workflow, and actuator handling.</li>
+              <li><b>PID Control & Stabilization:</b> Implements staged enable logic (throttle, then pitch, then roll) and an exponential moving average filter to smooth WhyCon positional jitter.</li>
+              <li><b>Mission Sequencing:</b> Action Servers execute goals sequentially—navigating to the pesticide station, traversing hoop routes, and hovering over the infected plant.</li>
+              <li><b>Hardware Deployment:</b> Transitioned from Gazebo to physical hardware with strict camera calibration, an Arduino-based latching circuit for stable actuator retention during spraying, and a rigorous arming/disarming safety workflow.</li>
             </ul>
             
         </div>
 <div class="content-box">
-          <h2>4. Portfolio-Friendly Outcome</h2>
+          <h2>4. Outcome & Impact</h2>
           
             <p class="content-text">This layout is written to read like a project showcase rather than a plain report. It lets you demonstrate robotics, computer vision, system integration, and field deployment in one page.</p>
             <ul class="content-list">
@@ -375,7 +374,7 @@ footer p{font-size:12px;color:var(--muted-2);}
     <div class="sidebar-section">
       <div class="side-card">
         <h3>What this page highlights</h3>
-        <p>Based on your resume and the repository, this page emphasizes plant-disease detection, waypoint navigation, simulation-to-hardware transfer, and targeted spraying for precision agriculture.</p>
+        <p>Krishi Drone (KD) is an autonomous quadrotor developed for the e-Yantra robotics competition. It addresses the need for precision agriculture by utilizing computer vision to detect infected plants and an autonomous navigation stack to deploy targeted biopesticide, minimizing the need for manual inspection and field-wide chemical spraying.</p>
         <div class="chip-row">
           <span class="mini-chip">Resume</span>
           <span class="mini-chip">Project Layout</span>
