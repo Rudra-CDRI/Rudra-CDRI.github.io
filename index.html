@@ -534,30 +534,171 @@ body:not(.dark) .pdf-kbd { background: #f0ece8; border-color: #e0dcd4; color: #a
   </div>
 </nav>
 
-<section id="hero">
-  <div class="hero-text reveal">
-    <div class="hero-socials" style="display:flex; gap:16px; margin-bottom:20px;">
-      <a href="https://github.com/Rudra-CDRI" target="_blank" style="color:#c97d4e; font-size:1.4rem; transition:color 0.2s, transform 0.2s;" onmouseover="this.style.color='#b56e40'; this.style.transform='translateY(-2px)';" onmouseout="this.style.color='#c97d4e'; this.style.transform='translateY(0)';"><i class="fa-brands fa-github"></i></a>
-      <a href="https://www.linkedin.com/in/rudra-choudhari-030297317" target="_blank" style="color:#c97d4e; font-size:1.4rem; transition:color 0.2s, transform 0.2s;" onmouseover="this.style.color='#b56e40'; this.style.transform='translateY(-2px)';" onmouseout="this.style.color='#c97d4e'; this.style.transform='translateY(0)';"><i class="fa-brands fa-linkedin"></i></a>
+<style>
+  .hero-geometric {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+  .name-geo {
+    font-size: clamp(3.2rem, 6.5vw, 6.5rem);
+    font-weight: 900;
+    line-height: 0.85;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+    color: #eaeaf0;
+    margin: 0;
+  }
+  .name-geo span {
+    color: #c97d4e;
+  }
+  .soc-geo {
+    color: #c97d4e;
+    font-size: 1.2rem;
+    border: 1px solid rgba(201,125,78,0.3);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+  .soc-geo:hover {
+    background: rgba(201,125,78,0.1);
+    border-color: #c97d4e;
+  }
+  .chip-geo {
+    border-radius: 0 !important;
+    border: 1px solid #333 !important;
+    background: #111 !important;
+    color: #aaa !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 10px !important;
+    font-family: monospace;
+  }
+  .btn-ghost-geo {
+    border-radius: 0 !important;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-size: 12px !important;
+    padding: 14px 28px !important;
+    border: 1px solid #c97d4e !important;
+    background: transparent;
+    color: #c97d4e;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-ghost-geo:hover {
+    background: rgba(201,125,78,0.1);
+  }
+  .badge-geo {
+    border-radius: 0 !important;
+    background: #0f0f0f !important;
+    border: 1px solid #333 !important;
+    box-shadow: none !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-family: monospace;
+    font-size: 10px !important;
+    padding: 10px 14px !important;
+    color: #aaa !important;
+  }
+  
+  /* Geometry for Image */
+  .hero-photo-geo {
+    width: 360px;
+    height: 440px;
+    object-fit: cover;
+    position: relative;
+    z-index: 2;
+    /* Sharp geometric cut: chamfered top-left and bottom-right */
+    clip-path: polygon(15% 0, 100% 0, 100% 85%, 85% 100%, 0 100%, 0 15%);
+    filter: contrast(1.05);
+  }
+  .geo-solid-shape {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #c97d4e;
+    top: 24px;
+    left: 24px;
+    z-index: 1;
+    /* Complementary cut for the background block */
+    clip-path: polygon(0 0, 100% 15%, 100% 100%, 15% 100%);
+  }
+  
+  /* Accents */
+  .geo-accent-line {
+    width: 60px;
+    height: 4px;
+    background: #c97d4e;
+    margin-bottom: 24px;
+  }
+  .geo-accent-square {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    border: 1px solid rgba(201,125,78,0.4);
+    bottom: -20px;
+    left: -20px;
+    z-index: 3;
+  }
+  .geo-accent-dot {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: #c97d4e;
+    top: 40px;
+    right: -30px;
+    z-index: 3;
+  }
+
+  @media(max-width: 900px) {
+    .hero-photo-geo { width: 300px; height: 380px; }
+    .hero-geometric { flex-direction: column; text-align: left; padding-top: 20px; gap: 40px; }
+    .geo-solid-shape { top: 16px; left: 16px; }
+    .name-geo { text-align: left; }
+    .hero-socials, .hero-chips, .hero-btns { justify-content: flex-start !important; }
+  }
+</style>
+
+<section id="hero" class="hero-geometric">
+  <div class="hero-text reveal" style="position:relative; z-index:2; max-width: 600px;">
+    
+    <div class="hero-socials" style="display:flex; gap:12px; margin-bottom:20px;">
+      <a href="https://github.com/Rudra-CDRI" target="_blank" class="soc-geo"><i class="fa-brands fa-github"></i></a>
+      <a href="https://www.linkedin.com/in/rudra-choudhari-030297317" target="_blank" class="soc-geo"><i class="fa-brands fa-linkedin"></i></a>
     </div>
-    <h1 class="name" style="margin-top:0;">Rudrapriya<br><span>Rajesh</span><br>Choudhari</h1>
-    <div class="hero-chips" style="margin-top:24px;">
-      <div class="chip">⚙ System Design</div>
-      <div class="chip">💧 Fluid Dynamics</div>
-      <div class="chip">🤖 Robotics</div>
-      <div class="chip">🎸 Progressive Metal</div>
+    
+    <h1 class="name-geo">RUDRAPRIYA<br>RAJESH<br><span>CHOUDHARI</span></h1>
+    
+    <div class="hero-chips" style="display:flex; flex-wrap:wrap; gap:8px; margin-top:24px;">
+      <div class="chip chip-geo">System Design</div>
+      <div class="chip chip-geo">Fluid Dynamics</div>
+      <div class="chip chip-geo">Robotics</div>
+      <div class="chip chip-geo">Comp. Engineering</div>
     </div>
-    <div class="hero-btns" style="margin-top:32px;">
-      <button class="btn-ghost" onclick="openResume()"><i class="fa-solid fa-file-pdf"></i> View CV</button>
-      <a href="#contact" class="btn-ghost">Get in Touch</a>
+    
+    <div class="hero-btns" style="display:flex; gap:12px; margin-top:28px; flex-wrap:wrap;">
+      <button class="btn-ghost-geo" onclick="openResume()">VIEW CV</button>
+      <a href="#contact" class="btn-ghost-geo" style="text-decoration:none; display:flex; align-items:center;">GET IN TOUCH</a>
     </div>
   </div>
   
-  <div class="hero-img-wrap reveal">
-    <div class="hero-blob" id="parallaxBlob"></div>
-    <img src="assests/images/hero_profile.png" alt="Rudrapriya Rajesh Choudhari" class="hero-photo" id="parallaxImg" style="border: 2px solid rgba(201, 125, 78, 0.2); box-shadow: 0 10px 40px rgba(201, 125, 78, 0.15);"/>
-    <div class="hero-badge" id="parallaxBadge1">📍 IIT Bhubaneswar · Year 4</div>
-    <div class="hero-badge2" id="parallaxBadge2">B.Tech + M.Tech Dual Degree</div>
+  <div class="hero-img-wrap reveal" style="position:relative; z-index:1;">
+    <div class="geo-solid-shape"></div>
+    <div class="geo-accent-square"></div>
+    <div class="geo-accent-dot"></div>
+    <img src="assests/images/hero_profile.png" alt="Rudrapriya Rajesh Choudhari" class="hero-photo-geo" id="parallaxImg"/>
+    
+    <div class="hero-badge badge-geo" id="parallaxBadge1" style="position:absolute; bottom:20px; left:-40px; z-index:4;">📍 IIT Bhubaneswar · Year 4</div>
+    <div class="hero-badge2 badge-geo" id="parallaxBadge2" style="position:absolute; top:20px; right:-30px; z-index:4;">B.Tech + M.Tech Dual Degree</div>
   </div>
 </section>
 
