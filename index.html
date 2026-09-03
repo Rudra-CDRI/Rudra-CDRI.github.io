@@ -92,7 +92,7 @@ body.dark #hero { background: transparent; }
 body.dark .astat-label { color:#666; }
 body.dark .mini-card-img { filter:brightness(.8); }
 body.dark .proj-tabs { border-color:#222222; }
-body.dark .proj-panel.active { background:#111111; }
+body.dark .proj-panel { background:#111111; }
 body.dark .about-stats .astat-num { color:#c97d4e; }
 body.dark .modal-title { color:#eaeaf0; }
 body.dark .modal-desc { color:#aaa; }
@@ -223,8 +223,8 @@ h1.name span{color:#c97d4e;}
 .ptab.active, .ptab:hover { color: #c97d4e !important; }
 
 /* PROJECT PANELS */
-.proj-panel { position: absolute; visibility: hidden; opacity: 0; transform: translateX(16px); transition: opacity 300ms cubic-bezier(0.16, 1, 0.3, 1), transform 300ms cubic-bezier(0.16, 1, 0.3, 1); width: 100%; }
-.proj-panel.active { position: relative; visibility: visible; opacity: 1; transform: translateX(0); transition: opacity 400ms cubic-bezier(0.16, 1, 0.3, 1) 300ms, transform 400ms cubic-bezier(0.16, 1, 0.3, 1) 300ms; display: grid; grid-template-columns: 1fr 1fr; min-height: 460px; }
+
+.proj-panel { display: grid; grid-template-columns: 1fr 1fr; min-height: 460px; }
 
 .proj-img { width: 100%; height: 100%; object-fit: cover; min-height: 380px; border-radius: 0 0 0 16px; transition: filter 0.3s ease; }
 .proj-panel:hover .proj-img { filter: brightness(1.05); }
@@ -257,11 +257,11 @@ h1.name span{color:#c97d4e;}
 
 .proj-panel .proj-img-wrap { overflow: hidden; border-radius: 0 0 0 16px; width: 100%; height: 100%; display: block; }
 .proj-panel .proj-img { width: 100%; height: 100%; object-fit: cover; min-height: 380px; transform-origin: center; border-radius: 0; }
-.proj-panel.active .proj-img { animation: kenBurns 8s ease-in-out infinite alternate; }
-@keyframes kenBurns { from { transform: scale(1.0); } to { transform: scale(1.04); } }
+
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
-  .proj-panel.active .proj-img { animation: none !important; transform: scale(1.0) !important; }
+  
 }
 
 /* COURSEWORK */
@@ -413,7 +413,7 @@ footer strong{color:#888;}
   .about-grid, .contact-grid { grid-template-columns: 1fr; }
   
   /* Project Panel Fixes */
-  .proj-panel.active { grid-template-columns: 1fr; }
+  .proj-panel { grid-template-columns: 1fr; }
   .proj-img { min-height: 240px; border-radius: 0; }
   .proj-content { padding: 32px 24px; }
 
@@ -781,18 +781,12 @@ body:not(.dark) .pdf-kbd { background: #f0ece8; border-color: #e0dcd4; color: #a
   <div class="sec-inner reveal">
     <div class="sec-eyebrow">Research & Engineering</div>
     <h2 class="sec-title">Major Projects</h2>
-    <p class="sec-sub">Full-width project cards — click tabs to explore each one.</p>
+    <p class="sec-sub">Full-width project cards detailing engineering and research work.</p>
 
-    <div class="main-proj-wrapper">
-      <div class="proj-tabs-container" id="tabsContainer">
-                <div class="proj-tabs" id="projTabs">
-          <button class="ptab active" onclick="showProj(0,this)">01 · ROS 2 Gesture Teleoperation</button>
-          <button class="ptab" onclick="showProj(1,this)">02 · Ionic Wind Generator</button>
-          <button class="ptab" onclick="showProj(2,this)">03 · Piston CFD Analysis</button>
-        </div>
-      </div>
+    <div class="projects-stack" style="display:flex; flex-direction:column; gap:48px;">
+      
 
-            <div class="proj-panel active" id="pp0" onclick="openModal('teleop')">
+            <div class="main-proj-wrapper reveal proj-panel" id="pp0" onclick="openModal('teleop')">
         <img src="assests/images/gesture_teleop.png" alt="Gesture Teleoperation" class="proj-img"/>
         <div class="proj-content">
           <div class="proj-num">Project 01 · Robotics & CV</div>
@@ -808,7 +802,7 @@ body:not(.dark) .pdf-kbd { background: #f0ece8; border-color: #e0dcd4; color: #a
         </div>
       </div>
 
-      <div class="proj-panel" id="pp1" onclick="openModal('ionic')">
+      <div class="main-proj-wrapper reveal proj-panel" id="pp1" onclick="openModal('ionic')">
         <img src="assests/images/iwg2.png" alt="Fluid dynamics" class="proj-img"/>
         <div class="proj-content">
           <div class="proj-num">Project 02 · Ongoing</div>
@@ -823,7 +817,7 @@ body:not(.dark) .pdf-kbd { background: #f0ece8; border-color: #e0dcd4; color: #a
         </div>
       </div>
 
-      <div class="proj-panel" id="pp2" onclick="openModal('cfd')">
+      <div class="main-proj-wrapper reveal proj-panel" id="pp2" onclick="openModal('cfd')">
         <img src="assests/images/piston_cfd.png" alt="CFD Engine" class="proj-img"/>
         <div class="proj-content">
           <div class="proj-num">Project 03 · Simulation</div>
@@ -1117,14 +1111,7 @@ function toggleDark() {
 }
 
 // Project Tabs Logic
-const panels = document.querySelectorAll('.proj-panel');
-const tabs = document.querySelectorAll('.ptab');
-function showProj(i, btn) {
-  panels.forEach(p => p.classList.remove('active'));
-  tabs.forEach(t => t.classList.remove('active'));
-  document.getElementById('pp' + i).classList.add('active');
-  btn.classList.add('active');
-}
+
 
 // Scroll reveal Logic
 const reveals = document.querySelectorAll('.reveal');
@@ -1148,7 +1135,7 @@ const staggerObserver = new IntersectionObserver(entries => {
     }
   });
 }, { threshold: 0.1 });
-document.querySelectorAll('.mini-grid, .skills-grid, .timeline').forEach(el => {
+document.querySelectorAll('.projects-stack, .mini-grid, .skills-grid, .timeline').forEach(el => {
   staggerObserver.observe(el);
 });
 
