@@ -88,7 +88,7 @@ body.dark .nav-links a:hover { color:#c97d4e; }
 body.dark .timeline::before { background:linear-gradient(#c97d4e,#222222); }
 body.dark .tl-placeholder { border-color:#222222; color:#444; }
 body.dark .hero-blob { background:linear-gradient(135deg,#2a1a10,#1e1525); }
-body.dark #hero { background:linear-gradient(135deg,#0a0a0a 0%,#050505 100%); }
+body.dark #hero { background: transparent; }
 body.dark .astat-label { color:#666; }
 body.dark .mini-card-img { filter:brightness(.8); }
 body.dark .proj-tabs { border-color:#222222; }
@@ -535,6 +535,10 @@ body:not(.dark) .pdf-kbd { background: #f0ece8; border-color: #e0dcd4; color: #a
 </nav>
 
 <style>
+  
+  /* Allow canvas grid to show through */
+  #hero, .hero-geometric { background: transparent !important; }
+
   .hero-geometric {
     display: flex;
     align-items: center;
@@ -679,7 +683,11 @@ body:not(.dark) .pdf-kbd { background: #f0ece8; border-color: #e0dcd4; color: #a
   }
 
   .hero-photo-geo { width: 300px; height: 380px; }
-    .hero-geometric { flex-direction: column; text-align: left; padding-top: 20px; gap: 40px; }
+    
+  /* Allow canvas grid to show through */
+  #hero, .hero-geometric { background: transparent !important; }
+
+  .hero-geometric { flex-direction: column; text-align: left; padding-top: 20px; gap: 40px; }
     .geo-solid-shape { top: 16px; left: 16px; }
     .name-geo { text-align: left; }
     .hero-socials, .hero-chips, .hero-btns { justify-content: flex-start !important; }
@@ -1266,7 +1274,7 @@ class InteractiveGrid {
     this.canvas = document.getElementById('interactive-grid');
     this.ctx = this.canvas.getContext('2d');
     
-    this.cellSize = 40;
+    this.cellSize = 80;
     this.mouse = { x: -1000, y: -1000, targetX: -1000, targetY: -1000 };
     this.isHovering = false;
     
