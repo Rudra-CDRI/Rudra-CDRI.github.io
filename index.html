@@ -577,10 +577,12 @@ body:not(.dark) .pdf-kbd { background: #f0ece8; border-color: #e0dcd4; color: #a
   /* Allow canvas grid to show through */
   #hero, .hero-geometric { background: transparent !important; }
 
-  .hero-geometric {
+  .hero-geometric > div {
     zoom: 0.8;
-    min-height: 125vh;
+  }
+  .hero-geometric {
     box-sizing: border-box;
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: space-between;
