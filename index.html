@@ -83,7 +83,7 @@ body.dark footer p { color:#555; }
 body.dark .skill-pill { background:#1a1a1a; color:#ccc; border: 1px solid #333; }
 body.dark .proj-tags .proj-tag { background:#1a1512; color:#c97d4e; }
 body.dark .nav-logo, body.dark h1.name, body.dark .sec-title { color:#eaeaf0; }
-body.dark .nav-links a { color:#888; }
+body.dark .nav-links a { color:#eaeaf0; }
 body.dark .nav-links a:hover { color:#c97d4e; }
 body.dark .timeline::before { background:linear-gradient(#c97d4e,#222222); }
 body.dark .tl-placeholder { border-color:#222222; color:#444; }
@@ -98,11 +98,35 @@ body.dark .modal-title { color:#eaeaf0; }
 body.dark .modal-desc { color:#aaa; }
 body.dark .proj-tabs-container { background: #080808 !important; border-bottom-color: #222222 !important; }
 
+
+  .theme-btn-polished {
+    background: none;
+    border: 2px solid #333;
+    color: #333;
+    border-radius: 50%;
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  body.dark .theme-btn-polished {
+    border-color: #eaeaf0;
+    color: #eaeaf0;
+  }
+  .theme-btn-polished:hover {
+    color: #c97d4e !important;
+    border-color: #c97d4e !important;
+  }
+
 /* NAV LINKS & HAMBURGER */
-.nav-logo{display:flex;align-items:center;gap:8px;font-size:22px;font-weight:700;letter-spacing:-.01em;color:#1c1c1e;}
+.nav-logo{display:flex;align-items:center;gap:8px;font-size:26px;font-weight:700;letter-spacing:-.01em;color:#1c1c1e;}
 .nav-logo span{color:#c97d4e;}
 .nav-links{display:flex;gap:40px;align-items:center;}
-.nav-links a{font-size:15px;color:#666;text-decoration:none;font-weight:500;transition:color .2s;}
+.nav-links a{font-size:17px;color:#333;text-decoration:none;font-weight:600;letter-spacing:0.5px;transition:color .2s;}
 .nav-links a:hover{color:#c97d4e;}
 .menu-toggle { display: none; font-size: 20px; color: #1c1c1e; cursor: pointer; background: none; border: none; }
 body.dark .menu-toggle { color: #eaeaf0; }
@@ -517,7 +541,7 @@ body:not(.dark) .pdf-kbd { background: #f0ece8; border-color: #e0dcd4; color: #a
 
 <nav>
   <div class="nav-logo">
-    <img src="assests/images/portfolio_logo_transparent.png" alt="Rudra Logo" style="height:32px;width:32px;object-fit:contain;border-radius:4px;"/>
+    <img src="assests/images/portfolio_logo_transparent.png" alt="Rudra Logo" style="height:40px;width:40px;object-fit:contain;border-radius:4px;"/>
     Rudra<span>.</span>
   </div>
   <button class="menu-toggle" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
@@ -530,7 +554,7 @@ body:not(.dark) .pdf-kbd { background: #f0ece8; border-color: #e0dcd4; color: #a
     <a href="#experience" onclick="toggleMenu()">Experience</a>
     <a href="#music" onclick="toggleMenu()">Music</a>
     <a href="#contact" onclick="toggleMenu()">Contact</a>
-    <button onclick="toggleDark()" id="theme-btn" style="background:none;border:1.5px solid #e8e4dc;color:#555;border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;font-size:16px;transition:all .2s;cursor:pointer;"><i class="fa-solid fa-sun"></i></button>
+    <button onclick="toggleDark()" id="theme-btn" class="theme-btn-polished"><i class="fa-solid fa-sun"></i></button>
   </div>
 </nav>
 
