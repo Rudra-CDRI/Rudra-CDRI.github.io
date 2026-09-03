@@ -240,6 +240,36 @@ html { scrollbar-width: none; }
 .proj-tools span{color:#888;}
 
 /* MINI PROJECTS */
+
+.slider-btn {
+  background: transparent;
+  border: 1px solid #e8e4dc;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1c1c1e;
+  cursor: pointer;
+  transition: all 200ms ease-out;
+}
+.slider-btn:hover {
+  background: #c97d4e;
+  border-color: #c97d4e;
+  color: #fff;
+  transform: scale(1.05);
+}
+body.dark .slider-btn {
+  border-color: #222;
+  color: #eaeaf0;
+}
+body.dark .slider-btn:hover {
+  background: #c97d4e;
+  border-color: #c97d4e;
+  color: #fff;
+}
+
 .mini-grid {
   display: flex;
   overflow-x: auto;
@@ -868,9 +898,17 @@ body:not(.dark) .pdf-kbd { background: #f0ece8; border-color: #e0dcd4; color: #a
 
 <section class="section section-alt" id="miniprojects">
   <div class="sec-inner reveal">
-    <div class="sec-eyebrow">Coursework & Content</div>
-    <h2 class="sec-title">Mini Projects</h2>
-    <p class="sec-sub">Selected coursework and problem-solving initiatives.</p>
+    <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom: 48px; flex-wrap:wrap; gap:24px;">
+      <div>
+        <div class="sec-eyebrow">Coursework & Content</div>
+        <h2 class="sec-title" style="margin-bottom:8px;">Mini Projects</h2>
+        <p class="sec-sub" style="margin-bottom:0;">Selected coursework and problem-solving initiatives.</p>
+      </div>
+      <div style="display:flex; gap:12px; padding-bottom:4px;">
+        <button class="slider-btn" onclick="document.querySelector('.mini-grid').scrollBy({left: -320, behavior: 'smooth'})" aria-label="Scroll left"><i class="fa-solid fa-arrow-left"></i></button>
+        <button class="slider-btn" onclick="document.querySelector('.mini-grid').scrollBy({left: 320, behavior: 'smooth'})" aria-label="Scroll right"><i class="fa-solid fa-arrow-right"></i></button>
+      </div>
+    </div>
         <div class="mini-grid">
       <div class="mini-card" onclick="openModal('iot_weather')">
         <img src="assests/images/iot_dashboard.png" alt="IoT Weather Station" class="mini-card-img"/>
