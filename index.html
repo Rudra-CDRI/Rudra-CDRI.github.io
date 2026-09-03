@@ -536,17 +536,18 @@ body:not(.dark) .pdf-kbd { background: #f0ece8; border-color: #e0dcd4; color: #a
 
 <section id="hero">
   <div class="hero-text reveal">
-    <div class="hero-eyebrow"><span class="dot"></span> Open to Internships</div>
-    <h1 class="name">Rudrapriya<br><span>Rajesh</span><br>Choudhari</h1>
-    <p class="hero-sub">4th-year Dual Degree student at <strong>IIT Bhubaneswar</strong>. Robotics is where most of my time goes — fluid simulations and System Design problems fill in the rest. Guitar's the one hobby that has nothing to do with any of that.</p>
-    <div class="hero-chips">
+    <div class="hero-socials" style="display:flex; gap:16px; margin-bottom:20px;">
+      <a href="https://github.com/Rudra-CDRI" target="_blank" style="color:#c97d4e; font-size:1.4rem; transition:color 0.2s, transform 0.2s;" onmouseover="this.style.color='#b56e40'; this.style.transform='translateY(-2px)';" onmouseout="this.style.color='#c97d4e'; this.style.transform='translateY(0)';"><i class="fa-brands fa-github"></i></a>
+      <a href="https://www.linkedin.com/in/rudra-choudhari-030297317" target="_blank" style="color:#c97d4e; font-size:1.4rem; transition:color 0.2s, transform 0.2s;" onmouseover="this.style.color='#b56e40'; this.style.transform='translateY(-2px)';" onmouseout="this.style.color='#c97d4e'; this.style.transform='translateY(0)';"><i class="fa-brands fa-linkedin"></i></a>
+    </div>
+    <h1 class="name" style="margin-top:0;">Rudrapriya<br><span>Rajesh</span><br>Choudhari</h1>
+    <div class="hero-chips" style="margin-top:24px;">
       <div class="chip">⚙ System Design</div>
       <div class="chip">💧 Fluid Dynamics</div>
       <div class="chip">🤖 Robotics</div>
       <div class="chip">🎸 Progressive Metal</div>
     </div>
-    <div class="hero-btns">
-      <a href="#projects" class="btn-warm">See My Work</a>
+    <div class="hero-btns" style="margin-top:32px;">
       <button class="btn-ghost" onclick="openResume()"><i class="fa-solid fa-file-pdf"></i> View CV</button>
       <a href="#contact" class="btn-ghost">Get in Touch</a>
     </div>
@@ -554,7 +555,7 @@ body:not(.dark) .pdf-kbd { background: #f0ece8; border-color: #e0dcd4; color: #a
   
   <div class="hero-img-wrap reveal">
     <div class="hero-blob" id="parallaxBlob"></div>
-    <img src="assests/images/profile_pic.jpg" alt="Engineering lab" class="hero-photo" id="parallaxImg"/>
+    <img src="assests/images/hero_profile.png" alt="Rudrapriya Rajesh Choudhari" class="hero-photo" id="parallaxImg" style="border: 2px solid rgba(201, 125, 78, 0.2); box-shadow: 0 10px 40px rgba(201, 125, 78, 0.15);"/>
     <div class="hero-badge" id="parallaxBadge1">📍 IIT Bhubaneswar · Year 4</div>
     <div class="hero-badge2" id="parallaxBadge2">B.Tech + M.Tech Dual Degree</div>
   </div>

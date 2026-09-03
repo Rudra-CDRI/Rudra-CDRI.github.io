@@ -1,0 +1,36 @@
+6: <title>Rudrapriya Rajesh Choudhari</title>
+516: <canvas id="interactive-grid"></canvas>
+518: <nav>
+525: <div class="nav-links" id="navLinks">
+537: <section id="hero">
+556: <div class="hero-blob" id="parallaxBlob"></div>
+557: <img src="assests/images/profile_pic.jpg" alt="Engineering lab" class="hero-phot
+558: <div class="hero-badge" id="parallaxBadge1">📍 IIT Bhubaneswar · Year 4</div>
+559: <div class="hero-badge2" id="parallaxBadge2">B.Tech + M.Tech Dual Degree</div>
+563: <section class="section section-alt" id="about">
+584: <section class="section" id="projects">
+591: <div class="proj-tabs-container" id="tabsContainer">
+592: <div class="proj-tabs" id="projTabs">
+599: <div class="proj-panel active" id="pp0" onclick="openModal('teleop')">
+615: <div class="proj-panel" id="pp1" onclick="openModal('ionic')">
+630: <div class="proj-panel" id="pp2" onclick="openModal('cfd')">
+649: <section class="section section-alt" id="miniprojects">
+713: <section class="section" id="skills">
+752: <section class="section section-alt" id="coursework">
+798: <section class="section" id="experience">
+838: <section class="section section-alt" id="music">
+879: <section class="section" id="contact">
+888: <form id="contactForm" onsubmit="handleContactSubmit(event)">
+904: <button type="submit" class="btn-warm" id="submitBtn">Send Message</button>
+922: <div class="modal-overlay" id="projectModal" onclick="closeModalOnOutsideClick(e
+925: <h3 class="modal-title" id="modalTitle">Project Title</h3>
+926: <p class="modal-desc" id="modalDesc">Project description goes here...</p>
+927: <div class="modal-actions" id="modalActions">
+1261: <div class="overlay" id="pdfOverlay" onclick="closeOnOutside(event, 'pdfOverlay'
+1266: <span class="t-name" id="pdfTitle">Rudrapriya's Resume</span>
+1277: <span class="t-page-of" id="pvOf">/ —</span>
+1284: <select class="t-zoom-select" id="pvZoom" onchange="pv.setZoom(this.value)">
+1299: <div class="pdf-loading-strip"><div class="pdf-loading-bar" id="pvBar"></div></d
+1300: <div class="viewer-area pdf-canvas-area" id="pvArea">
+1301: <div class="pdf-state" id="pvState">
+1310: <span class="pdf-f-pill" id="pvPageBadge">Page 1</span>
