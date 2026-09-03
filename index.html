@@ -530,7 +530,7 @@ body:not(.dark) .pdf-kbd { background: #f0ece8; border-color: #e0dcd4; color: #a
     <a href="#experience" onclick="toggleMenu()">Experience</a>
     <a href="#music" onclick="toggleMenu()">Music</a>
     <a href="#contact" onclick="toggleMenu()">Contact</a>
-    <button onclick="toggleDark()" id="theme-btn" style="background:none;border:1.5px solid #e8e4dc;color:#555;border-radius:20px;padding:8px 20px;font-size:15px;font-weight:700;transition:all .2s;">☀️ Light</button>
+    <button onclick="toggleDark()" id="theme-btn" style="background:none;border:1.5px solid #e8e4dc;color:#555;border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;font-size:16px;transition:all .2s;cursor:pointer;"><i class="fa-solid fa-sun"></i></button>
   </div>
 </nav>
 
@@ -1103,7 +1103,7 @@ function toggleDark() {
   const btn = document.getElementById('theme-btn');
   body.classList.toggle('dark');
   const isDark = body.classList.contains('dark');
-  btn.textContent = isDark ? '☀️ Light' : '🌙 Dark';
+  btn.innerHTML = isDark ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
 }
 
 // Project Tabs Logic
