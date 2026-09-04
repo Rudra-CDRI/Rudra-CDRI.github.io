@@ -284,8 +284,8 @@ body.dark .slider-btn:hover {
   display: none;
 }
 .mini-card {
-  flex: 0 0 calc(33.333% - 16px);
-  min-width: 280px;
+  flex: 0 0 calc(20% - 19.2px);
+  min-width: 200px;
   scroll-snap-align: start;
   background:#fff;
   border:1px solid #e8e4dc;
@@ -905,8 +905,8 @@ body:not(.dark) .pdf-kbd { background: #f0ece8; border-color: #e0dcd4; color: #a
         <p class="sec-sub" style="margin-bottom:0;">Selected coursework and problem-solving initiatives.</p>
       </div>
       <div style="display:flex; gap:12px; padding-bottom:4px;">
-        <button class="slider-btn" onclick="document.querySelector('.mini-grid').scrollBy({left: -320, behavior: 'smooth'})" aria-label="Scroll left"><i class="fa-solid fa-arrow-left"></i></button>
-        <button class="slider-btn" onclick="document.querySelector('.mini-grid').scrollBy({left: 320, behavior: 'smooth'})" aria-label="Scroll right"><i class="fa-solid fa-arrow-right"></i></button>
+        <button class="slider-btn" onclick="const s=document.querySelector('.mini-grid'); s.scrollBy({left: -(s.querySelector('.mini-card').offsetWidth+24), behavior: 'smooth'})" aria-label="Scroll left"><i class="fa-solid fa-arrow-left"></i></button>
+        <button class="slider-btn" onclick="const s=document.querySelector('.mini-grid'); s.scrollBy({left: (s.querySelector('.mini-card').offsetWidth+24), behavior: 'smooth'})" aria-label="Scroll right"><i class="fa-solid fa-arrow-right"></i></button>
       </div>
     </div>
         <div class="mini-grid">
@@ -1788,7 +1788,8 @@ document.addEventListener('keydown', e => {
       if (slider.scrollLeft + slider.clientWidth >= slider.scrollWidth - 10) {
         slider.scrollTo({ left: 0, behavior: 'smooth' });
       } else {
-        slider.scrollBy({ left: 320, behavior: 'smooth' });
+        const cw = slider.querySelector('.mini-card').offsetWidth + 24;
+        slider.scrollBy({ left: cw, behavior: 'smooth' });
       }
     }, 4000);
   }
