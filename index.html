@@ -1788,10 +1788,15 @@ document.addEventListener('keydown', e => {
     startAutoScroll();
     slider.addEventListener('mouseenter', stopAutoScroll);
     slider.addEventListener('mouseleave', startAutoScroll);
-    slider.addEventListener('touchstart', stopAutoScroll);
-    slider.addEventListener('touchend', startAutoScroll);
+    slider.addEventListener('touchstart', stopAutoScroll, { passive: true });
+    slider.addEventListener('touchend', startAutoScroll, { passive: true });
 
-    
+    slider.addEventListener('wheel', (e) => {
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+        e.preventDefault();
+        slider.scrollLeft += e.deltaY;
+      }
+    }, { passive: false });
   }
 </script>
 </body>
