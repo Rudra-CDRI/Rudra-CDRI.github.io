@@ -284,8 +284,8 @@ body.dark .slider-btn:hover {
   display: none;
 }
 .mini-card {
-  flex: 0 0 calc(20% - 19.2px);
-  min-width: 200px;
+  flex: 0 0 calc(33.333% - 16px);
+  min-width: 280px;
   scroll-snap-align: start;
   background:#fff;
   border:1px solid #e8e4dc;
@@ -1805,39 +1805,7 @@ document.addEventListener('keydown', e => {
     slider.addEventListener('touchstart', stopAutoScroll);
     slider.addEventListener('touchend', startAutoScroll);
 
-    // Flat Slider Effect with Blur
-    const cards = document.querySelectorAll('.mini-card');
-
-    function updateCoverflow() {
-      const sliderCenter = slider.getBoundingClientRect().left + slider.clientWidth / 2;
-      cards.forEach(card => {
-        const cardRect = card.getBoundingClientRect();
-        const cardCenter = cardRect.left + cardRect.width / 2;
-        const distFromCenter = cardCenter - sliderCenter;
-        
-        let ratio = distFromCenter / (slider.clientWidth / 2);
-        ratio = Math.max(-1.5, Math.min(1.5, ratio));
-        
-        const scale = 1 - Math.abs(ratio) * 0.1; 
-        const opacity = 1 - Math.abs(ratio) * 0.4;
-        const blurAmount = Math.abs(ratio) * 4;
-        
-        card.style.transform = `scale(${scale})`;
-        card.style.opacity = Math.max(0.4, opacity);
-        card.style.filter = `blur(${blurAmount}px)`;
-        card.style.zIndex = Math.round(100 - Math.abs(ratio) * 10);
-      });
-    }
-
-    slider.addEventListener('scroll', () => {
-      requestAnimationFrame(updateCoverflow);
-    });
-    window.addEventListener('resize', updateCoverflow);
     
-    cards.forEach(c => {
-      c.style.transition = 'transform 0.1s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 200ms ease-out, opacity 0.1s ease-out, filter 0.1s ease-out';
-    });
-    setTimeout(updateCoverflow, 100);
   }
 </script>
 </body>
