@@ -1803,6 +1803,41 @@ document.addEventListener('keydown', e => {
     slider.addEventListener('mouseleave', startAutoScroll);
     slider.addEventListener('touchstart', stopAutoScroll);
     slider.addEventListener('touchend', startAutoScroll);
+
+    // 3D Coverflow Effect
+    const cards = document.querySelectorAll('.mini-card');
+    slider.style.perspective = '1200px';
+    slider.style.transformStyle = 'preserve-3d';
+
+    function updateCoverflow() {
+      const sliderCenter = slider.getBoundingClientRect().left + slider.clientWidth / 2;
+      cards.forEach(card => {
+        const cardRect = card.getBoundingClientRect();
+        const cardCenter = cardRect.left + cardRect.width / 2;
+        const distFromCenter = cardCenter - sliderCenter;
+        
+        let ratio = distFromCenter / (slider.clientWidth / 2);
+        ratio = Math.max(-1.5, Math.min(1.5, ratio));
+        
+        const rotateY = ratio * 25; 
+        const scale = 1 - Math.abs(ratio) * 0.12; 
+        const opacity = 1 - Math.abs(ratio) * 0.3;
+        
+        card.style.transform = `rotateY(${rotateY}deg) scale(${scale})`;
+        card.style.opacity = Math.max(0.4, opacity);
+        card.style.zIndex = Math.round(100 - Math.abs(ratio) * 10);
+      });
+    }
+
+    slider.addEventListener('scroll', () => {
+      requestAnimationFrame(updateCoverflow);
+    });
+    window.addEventListener('resize', updateCoverflow);
+    
+    cards.forEach(c => {
+      c.style.transition = 'transform 0.1s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 200ms ease-out, opacity 0.1s ease-out';
+    });
+    setTimeout(updateCoverflow, 100);
   }
 </script>
 </body>
