@@ -1776,5 +1776,34 @@ document.addEventListener('keydown', e => {
   }
 });
 </script>
+
+<script>
+  // Auto-scroll Mini Projects slider
+  const slider = document.querySelector('.mini-grid');
+  let autoScrollInterval;
+  
+  function startAutoScroll() {
+    if (!slider) return;
+    autoScrollInterval = setInterval(() => {
+      if (slider.scrollLeft + slider.clientWidth >= slider.scrollWidth - 10) {
+        slider.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        slider.scrollBy({ left: 320, behavior: 'smooth' });
+      }
+    }, 4000);
+  }
+  
+  function stopAutoScroll() {
+    clearInterval(autoScrollInterval);
+  }
+  
+  if (slider) {
+    startAutoScroll();
+    slider.addEventListener('mouseenter', stopAutoScroll);
+    slider.addEventListener('mouseleave', startAutoScroll);
+    slider.addEventListener('touchstart', stopAutoScroll);
+    slider.addEventListener('touchend', startAutoScroll);
+  }
+</script>
 </body>
 </html>
