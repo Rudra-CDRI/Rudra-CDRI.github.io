@@ -1787,8 +1787,13 @@ document.addEventListener('keydown', e => {
 
     slider.addEventListener('wheel', (e) => {
       if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-        e.preventDefault();
-        slider.scrollLeft += e.deltaY;
+        const isAtStart = slider.scrollLeft === 0;
+        const isAtEnd = slider.scrollLeft + slider.clientWidth >= slider.scrollWidth - 1;
+        
+        if ((e.deltaY < 0 && !isAtStart) || (e.deltaY > 0 && !isAtEnd)) {
+          e.preventDefault();
+          slider.scrollLeft += e.deltaY;
+        }
       }
     }, { passive: false });
   }
