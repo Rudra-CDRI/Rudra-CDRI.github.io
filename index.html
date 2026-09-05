@@ -228,11 +228,11 @@ html { scrollbar-width: none; }
 
 /* PROJECT PANELS */
 
-.proj-panel { display: grid; grid-template-columns: 1fr 1fr; min-height: 460px; }
+.proj-panel { display: flex; flex-direction: column; min-height: 100%; }
 
-.proj-img { width: 100%; height: 100%; object-fit: cover; min-height: 380px; border-radius: 0 0 0 16px; transition: filter 0.3s ease; }
+.proj-img { width: 100%; height: 100%; object-fit: cover; min-height: 240px; border-radius: 0; transition: transform 0.3s ease, filter 0.3s ease; }
 .proj-panel:hover .proj-img { filter: brightness(1.05); }
-.proj-content { padding: 48px 48px; display: flex; flex-direction: column; justify-content: center; background: #fff; }
+.proj-content { padding: 32px; display: flex; flex-direction: column; justify-content: flex-start; background: transparent; flex-grow: 1; }
 .proj-num{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#c97d4e;font-weight:700;margin-bottom: 16px;}
 .proj-title{font-size:24px;font-weight:800;line-height:1.25;margin-bottom: 16px;color:#1c1c1e;}
 .proj-body{font-size:15px;color:#666;line-height:1.8;margin-bottom: 16px;}
@@ -318,8 +318,8 @@ body.dark .slider-btn:hover {
 .skill-pill{display:inline-block;background:#f5f2ee;color:#555;font-size:12px;font-weight:600;padding: 8px 8px;border-radius:20px;margin: 0px 0px 0 0;}
 
 
-.proj-panel .proj-img-wrap { overflow: hidden; border-radius: 0 0 0 16px; width: 100%; height: 100%; display: block; }
-.proj-panel .proj-img { width: 100%; height: 100%; object-fit: cover; min-height: 380px; transform-origin: center; border-radius: 0; }
+.proj-panel .proj-img-wrap { overflow: hidden; border-radius: 0; width: 100%; height: 280px; display: block; flex-shrink: 0; }
+.proj-panel .proj-img { width: 100%; height: 100%; object-fit: cover; min-height: 280px; transform-origin: center; border-radius: 0; }
 
 
 @media (prefers-reduced-motion: reduce) {
@@ -477,6 +477,7 @@ footer strong{color:#888;}
   
   
   /* Project Panel Fixes */
+  .projects-stack { grid-template-columns: 1fr !important; }
   .proj-panel { grid-template-columns: 1fr; }
   .proj-img { min-height: 240px; border-radius: 0; }
   .proj-content { padding: 32px 24px; }
@@ -842,18 +843,17 @@ body:not(.dark) .pdf-kbd { background: #f0ece8; border-color: #e0dcd4; color: #a
 <section class="section" id="projects">
   <div class="sec-inner reveal">
     <div class="sec-eyebrow">Research & Engineering</div>
-    <h2 class="sec-title">Major Projects</h2>
-    <p class="sec-sub">Full-width project cards detailing engineering and research work.</p>
+    <h2 class="sec-title">Projects</h2>
+    <p class="sec-sub">Curated selection of my engineering, robotics, and AI work.</p>
 
-    <div class="projects-stack" style="display:flex; flex-direction:column; gap:48px;">
+    <div class="projects-stack" style="display:grid; grid-template-columns: repeat(2, 1fr); gap:32px;">
       
-
-            <div class="main-proj-wrapper reveal proj-panel" id="pp0" onclick="openModal('teleop')">
-        <img src="assests/images/gesture_teleop.png" alt="Gesture Teleoperation" class="proj-img"/>
+      <div class="main-proj-wrapper reveal proj-panel" id="pp0">
+        <div class="proj-img-wrap"><img src="assests/images/gesture_teleop.png" alt="Gesture Teleoperation" class="proj-img"/></div>
         <div class="proj-content">
-          <div class="proj-num">Project 01 · Robotics & CV</div>
+          <div class="proj-num">Robotics & CV</div>
           <div class="proj-title">ROS 2 Gesture-Controlled Robotic Arm</div>
-          <p class="proj-body">Real-time teleoperation of a simulated OpenManipulator-X robotic arm in Gazebo using 3D hand tracking and computer vision. MediaPipe extracts 21 3D landmarks, a PyTorch classifier determines the gesture, and a control node maps gestures to velocity control commands computed using inverse kinematics.</p>
+          <p class="proj-body">Real-time teleoperation of a simulated OpenManipulator-X robotic arm using hand gestures, ROS 2 Humble, and computer vision. A webcam captures hand movements, MediaPipe extracts 21 3D landmarks, a lightweight PyTorch classifier maps the pose to a gesture, and a ROS 2 control node converts that gesture into joint commands via numerical inverse kinematics.</p>
           <div class="proj-tags">
             <span class="proj-tag">Robotics</span>
             <span class="proj-tag">ROS 2</span>
@@ -861,40 +861,88 @@ body:not(.dark) .pdf-kbd { background: #f0ece8; border-color: #e0dcd4; color: #a
             <span class="proj-tag">Deep Learning</span>
           </div>
           <div class="proj-tools">Tools: <span>ROS 2 Humble · Gazebo · PyTorch · MediaPipe · OpenCV · Python</span></div>
+          <div style="margin-top: auto; display: flex; gap: 12px; flex-wrap: wrap; padding-top: 24px;">
+            <a href="gesture_teleoperation.html" class="btn-warm">Project Details</a>
+          </div>
         </div>
       </div>
 
-      <div class="main-proj-wrapper reveal proj-panel" id="pp1" onclick="openModal('ionic')">
-        <img src="assests/images/iwg2.png" alt="Fluid dynamics" class="proj-img"/>
+      <div class="main-proj-wrapper reveal proj-panel" id="pp1">
+        <div class="proj-img-wrap"><img src="assests/images/krishi_drone.png" alt="Krishi Drone" class="proj-img"/></div>
         <div class="proj-content">
-          <div class="proj-num">Project 02 · Ongoing</div>
+          <div class="proj-num">Robotics</div>
+          <div class="proj-title">Krishi Drone UAV</div>
+          <p class="proj-body">Developed as part of the e-Yantra Robotics initiative, this autonomous quadrotor is designed for precision agriculture. Using ROS 2 and Gazebo, we implemented a navigation stack for waypoint following. Real-time image feedback from an overhead camera allows the drone to localize diseased crops and selectively deploy biopesticides.</p>
+          <div class="proj-tags">
+            <span class="proj-tag">ROS 2</span>
+            <span class="proj-tag">Gazebo</span>
+            <span class="proj-tag">Python</span>
+            <span class="proj-tag">YOLO</span>
+          </div>
+          <div class="proj-tools">Tools: <span>ROS 2 · Gazebo · Python · YOLO</span></div>
+          <div style="margin-top: auto; display: flex; gap: 12px; flex-wrap: wrap; padding-top: 24px;">
+            <a href="krishi_drone.html" class="btn-warm">Project Details</a>
+            <a href="https://github.com/SATHYAGITH368/krishi-drone" target="_blank" class="btn-ghost" style="color: #c97d4e; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;"><i class="fa-brands fa-github"></i> View Repository</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="main-proj-wrapper reveal proj-panel" id="pp2">
+        <div class="proj-img-wrap"><img src="assests/images/2dof_robot_arm.png" alt="Robotic Arm" class="proj-img"/></div>
+        <div class="proj-content">
+          <div class="proj-num">Kinematics</div>
+          <div class="proj-title">2DOF Robotic Manipulator</div>
+          <p class="proj-body">A complete kinematic mapping and trajectory planning model built in MATLAB Simulink. The project involved exporting a Simscape Multibody Rigid Body Tree, establishing Forward Kinematics for pose estimation, and utilizing the Levenberg-Marquardt solver for Inverse Kinematics. This enables the end-effector to trace accurate geometric paths with governed acceleration.</p>
+          <div class="proj-tags">
+            <span class="proj-tag">MATLAB</span>
+            <span class="proj-tag">Simulink</span>
+            <span class="proj-tag">Simscape</span>
+          </div>
+          <div class="proj-tools">Tools: <span>MATLAB Simulink · Simscape Multibody</span></div>
+          <div style="margin-top: auto; display: flex; gap: 12px; flex-wrap: wrap; padding-top: 24px;">
+            <a href="2-dof_robotiic_manipulator.html" class="btn-warm">Project Details</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="main-proj-wrapper reveal proj-panel" id="pp3">
+        <div class="proj-img-wrap"><img src="assests/images/iwg2.png" alt="Ionic Wind" class="proj-img"/></div>
+        <div class="proj-content">
+          <div class="proj-num">Hardware & Fluid Dynamics</div>
           <div class="proj-title">Ionic Wind Generator (EHD Thruster)</div>
-          <p class="proj-body">Designing a solid-state electrohydrodynamic (EHD) thruster to generate directed airflow with no moving parts. Successfully identified and integrated a high-voltage DC source to drive corona discharge, and currently iterating on electrode geometry to optimize thrust. Investigating boundary layer control effects for potential drag-reduction applications.</p>
+          <p class="proj-body">This project focuses on designing a solid-state electrohydrodynamic (EHD) thruster. The goal is to generate directed airflow with no moving parts for miniaturized cooling applications and drag reduction. Working under Dr. Venugopal Arumuru, I have built and tested a prototype, mapping flow rates and iterating on electrode geometries to maximize thrust efficiency.</p>
           <div class="proj-tags">
             <span class="proj-tag">Fluid Dynamics</span>
             <span class="proj-tag">Hardware</span>
             <span class="proj-tag">Electrostatics</span>
           </div>
           <div class="proj-tools">Tools: <span>HV Electronics · Prototype Fabrication</span></div>
+          <div style="margin-top: auto; display: flex; gap: 12px; flex-wrap: wrap; padding-top: 24px;">
+            <a href="ionic_wind.html" class="btn-warm">Project Details</a>
+          </div>
         </div>
       </div>
 
-      <div class="main-proj-wrapper reveal proj-panel" id="pp2" onclick="openModal('cfd')">
-        <img src="assests/images/piston_cfd.png" alt="CFD Engine" class="proj-img"/>
+      <div class="main-proj-wrapper reveal proj-panel" id="pp4">
+        <div class="proj-img-wrap"><img src="assests/images/piston_cfd.png" alt="CFD Engine" class="proj-img"/></div>
         <div class="proj-content">
-          <div class="proj-num">Project 03 · Simulation</div>
+          <div class="proj-num">Simulation</div>
           <div class="proj-title">CFD Analysis of IC Engine Piston Heads</div>
-          <p class="proj-body">Performed reactive-flow CFD simulations in ANSYS Forte to compare combustion performance of Flat-top and Circular Dish piston geometries in a CI engine. Configured RANS RNG k-epsilon turbulence model with CHEMKIN-Pro chemistry solver to confirm superior air-fuel mixing in dish-type geometry.</p>
+          <p class="proj-body">An analytical project conducting reactive-flow CFD simulations in ANSYS Forte to evaluate CI engine combustion. By comparing Flat-top and Circular Dish geometries, we utilized the RANS RNG k-epsilon turbulence model and CHEMKIN-Pro solver. The dish geometry demonstrated superior squish-driven air-fuel mixing, resulting in near-complete combustion.</p>
           <div class="proj-tags">
             <span class="proj-tag">Thermodynamics</span>
             <span class="proj-tag">CFD</span>
             <span class="proj-tag">Combustion</span>
           </div>
           <div class="proj-tools">Tools: <span>ANSYS Forte · CHEMKIN-Pro</span></div>
+          <div style="margin-top: auto; display: flex; gap: 12px; flex-wrap: wrap; padding-top: 24px;">
+            <a href="piston_cfd_analysis.html" class="btn-warm">Project Details</a>
+          </div>
         </div>
       </div>
 
     </div>
+
   </div>
 </section>
 
@@ -912,61 +960,55 @@ body:not(.dark) .pdf-kbd { background: #f0ece8; border-color: #e0dcd4; color: #a
       </div>
     </div>
         <div class="mini-grid">
-      <div class="mini-card" onclick="openModal('iot_weather')">
+      <div class="mini-card">
         <img src="assests/images/iot_dashboard.png" alt="IoT Weather Station" class="mini-card-img"/>
         <div class="mini-card-body">
           <div class="mini-card-num">Internet of Things</div>
           <div class="mini-card-title">IoT Weather Station & Alert System</div>
           <p style="font-size:12px;color:#888;line-height:1.65;margin: 8px 0 8px;">Simulated a complete sensor-to-cloud data pipeline using ESP32 and DHT22 in Wokwi. Configured live visualization and threshold-based email alerts via ThingSpeak.</p>
           <div class="mini-card-tools">ESP32 · C++ · ThingSpeak · Wokwi</div>
+          <div style="margin-top: 16px; display: flex; gap: 8px;">
+            <a href="iot_weather_station.html" class="btn-warm" style="font-size: 12px; padding: 6px 16px;">Project Details</a>
+          </div>
         </div>
       </div>
-      <div class="mini-card" onclick="openModal('cad_portfolio')">
+      <div class="mini-card">
         <img src="assests/images/cad_portfolio_thumb.jpg" alt="CAD modelling" class="mini-card-img"/>
         <div class="mini-card-body">
           <div class="mini-card-num">Coursework</div>
           <div class="mini-card-title">CAD Modelling Portfolio</div>
-          <p style="font-size:12px;color:#888;line-height:1.65;margin: 8px 0 8px;">Assembly and detail drawings spanning engine sub-assemblies, precision jigs, and mechanical linkages — produced with strict adherence to GD&T standards and design-for-manufacture conventions.</p>
+          <p style="font-size:12px;color:#888;line-height:1.65;margin: 8px 0 8px;">Assembly and detail drawings spanning engine sub-assemblies, precision jigs, and mechanical linkages - produced with strict adherence to GD&T standards and design-for-manufacture conventions.</p>
           <div class="mini-card-tools">SolidWorks</div>
+          <div style="margin-top: 16px; display: flex; gap: 8px;">
+            <a href="cad_portfolio.html" class="btn-warm" style="font-size: 12px; padding: 6px 16px;">Project Details</a>
+          </div>
         </div>
       </div>
-      <div class="mini-card" onclick="openModal('drone')">
-        <img src="assests/images/krishi_drone.png" alt="Robotics" class="mini-card-img"/>
-        <div class="mini-card-body">
-          <div class="mini-card-num">e-Yantra IIT Bombay</div>
-          <div class="mini-card-title">Krishi Drone : Precision Agriculture UAV</div>
-          <p style="font-size:12px;color:#888;line-height:1.65;margin: 8px 0 8px;">Autonomous quadrotor developed for the e-Yantra Robotics Competition (IIT Bombay). Implements ROS 2 waypoint navigation with real-time computer vision for crop disease detection, iteratively refined for reliable inference under variable lighting and altitude conditions.</p>
-          <div class="mini-card-tools">ROS2 · Gazebo · Python · YOLO</div>
-        </div>
-      </div>
-      <div class="mini-card" onclick="openModal('gripper_design')">
+      <div class="mini-card">
         <img src="assests/images/gripper_ansys.png" alt="Industrial Gripper" class="mini-card-img"/>
         <div class="mini-card-body">
           <div class="mini-card-num">Industrial Design</div>
           <div class="mini-card-title">2-Finger Industrial Gripper</div>
           <p style="font-size:12px;color:#888;line-height:1.65;margin: 8px 0 8px;">Designed a gear-driven parallel jaw gripper for 10 kg payloads. Modelled the dual parallelogram linkage in SolidWorks and validated the design with static structural FEA in ANSYS.</p>
           <div class="mini-card-tools">SolidWorks · ANSYS Workbench</div>
+          <div style="margin-top: 16px; display: flex; gap: 8px;">
+            <a href="industrial_gripper.html" class="btn-warm" style="font-size: 12px; padding: 6px 16px;">Project Details</a>
+          </div>
         </div>
       </div>
-    <div class="mini-card" onclick="openModal('manipulator')">
-        <img src="assests/images/2dof_robot_arm.png" alt="Robotic Arm" class="mini-card-img"/>
-        <div class="mini-card-body">
-          <div class="mini-card-num">Kinematics</div>
-          <div class="mini-card-title">2DOF Robotic Manipulator</div>
-          <p style="font-size:12px;color:#888;line-height:1.65;margin: 8px 0 8px;">Simscape Multibody model of a 2-DOF planar arm with analytically derived forward and inverse kinematics. Implements Jacobian-based velocity mapping for smooth Cartesian trajectory generation with governed acceleration profiles.</p>
-          <div class="mini-card-tools">MATLAB Simulink · Simscape Multibody</div>
-        </div>
-      </div>
-      <div class="mini-card" onclick="openModal('booksolver_sme')">
+      <div class="mini-card">
         <img src="assests/images/booksolver_thumb.jpg" alt="Physics & Maths" class="mini-card-img"/>
         <div class="mini-card-body">
           <div class="mini-card-num">Booksolver</div>
           <div class="mini-card-title">Physics & Maths Expert</div>
           <p style="font-size:12px;color:#888;line-height:1.65;margin: 8px 0 8px;">Produced detailed video solutions for JEE Advanced-level physics and mathematics problems, emphasising conceptual clarity and structured problem-solving methodology.</p>
           <div class="mini-card-tools">Content Creation · EdTech</div>
+          <div style="margin-top: 16px; display: flex; gap: 8px;">
+            <a href="https://www.youtube.com/playlist?list=PLioTSJheQgGiX10VHZz487jypl0BGnESb" target="_blank" class="btn-warm" style="font-size: 12px; padding: 6px 16px;"><i class="fa-brands fa-youtube"></i> Playlist</a>
+          </div>
         </div>
       </div>
-      </div>
+    </div>
   </div>
 </section>
 
@@ -1223,56 +1265,6 @@ hero.addEventListener('mouseleave', () => {
 
 // DYNAMIC MODAL LOGIC
 const projectData = {
-  // Main Projects
-  'ionic': {
-    title: 'Ionic Wind Generator',
-    desc: 'This project focuses on designing a solid-state electrohydrodynamic (EHD) thruster. The goal is to generate directed airflow with no moving parts for miniaturized cooling applications and drag reduction. Working under Dr. Venugopal Arumuru, I have built and tested a prototype, mapping flow rates and iterating on electrode geometries to maximize thrust efficiency.',
-    buttons: '<a href="ionic_wind.html" class="btn-warm">Learn More</a>'
-  },
-  'drone': {
-    title: 'Krishi Drone UAV',
-    desc: 'Developed as part of the e-Yantra Robotics initiative, this autonomous quadrotor is designed for precision agriculture. Using ROS 2 and Gazebo, we implemented a navigation stack for waypoint following. Real-time image feedback from an overhead camera allows the drone to localize diseased crops and selectively deploy biopesticides.',
-    buttons: '<a href="krishi_drone.html" class="btn-warm">Learn More</a> <a href="https://github.com/SATHYAGITH368/krishi-drone" target="_blank" class="btn-ghost" style="margin-top: 8px;"><i class="fa-brands fa-github"></i> View Repository</a>'
-  },
-  'cfd': {
-    title: 'CFD Analysis of Piston Heads',
-    desc: 'An analytical project conducting reactive-flow CFD simulations in ANSYS Forte to evaluate CI engine combustion. By comparing Flat-top and Circular Dish geometries, we utilized the RANS RNG k-epsilon turbulence model and CHEMKIN-Pro solver. The dish geometry demonstrated superior squish-driven air-fuel mixing, resulting in near-complete combustion.',
-    buttons: '<a href="piston_cfd_analysis.html" class="btn-warm">Learn More</a>'
-  },
-  'manipulator': {
-    title: '2DOF Robotic Manipulator',
-    desc: 'A complete kinematic mapping and trajectory planning model built in MATLAB Simulink. The project involved exporting a Simscape Multibody Rigid Body Tree, establishing Forward Kinematics for pose estimation, and utilizing the Levenberg-Marquardt solver for Inverse Kinematics. This enables the end-effector to trace accurate geometric paths with governed acceleration.',
-    buttons: '<a href="2-dof_robotiic_manipulator.html" class="btn-warm">Learn More</a>'
-  },
-  'teleop': {
-    title: 'ROS 2 Gesture Teleoperation',
-    desc: 'Real-time teleoperation of a simulated OpenManipulator-X robotic arm using hand gestures, ROS 2 Humble, and computer vision. A webcam captures hand movements, MediaPipe extracts 21 3D landmarks, a lightweight PyTorch classifier maps the pose to a gesture, and a ROS 2 control node converts that gesture into joint commands via numerical inverse kinematics.',
-    buttons: '<a href="gesture_teleoperation.html" class="btn-warm">Learn More</a>'
-  },
-  'gripper_design': {
-    title: '2-Finger Industrial Gripper',
-    desc: 'Designed a gear-driven parallel jaw gripper for 10 kg payloads. Modelled the dual parallelogram linkage in SolidWorks and validated the design with static structural FEA in ANSYS.',
-    buttons: '<a href="industrial_gripper.html" class="btn-warm">Learn More</a>'
-  },
-  
-  // Other Work (Mini Projects)
-  'iot_weather': {
-    title: 'IoT Weather Station & Alert System',
-    desc: 'Developed a robust proof-of-concept IoT weather monitoring system using an ESP32 and DHT22 sensor within the Wokwi simulation environment. The system establishes a Wi-Fi connection to transmit real-time temperature and humidity data to the ThingSpeak cloud via HTTP. Features a custom dashboard with trend graphs and gauges, and utilizes ThingSpeak\'s React capability to trigger automated email alerts when predefined environmental thresholds (>35°C or >80% Humidity) are exceeded.',
-    buttons: '<a href="iot_weather_station.html" class="btn-warm">Learn More</a>'
-  },
-  'cad_portfolio': {
-    title: 'CAD Modelling Portfolio',
-    desc: 'An extensive assembly and detail-drawing collection spanning engine sub-assemblies, precision jigs, and mechanical linkages. The designs place heavy emphasis on GD&T compliance and standard design-for-manufacture conventions.',
-    buttons: '<a href="cad_portfolio.html" class="btn-warm">Learn More</a>'
-  },
-  'booksolver_sme': {
-    title: 'Physics & Maths Expert - Booksolver',
-    desc: 'Produced detailed video solutions for JEE Advanced-level Physics and Mathematics problems. I focused on emphasizing conceptual clarity, first-principles understanding, and structured problem-solving approaches for competitive exam preparation.',
-    buttons: '<a href="https://www.youtube.com/playlist?list=PLioTSJheQgGiX10VHZz487jypl0BGnESb" target="_blank" class="btn-warm"><i class="fa-brands fa-youtube"></i> Learn More</a>'
-  },
-
-  // Relevant Coursework
   'cw_robotics': {
     title: 'Robotics (Core)',
     desc: 'Studied Robot Kinematics & Dynamics, covering DH Parameters, Coordinate Transforms, Workspace Analysis, and advanced Path Planning algorithms.',
