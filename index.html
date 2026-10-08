@@ -1487,25 +1487,7 @@ const pImg = document.getElementById('parallaxImg');
 const pB1 = document.getElementById('parallaxBadge1');
 const pB2 = document.getElementById('parallaxBadge2');
 
-hero.addEventListener('mousemove', (e) => {
-  if (window.innerWidth <= 900) return; // Ignore on mobile
-  const x = (window.innerWidth / 2 - e.pageX) / 50;
-  const y = (window.innerHeight / 2 - e.pageY) / 50;
-  
-  if(pBlob) pBlob.style.transform = `translate(${x * -2}px, ${y * -2}px)`;
-  if(pImg) pImg.style.transform = `translate(${x * 0.1}px, ${y * 0.1}px)`;
-  if(pShape) pShape.style.transform = `translate(${x * 2.5}px, ${y * 2.5}px)`;
-  if(pB1) pB1.style.transform = `translate(${x * 1.5}px, ${y * 1.5}px)`;
-  if(pB2) pB2.style.transform = `translate(${x * 2}px, ${y * 2}px)`;
-});
-
-hero.addEventListener('mouseleave', () => {
-  if (window.innerWidth <= 900) return;
-  const elements = [pBlob, pImg, pShape, pB1, pB2];
-  elements.forEach(el => {
-    if(el) el.style.transform = 'translate(0, 0)';
-  });
-});
+// Static geometric backdrop (parallax removed)
 
 // DYNAMIC MODAL LOGIC
 const projectData = {
