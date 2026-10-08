@@ -132,11 +132,8 @@ body.dark .proj-tabs-container { background: #080808 !important; border-bottom-c
 ::view-transition-new(root) {
   animation: none;
   mix-blend-mode: normal;
+  display: block;
 }
-::view-transition-old(root) { z-index: 1; }
-::view-transition-new(root) { z-index: 2; }
-.dark::view-transition-old(root) { z-index: 2; }
-.dark::view-transition-new(root) { z-index: 1; }
 
 /* NAV LINKS & HAMBURGER */
 .nav-logo{display:flex;align-items:center;gap: 8px;font-size:24px;font-weight:700;letter-spacing:-.01em;color:#1c1c1e;}
@@ -1292,12 +1289,12 @@ function toggleDark(e) {
     
     document.documentElement.animate(
       {
-        clipPath: isDark ? [...clipPath].reverse() : clipPath,
+        clipPath: clipPath,
       },
       {
         duration: 500,
         easing: 'ease-out',
-        pseudoElement: isDark ? '::view-transition-old(root)' : '::view-transition-new(root)',
+        pseudoElement: '::view-transition-new(root)',
       }
     );
   });
