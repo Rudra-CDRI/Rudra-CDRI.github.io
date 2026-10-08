@@ -86,9 +86,10 @@ body.dark .proj-tags .proj-tag { background:#1a1512; color:#c97d4e; }
 body.dark .nav-logo, body.dark h1.name, body.dark .name-geo, body.dark .sec-title { color:#eaeaf0; }
 body.dark .nav-links a { color:#eaeaf0; }
 body.dark .nav-links a:hover { color:#c97d4e; }
-body.dark .timeline::before { background:linear-gradient(#c97d4e,#222222); }
-body.dark .tl-dot { border-color: #080808; }
-body.dark .tl-dot.empty { background: #222; box-shadow: 0 0 0 2px #333; }
+body.dark .timeline::before { background:#222222; }
+body.dark .tl-dot { background: #222; box-shadow: 0 0 0 2px #333; border-color: #080808; }
+body.dark .tl-dot.active { background:#c97d4e; box-shadow:0 0 0 2px #c97d4e; border-color: #080808; }
+
 body.dark .tl-placeholder { border-color:#222222; color:#444; }
 body.dark .hero-blob { background:linear-gradient(135deg,#2a1a10,#1e1525); }
 body.dark #hero { background: transparent; }
@@ -352,10 +353,13 @@ body.dark .interactive-course .course-title {
 
 /* TIMELINE */
 .timeline{max-width:900px;display:flex;flex-direction:column;gap: 0;position:relative;padding-left: 0;}
-.timeline::before{content:'';position:absolute;left: 11px;top: 0;bottom: 0;width:2px;background:linear-gradient(#c97d4e,#e8e4dc);}
-.tl{position:relative;padding: 0 0 32px 40px;}
-.tl-dot{position:absolute;left: 4px;top: 0px;width:16px;height:16px;border-radius:50%;background:#c97d4e;border:3px solid #fafaf8;box-shadow:0 0 0 2px #c97d4e;}
-.tl-dot.empty{background:#e8e4dc;box-shadow:0 0 0 2px #e8e4dc;}
+.timeline::before{content:'';position:absolute;left: 11px;top: 0;bottom: 0;width:2px;background:#e8e4dc;}
+.timeline-progress { position:absolute;left: 11px;top: 0;width:2px;background:#c97d4e;height:0%;transition:height 0.1s ease-out;z-index: 1; }
+.tl{position:relative;padding: 0 0 32px 40px; opacity:0; transform:translateY(16px); transition:opacity 0.6s ease-out, transform 0.6s ease-out;}
+.tl.active { opacity:1; transform:translateY(0); }
+.tl-dot{position:absolute;left: 4px;top: 0px;width:16px;height:16px;border-radius:50%;background:#e8e4dc;border:3px solid #fafaf8;box-shadow:0 0 0 2px #e8e4dc;transition: background 0.4s ease, box-shadow 0.4s ease;z-index: 2;}
+.tl-dot.active { background:#c97d4e;box-shadow:0 0 0 2px #c97d4e; }
+
 .tl-date{font-size:12px;color:#c97d4e;font-weight:700;letter-spacing:.08em;margin-bottom: 8px;}
 .tl-role{font-size:15px;font-weight:700;color:#1c1c1e;margin-bottom: 0px;}
 .tl-org{font-size:15px;color:#aaa;margin-bottom: 8px;}
@@ -1109,7 +1113,8 @@ body:not(.dark) .pdf-kbd { background: #f0ece8; border-color: #e0dcd4; color: #a
       <h2 class="sec-title">Experience</h2>
       <p class="sec-sub">Roles, responsibilities, and milestones.</p>
     </div>
-    <div class="timeline reveal">
+    <div class="timeline">
+      <div class="timeline-progress"></div>
       <div class="tl">
         <div class="tl-dot"></div>
         <div class="tl-date">Present</div>
@@ -1238,9 +1243,39 @@ const staggerObserver = new IntersectionObserver(entries => {
     }
   });
 }, { threshold: 0.1 });
-document.querySelectorAll('.projects-stack, .mini-grid, .skills-grid, .timeline').forEach(el => {
+document.querySelectorAll('.projects-stack, .mini-grid, .skills-grid').forEach(el => {
   staggerObserver.observe(el);
 });
+
+
+// Timeline Scroll Animation
+window.addEventListener('scroll', () => {
+  const timeline = document.querySelector('.timeline');
+  if (!timeline) return;
+  const rect = timeline.getBoundingClientRect();
+  const timelineHeight = rect.height;
+  const triggerPoint = window.innerHeight * 0.7; // 70% down the screen
+  
+  // Calculate how far the trigger point is past the top of the timeline
+  let progress = (triggerPoint - rect.top) / timelineHeight;
+  progress = Math.max(0, Math.min(1, progress));
+  
+  const progressLine = document.querySelector('.timeline-progress');
+  if (progressLine) progressLine.style.height = `${progress * 100}%`;
+  
+  const tls = document.querySelectorAll('.tl');
+  tls.forEach(tl => {
+    // Offset relative to timeline container (plus a little buffer so it activates exactly when line hits dot)
+    const tlPercentage = (tl.offsetTop) / timelineHeight;
+    if (progress >= tlPercentage) {
+      tl.classList.add('active');
+      const dot = tl.querySelector('.tl-dot');
+      if (dot) dot.classList.add('active');
+    }
+  });
+});
+// Trigger once on load
+window.dispatchEvent(new Event('scroll'));
 
 // EXPERIMENTAL: Parallax Hover Effect in Hero (Disabled on small screens to prevent touch issues)
 const hero = document.getElementById('hero');
