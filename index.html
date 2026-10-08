@@ -429,7 +429,7 @@ footer strong{color:#888;}
 /* ========================================================
    MOBILE RESPONSIVENESS OVERHAUL
 ======================================================== */
-@media(max-width: 1200px) {
+@media(max-width: 1000px) {
   .projects-stack { grid-template-columns: repeat(2, 1fr) !important; }
 }
 
@@ -1281,8 +1281,7 @@ window.dispatchEvent(new Event('scroll'));
 
 // Interactive Particle Background for Hero
 (function() {
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (prefersReducedMotion) return;
+  // prefers-reduced-motion check removed to ensure visibility
 
   const canvas = document.getElementById('hero-canvas');
   const hero = document.getElementById('hero');
@@ -1317,7 +1316,7 @@ window.dispatchEvent(new Event('scroll'));
       this.y = Math.random() * height;
       this.vx = (Math.random() - 0.5) * 0.8; // Slow drifting speed
       this.vy = (Math.random() - 0.5) * 0.8;
-      this.radius = Math.random() * 1.5 + 1; // 1 to 2.5px
+      this.radius = Math.random() * 2 + 1.5; // 1 to 2.5px
     }
     update() {
       this.x += this.vx;
@@ -1352,7 +1351,7 @@ window.dispatchEvent(new Event('scroll'));
   function initParticles() {
     particles = [];
     // Number of particles depends on screen size, capped at 120
-    const numParticles = Math.min(Math.floor((width * height) / 12000), 120);
+    const numParticles = Math.min(Math.floor((width * height) / 8000), 150);
     for (let i = 0; i < numParticles; i++) {
       particles.push(new Particle());
     }
