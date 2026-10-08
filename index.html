@@ -225,19 +225,20 @@ h1.name span{color:#c97d4e;}
   content: '';
   position: absolute;
   top: 0; left: -150%;
-  width: 60%; height: 100%;
-  background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+  width: 50%; height: 100%;
+  background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 100%);
   transform: skewX(-25deg);
-  transition: none;
+  transition: left 0.7s ease-in-out; 
   z-index: 10;
   pointer-events: none;
+  mix-blend-mode: overlay;
 }
 body.dark .main-proj-wrapper::after, body.dark .mini-card::after {
-  background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%);
+  background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0) 100%);
+  mix-blend-mode: normal;
 }
 .main-proj-wrapper:hover::after, .mini-card:hover::after {
   left: 150%;
-  transition: left 0.75s ease-out;
 }
 
 
