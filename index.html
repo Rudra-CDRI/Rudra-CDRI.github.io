@@ -205,10 +205,32 @@ h1.name span{color:#c97d4e;}
 
 /* MAIN PROJECT WRAPPER */
 .main-proj-wrapper {
+  position: relative;
   background: #fff; border: 1px solid #e8e4dc; border-radius: 20px; overflow: hidden;
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .main-proj-wrapper:hover { transform: translateY(-4px); box-shadow: 0 16px 32px rgba(0,0,0,0.06); }
+
+/* PREMIUM GLARE HOVER EFFECT */
+.main-proj-wrapper::after, .mini-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -150%;
+  width: 60%; height: 100%;
+  background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+  transform: skewX(-25deg);
+  transition: none;
+  z-index: 10;
+  pointer-events: none;
+}
+body.dark .main-proj-wrapper::after, body.dark .mini-card::after {
+  background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%);
+}
+.main-proj-wrapper:hover::after, .mini-card:hover::after {
+  left: 150%;
+  transition: left 0.75s ease-out;
+}
+
 
 /* PROJECTS — Tabs */
 .proj-tabs-container { width: 100%; background: #fff !important; border-bottom: 0px solid #e8e4dc; }
@@ -287,6 +309,7 @@ body.dark .slider-btn:hover {
   display: none;
 }
 .mini-card {
+  position: relative;
   flex: 0 0 calc(33.333% - 16px);
   min-width: 280px;
   scroll-snap-align: start;
