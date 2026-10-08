@@ -738,8 +738,8 @@ body:not(.dark) .pdf-kbd { background: #f0ece8; border-color: #e0dcd4; color: #a
   }
 
   .hero-photo-geo {
-    width: 360px;
-    height: 440px;
+    width: 420px;
+    height: 520px;
     object-fit: cover;
     position: relative;
     z-index: 2;
@@ -796,7 +796,7 @@ body:not(.dark) .pdf-kbd { background: #f0ece8; border-color: #e0dcd4; color: #a
     filter: drop-shadow(4px 0px 0px #1a1a1a) drop-shadow(-4px 0px 0px #1a1a1a) drop-shadow(0px 4px 0px #1a1a1a) drop-shadow(0px -4px 0px #1a1a1a);
   }
 
-  .hero-photo-geo { width: 300px; height: 380px; }
+  .hero-photo-geo { width: 360px; height: 460px; }
     
   /* Allow canvas grid to show through */
   #hero, .hero-geometric { background: transparent !important; }
@@ -828,8 +828,8 @@ body:not(.dark) .pdf-kbd { background: #f0ece8; border-color: #e0dcd4; color: #a
   </div>
   
   <div class="hero-img-wrap reveal" style="position:relative; z-index:1;">
-    <div class="geo-solid-shape"></div>
-            <div class="photo-outline-wrap"><img src="assests/images/hero_profile.png" alt="Rudrapriya Rajesh Choudhari" class="hero-photo-geo" id="parallaxImg"/></div>
+    <div class="geo-solid-shape" id="parallaxShape"></div>
+            <div class="photo-outline-wrap"><img src="assests/images/new_hero_profile.jpg" alt="Rudrapriya Rajesh Choudhari" class="hero-photo-geo" id="parallaxImg"/></div>
     
     
     
@@ -1398,6 +1398,7 @@ window.dispatchEvent(new Event('scroll'));
 // EXPERIMENTAL: Parallax Hover Effect in Hero (Disabled on small screens to prevent touch issues)
 const hero = document.getElementById('hero');
 const pBlob = document.getElementById('parallaxBlob');
+const pShape = document.getElementById('parallaxShape');
 const pImg = document.getElementById('parallaxImg');
 const pB1 = document.getElementById('parallaxBadge1');
 const pB2 = document.getElementById('parallaxBadge2');
@@ -1408,14 +1409,15 @@ hero.addEventListener('mousemove', (e) => {
   const y = (window.innerHeight / 2 - e.pageY) / 50;
   
   if(pBlob) pBlob.style.transform = `translate(${x * -2}px, ${y * -2}px)`;
-  if(pImg) pImg.style.transform = `translate(${x * 1}px, ${y * 1}px)`;
+  if(pImg) pImg.style.transform = `translate(${x * 0.1}px, ${y * 0.1}px)`;
+  if(pShape) pShape.style.transform = `translate(${x * 2.5}px, ${y * 2.5}px)`;
   if(pB1) pB1.style.transform = `translate(${x * 1.5}px, ${y * 1.5}px)`;
   if(pB2) pB2.style.transform = `translate(${x * 2}px, ${y * 2}px)`;
 });
 
 hero.addEventListener('mouseleave', () => {
   if (window.innerWidth <= 900) return;
-  const elements = [pBlob, pImg, pB1, pB2];
+  const elements = [pBlob, pImg, pShape, pB1, pB2];
   elements.forEach(el => {
     if(el) el.style.transform = 'translate(0, 0)';
   });
